@@ -1,0 +1,11 @@
+x0 u_x y0 m n_points gap motion noise(mean, standard deviation)
+0 2 0.33 20 10 Linear [None]
+0 4 0.2 20 10 Linear [None]
+0 2 -0.26 20 10 Linear [None]
+0 1 40 0.16 20 10 Linear [None]
+0 4 -0.27 20 10 Linear [None]
+0 2 -0.19 20 10 Linear [None]
+0 3 0.34 20 10 Linear [None]
+0 2 -0.33 20 10 Linear [None]
+0 4 0.2 20 10 Linear [None]
+0 2 0.56 20 10 Linear [None]
