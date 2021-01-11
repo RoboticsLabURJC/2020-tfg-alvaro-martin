@@ -1,5 +1,5 @@
 # Root to save
-root: /Users/Martin/Downloads/2017-tfm-nuria-oyaga-master/Generator
+root: /Users/Martin/Desktop/Generator
 
 # Type of element to generate
 to_generate: f #frame('f'), vector('v') or number('n')
@@ -24,7 +24,7 @@ circle_parameters:
   radius: 5
 
 # Number of samples
-n_samples: 5000
+n_samples: 6000
 
 # Number of know points (x values)
 n_points: 20

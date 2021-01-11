@@ -7,7 +7,7 @@ __author__ = "Nuria Oyaga"
 __date__ = "22/05/2018"
 
 import sys
-sys.path.insert(0, '/Users/Martin/Desktop/2017-tfm-nuria-oyaga-master')
+sys.path.insert(0, '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin')
 
 from Utils import utils, func_utils, vect_utils, frame_utils
 from Network import Net
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     conf = utils.get_config_file()
     data_type = conf['data_path'].split('/')[6]
     net_type = conf['model_path'].split('/')[7]
-    complexity = conf['model_path'].split('/')[9]
+    complexity = conf['model_path'].split('/')[10]
 
     print("Dataset: " + conf['data_path'])
     print("Model: " + conf['model_path'])

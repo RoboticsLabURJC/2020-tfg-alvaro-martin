@@ -235,6 +235,3 @@ def draw_pred_vs_real(real, predict, dim, fig_dir):
     ax2.grid(True)
 
     fig.savefig(fig_dir + 'Real_VS_Pred.png')
-
-
-

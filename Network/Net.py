@@ -324,7 +324,7 @@ class ConvolutionLstm(Net):
             self.model.add(Dropout(self.drop_percentage))
 
         self.model.add(Dense(self.output_shape, activation="softmax"))
-        self.model.compile(loss=self.loss, optimizer='adam')    
+        self.model.compile(loss=self.loss, optimizer='adam')
 
     def create_complex_model(self):
         print("Creating complex convolution LSTM model")
