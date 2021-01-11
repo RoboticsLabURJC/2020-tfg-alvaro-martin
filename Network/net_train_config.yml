@@ -1,0 +1,44 @@
+# Version
+version: 1
+
+# Complexity: simple, complex, convLSTM, complex_convLSTM
+complexity: convLSTM
+
+# Root to save the model
+root:  /Users/Martin/Desktop/2017-tfm-nuria-oyaga-master/Models/
+
+# Type of the net to train (NoRec, Rec)
+net_type: Rec
+
+# Activation function
+activation: relu
+modeled_activation: tanh
+
+# Loss function
+func_loss: mean_squared_error
+vect_loss: categorical_crossentropy
+raw_frame_loss: categorical_crossentropy
+modeled_frame_loss: mean_squared_error
+
+
+# Dropout options
+dropout:
+  flag: False
+  percentage: 0.2
+
+# Epochs
+n_epochs: 600
+
+# Batch size
+batch_size: 10
+
+# Patience
+patience: 10
+
+# Data
+#data_dir: /home/docker/data_10/Frames_dataset/sinusoidal_point_255_var_1_100000_80_120/sinusoidal_10_[None]_
+#data_dir: /home/docker/data_10/Frames_dataset/linear_point_255_fix_10000_80_120/linear_10_[None]_
+data_dir:  /Users/Martin/Desktop/2017-tfm-nuria-oyaga-master/Frames_dataset/linear_point_255_fix_1000_80_120/linear_10_[None]_
+batch_data: True #True or False
+data_model: modeled #raw or modeled
+gauss_pixel: False

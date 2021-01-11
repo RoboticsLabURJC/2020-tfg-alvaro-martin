@@ -1,0 +1,5 @@
+# Test dataset path
+data_path: /Users/Martin/Desktop/2017-tfm-nuria-oyaga-master/Frames_dataset/linear_point_255_fix_1000_80_120/linear_10_[None]_test
+
+# Model path
+model_path: /Users/Martin/Desktop/2017-tfm-nuria-oyaga-master/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled/convLSTM/10_False_tanh_mean_squared_error_10.h5
