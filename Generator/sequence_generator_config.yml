@@ -18,7 +18,7 @@ height: 80
 width: 120
 object: point # point, circle
 obj_color: 255 # For b/w: 255; For color: [0, 255, 0]
-dof: fix # fix, var, (var_1, (var_2))
+dof: var_1 # fix, var, (var_1), (var_2) Ordenados por orden 1,2,3...
 
 circle_parameters:
   radius: 5

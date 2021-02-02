@@ -2,7 +2,7 @@
 version: 1
 
 # Complexity: simple, complex, convLSTM, complex_convLSTM
-complexity: convLSTM
+complexity: complex_convLSTM
 
 # Root to save the model
 root:  /Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Models/
@@ -15,8 +15,8 @@ activation: relu
 modeled_activation: tanh
 
 # Loss function
-func_loss: mean_squared_error
-vect_loss: categorical_crossentropy
+#func_loss: mean_squared_error
+#vect_loss: categorical_crossentropy
 raw_frame_loss: categorical_crossentropy
 modeled_frame_loss: mean_squared_error
 
@@ -36,9 +36,11 @@ batch_size: 10
 patience: 10
 
 # Data
-#data_dir: /home/docker/data_10/Frames_dataset/sinusoidal_point_255_var_1_100000_80_120/sinusoidal_10_[None]_
-#data_dir: /home/docker/data_10/Frames_dataset/linear_point_255_fix_10000_80_120/linear_10_[None]_
-data_dir:  /Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_6000_80_120/linear_10_[None]_
+#data_dir: /Users/Martin/Desktop/Generator_10/Frames_dataset/sinusoidal_point_255_fix_6000_80_120/sinusoidal_10_[None]_
+#data_dir: /Users/Martin/Desktop/Generator_10/Frames_dataset/sinusoidal_point_255_var_1_6000_80_120/sinusoidal_10_[None]_
+#data_dir: /Users/Martin/Desktop/Generator_10/Frames_dataset/parabolic_point_255_var_2_6000_80_120/parabolic_10_[None]_
+data_dir: /Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_var_1_6000_80_120/linear_10_[None]_
+#data_dir:  /Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_6000_80_120/linear_10_[None]_
 batch_data: True #True or False
 data_model: modeled #raw or modeled
 gauss_pixel: False
