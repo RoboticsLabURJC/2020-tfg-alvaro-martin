@@ -1,0 +1,3 @@
+BATCH DATA
+
+https://medium.com/metadatos/todo-lo-que-necesitas-saber-sobre-el-descenso-del-gradiente-aplicado-a-redes-neuronales-19bdbb706a78
