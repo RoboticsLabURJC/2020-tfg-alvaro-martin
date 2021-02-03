@@ -18,13 +18,13 @@ height: 80
 width: 120
 object: point # point, circle
 obj_color: 255 # For b/w: 255; For color: [0, 255, 0]
-dof: var_1 # fix, var, (var_1), (var_2) Ordenados por orden 1,2,3...
+dof: var # fix, var, (var_1), (var_2) Ordenados por orden 1,2,3,4..
 
 circle_parameters:
   radius: 5
 
 # Number of samples
-n_samples: 6000
+n_samples: 20000
 
 # Number of know points (x values)
 n_points: 20
