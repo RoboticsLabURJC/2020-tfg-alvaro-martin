@@ -2,7 +2,7 @@
 version: 1
 
 # Complexity: simple, complex, convLSTM, complex_convLSTM
-complexity: convLSTM
+complexity: complex_convLSTM
 
 # Root to save the model
 root:  /Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/
