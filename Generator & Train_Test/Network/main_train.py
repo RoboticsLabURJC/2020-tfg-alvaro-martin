@@ -7,7 +7,9 @@ __author__ = "Nuria Oyaga"
 __date__ = "22/05/2018"
 
 import sys
-sys.path.insert(0, '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test')
+#sys.path.insert(0, '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test')
+sys.path.insert(0, 'C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/')
+
 
 from Utils import utils, func_utils, vect_utils, frame_utils
 from Network import Net
