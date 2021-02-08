@@ -1,6 +1,6 @@
 # Root to save
-root: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Datashet
-#root: /Users/Martin/Desktop/Generator
+#root: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Datashet
+root: /Users/Martin/Desktop/Generator
 
 # Type of element to generate
 to_generate: f #frame('f')
@@ -16,13 +16,13 @@ height: 80
 width: 120
 object: point # point, circle
 obj_color: 255 # For b/w: 255; For color: [0, 255, 0]
-dof: var # fix, var, (var_1), (var_2) Ordenados por orden 1,2,3,4..
+dof: fix # fix, var, (var_1), (var_2) Ordenados por orden 1,2,3,4..
 
 circle_parameters:
   radius: 5
 
 # Number of samples
-n_samples: 10000
+n_samples: 1000
 
 # Number of know points (x values)
 n_points: 20

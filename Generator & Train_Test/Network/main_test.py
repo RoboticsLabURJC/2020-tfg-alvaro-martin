@@ -58,6 +58,7 @@ if __name__ == '__main__':
         print(data_path)
         print('\n')
         sample_type = data_path.split('/')[-1]
+        print(sample_type)
         data_type = data_type + "_" + sample_type
         samples_dir = data_path.split('/')[6]
         dim = (int(samples_dir.split('_')[-2]), int(samples_dir.split('_')[-1]))
