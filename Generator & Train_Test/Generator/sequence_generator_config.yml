@@ -9,14 +9,14 @@ to_generate: f #frame('f')
 func_type: linear #linear
 
 # If toGenerate = 'v' or 'f'; Motion type
-motion_type: linear # linear, parabolic, sinusoidal
+motion_type: sinusoidal # linear, parabolic, sinusoidal
 
 # If toGenerate = 'f'; Height, width, object
 height: 80
 width: 120
 object: point # point, circle
 obj_color: 255 # For b/w: 255; For color: [0, 255, 0]
-dof: var # fix, var, (var_1), (var_2) Ordenados por orden 1,2,3,4..
+dof: fix # fix, var, (var_1), (var_2) Ordenados por orden 1,2,3,4..
 
 circle_parameters:
   radius: 5
