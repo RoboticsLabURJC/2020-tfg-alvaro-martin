@@ -1,9 +1,16 @@
 # Extract all frames from a video using Python (OpenCV)
 import cv2
+import os
 
-video_path = 'D:\\PROGRAMMING\\3-Python\\My_Virtual_Envs\\opencv_extract_frames\\video_ok.mp4'
+folder_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Extract Frames/'
+video_name = 'MVI_9993.MOV'
+video_path = folder_path + video_name
+
+frames_path = folder_path + '/frames' + '_' + video_name + '/'
+os.mkdir(frames_path)
+
 cap = cv2.VideoCapture(video_path)
-
+os.chdir(frames_path)
 img_index = 0
 
 while (cap.isOpened()):
@@ -11,7 +18,7 @@ while (cap.isOpened()):
     gray_effect = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     if ret == False:
         break
-    cv2.imwrite('myphotos' + str(img_index) + '.png', gray_effect)
+    cv2.imwrite('video_frames' + str(img_index) + '.png', gray_effect)
     img_index += 1
 
 cap.release()
