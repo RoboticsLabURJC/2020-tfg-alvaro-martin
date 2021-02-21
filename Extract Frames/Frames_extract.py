@@ -12,7 +12,7 @@ previous_cX = 0
 #    if video.endswith(".MP4") and not video.endswith("2501.MP4") and not video.endswith("2515.MP4") and not video.endswith("2491.MP4") and not video.endswith("2493.MP4") and not video.endswith("2490.MP4"):
 
         #video_name = video
-video_name = 'MVI_2502.MP4'
+video_name = 'MVI_2510.MP4'
 video_path = folder_path + video_name
 
 frames_path = folder_path + '/' + video_name + '_frames'
@@ -75,8 +75,8 @@ while (cap.isOpened()):
         cv2.circle(gray_image, (cX, cY), 8, (255, 255, 255), 1)
         cv2.putText(gray_image, "centroid", (cX - 30, cY - 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
-        cv2.circle(frame, (cX, cY), 8, (255, 255, 255), 1)
-        cv2.putText(frame, "centroid", (cX - 30, cY - 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+        cv2.circle(frame, (cX, cY), 8, (0, 0, 0), 1)
+        cv2.putText(frame, "centroid", (cX - 30, cY - 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
         if (cX > previous_cX):
             print(previous_cX, cX)
