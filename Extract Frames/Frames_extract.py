@@ -29,7 +29,7 @@ for video in os.listdir(folder_path):
 
             # It converts the BGR color space of image to HSV color space
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            cv2.imwrite('HSV' + str(img_index) + '.png', hsv)
+            #cv2.imwrite('HSV' + str(img_index) + '.png', hsv)
 
             # Threshold of blue in HSV space for black background
             lower_blue = np.array([0, 0, 160])
@@ -47,7 +47,7 @@ for video in os.listdir(folder_path):
 
             # Gray scale
             gray_image = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
-            cv2.imwrite('GREY ' + str(img_index) + '.png', gray_image)
+            #cv2.imwrite('GREY ' + str(img_index) + '.png', gray_image)
 
             #Binary Mode
             ret,binary_gray = cv2.threshold(gray_image,100,255,cv2.THRESH_BINARY)
@@ -55,11 +55,11 @@ for video in os.listdir(folder_path):
 
             kernel = np.ones((2,2), np.uint8)       # 3x3 matrix
             erosion_image = cv2.erode(binary_gray, kernel, iterations=1)
-            cv2.imwrite('ERODE ' + str(img_index) + '.png', erosion_image)
+            #cv2.imwrite('ERODE ' + str(img_index) + '.png', erosion_image)
 
             kernel = np.ones((10,10), np.uint8)     # 10x10 matrix
             dilation_image = cv2.dilate(erosion_image, kernel, iterations=1)
-            cv2.imwrite('DILATE ' + str(img_index) + '.png', dilation_image)
+            #cv2.imwrite('DILATE ' + str(img_index) + '.png', dilation_image)
 
             # calculate moments of binary image
             M = cv2.moments(dilation_image)
@@ -73,8 +73,8 @@ for video in os.listdir(folder_path):
                 cX = int(M["m10"] / M["m00"])
                 cY = int(M["m01"] / M["m00"])
 
-                cv2.circle(gray_image, (cX, cY), 8, (255, 255, 255), 1)
-                cv2.putText(gray_image, "centroid", (cX - 30, cY - 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+                cv2.circle(gray_image, (cX, cY), 8, (0, 0, 0), 1)
+                cv2.putText(gray_image, "centroid", (cX - 30, cY - 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
                 cv2.circle(frame, (cX, cY), 8, (0, 0, 0), 1)
                 cv2.putText(frame, "centroid", (cX - 30, cY - 30),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
