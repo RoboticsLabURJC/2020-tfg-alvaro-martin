@@ -10,8 +10,8 @@ def main():
     window_name='color range parameter'
     cv2.namedWindow(window_name)
     # Create a black image, a window
-    im = cv2.imread('/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Extract Frames/MVI_2481.MP4_frames/HSV153.png')
-    cb = cv2.imread('/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Extract Frames/MVI_2481.MP4_frames/HSV153.png')
+    im = cv2.imread('/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Extract Frames/MVI_2510.MP4_frames/HSV80.png')
+    cb = cv2.imread('/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Extract Frames/MVI_2510.MP4_frames/HSV80.png')
     hsv = cv2.cvtColor(im,cv2.COLOR_BGR2HSV)
 
     print ('lower_color = np.array([a1,a2,a3])')
