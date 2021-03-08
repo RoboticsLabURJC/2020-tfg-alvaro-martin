@@ -47,7 +47,7 @@ for video in os.listdir(folder_path):
             gray_image = cv2.cvtColor(result, cv2.COLOR_BGR2GRAY)
             #cv2.imwrite('GREY ' + str(img_index) + '.png', gray_image)
 
-            #Binary Mode
+            # Binary Mode
             ret,binary_gray = cv2.threshold(gray_image,100,255,cv2.THRESH_BINARY)
             #cv2.imwrite('video_frames_BIN ' + str(img_index) + '.png', binary_gray)
 
