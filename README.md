@@ -1,5 +1,7 @@
-# Alvaro Martin TFG -- Deep Neural Networks for video prediction
+# Audiovisual Engineering Thesis by Álvaro Martín Menacho
 
-Space used for the compilation of all the documentation and scripting files used in the development and follow-up of Álvaro Martín's end of degree work on deep neural networks applied to video predictions. 
+### Deep Neural Networks for video prediction
 
-Using a network that has already be training for improve which model should be use, we are trying to give it a real use, and predict when and where the objects in a camera are going to be in the scene for the next frames.
+Space used for the compilation of all the documentation and scripting files used in the development and follow-up of Álvaro Martín's end of degree thesis on deep neural networks applied to video predictions. 
+
+Using neural networks of different complexity, we are trying to predict when and where the objects are going to be in a scene recorded by a camera for the futures frames.
