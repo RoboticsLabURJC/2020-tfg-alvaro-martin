@@ -3,10 +3,28 @@ import cv2
 import os
 import numpy as np
 
-folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Fondo Verde/'
+folder_path = 'C:/Users/optiva/Desktop/Nuevas tomas/'
 v = 0
 cX = 0
 previous_cX = 0
+
+def create_blank(width, height, rgb_color=(0, 0, 0)):
+    """Create new image(numpy array) filled with certain color in RGB"""
+    # Create black blank image
+    image = np.zeros((height, width, 3), np.uint8)
+
+    # Since OpenCV uses BGR, convert the color first
+    color = tuple(reversed(rgb_color))
+    # Fill image with color
+    image[:] = color
+
+    return image
+
+# Create new blank 300x300 black image
+width1, height1 = 500, 500
+
+black = (0, 0, 0)
+black_img = create_blank(width1, height1, rgb_color=black)
 
 for video in os.listdir(folder_path):
     if video.endswith(".MP4"):
@@ -33,13 +51,12 @@ for video in os.listdir(folder_path):
             #cv2.imwrite('HSV' + str(img_index) + '.png', hsv)
 
             # Threshold in HSV space
-            lower = np.array([0, 145, 0]) # Green Background
+            lower = np.array([225, 0, 0]) # Green Background
             #lower = np.array([0, 0, 160]) # Black background
             upper = np.array([255, 255, 255])
 
             # The black region in the mask has the value of 0
             mask = cv2.inRange(hsv, lower, upper)
-            result = cv2.bitwise_and(frame, frame, mask = mask)
             result = cv2.bitwise_and(frame, frame, mask = mask)
             #cv2.imwrite('video_frames_MASK' + str(img_index) + '.png', result)
 
@@ -68,6 +85,9 @@ for video in os.listdir(folder_path):
             if int((M["m10"]) != 0) or int((M["m10"]) != 0) or int((M["m10"]) != 0) or int((M["m10"]) != 0):
                 cX = int(M["m10"] / M["m00"])
                 cY = int(M["m01"] / M["m00"])
+
+                cv2.circle(black_img, (cX, cY), 3, (150, 0, 0), -1)
+                cv2.imwrite('Estela_azul.png', black_img)
 
                 cv2.circle(dilation_image, (cX, cY), 6, (0, 0, 0), 1)
                 cv2.putText(dilation_image, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
