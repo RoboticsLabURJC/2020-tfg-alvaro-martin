@@ -47,11 +47,12 @@ def Extract_Frames():
     gap = max_number_frames + 30
 
     # Create new blank image
-    #w, h = 1280, 720
     w, h = 120, 80
+    #w, h = 120, 80
     black = (0, 0, 0)
-    black_img = create_blank(w, h, rgb_color=black)
 
+    testX = []
+    testY = []
     dataX = []
     dataY = []
 
@@ -68,6 +69,14 @@ def Extract_Frames():
 
             cap = cv2.VideoCapture(video_path)
             os.chdir(frames_path)
+            black_img = create_blank(w, h, rgb_color=black)
+
+            if len(dataX) != 0:
+                testX.append(dataX)
+                testY.append(dataY)
+
+            dataX = []
+            dataY = []
 
             print('\nVideo #' + str(v) + '-----------' + str(video_name) + '\n')
 
@@ -78,7 +87,9 @@ def Extract_Frames():
                 if ret == False:
                     break
 
+                ''' FRAME RESIZED '''
                 frame = resize(frame, 120, 80)
+                ''' FRAME RESIZED '''
 
                 hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
                 hsv = cv2.bitwise_not(hsv) # Inverted filter color
@@ -118,13 +129,13 @@ def Extract_Frames():
                     data_temp_y = []
 
                     if img_index <= max_number_frames:
-                        data_temp_x.append(cY)
-                        data_temp_x.append(cX)
+                        data_temp_x.append(float(cY))
+                        data_temp_x.append(float(cX))
                         dataX.append(data_temp_x)
 
                     if img_index == gap:
-                        data_temp_y.append(cY)
-                        data_temp_y.append(cX)
+                        data_temp_y.append(float(cY))
+                        data_temp_y.append(float(cX))
                         dataY.append(data_temp_y)
 
                     '''
@@ -143,35 +154,39 @@ def Extract_Frames():
 
                     '''
 
-                    cv2.circle(black_img, (cX, cY), 2, (246, 209, 81), -1)
-                    cv2.imwrite('Real_Trails.png', black_img)
-                    cv2.circle(dilation_image, (cX, cY), 6, (0, 0, 0), 1)
-                    cv2.putText(dilation_image, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
-                    cv2.circle(frame, (cX, cY), 6, (0, 0, 0), 1)
-                    cv2.putText(frame, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
+                    cv2.circle(dilation_image, (cX, cY), 3, (0, 0, 0), -1)
+                    #cv2.putText(dilation_image, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
+                    cv2.circle(frame, (cX, cY), 3, (0, 0, 0), -1)
+                    #cv2.putText(frame, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
                     if (cX > previous_cX):
                         print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                         cv2.imwrite('HVS+GREY+BIN(ERODE+DILATE) ' + str(img_index) + '.png', dilation_image)
                         cv2.imwrite('ORIGINAL ' + str(img_index) + '.png', frame)
+                        cv2.circle(black_img, (cX, cY), 5, (246, 209, 81), -1)
+                        cv2.imwrite('Real_Trails.png', black_img)
 
                     img_index += 1
                     cv2.waitKey(1)
 
+    testX.append(dataX)
+    testY.append(dataY)
     cap.release()
     cv2.destroyAllWindows()
 
-    return dataX, dataY
+    return testX, testY
 
 if __name__ == '__main__':
-    folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Ultimas/'
-    dataX, dataY = Extract_Frames()
+    folder_path = '/Users/Martin/Desktop/Nuevas tomas/'#Prueba crudas pelota golf/Ultimas/'
+    testX, testY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
+
     print('\n--- DATA X REAL VALUE ---')
     with open('dataX.txt', 'w') as file:
-            file.write(str(dataX))
-            print(str(dataX))
+            file.write(str(testX))
+            print(np.array(testX))
+
     print('\n--- DATA Y GAP + 30 ---')
     with open('dataY.txt', 'w') as file:
-            file.write(str(dataY))
-            print(str(dataY))
+            file.write(str(testY))
+            print(np.array(testY))
