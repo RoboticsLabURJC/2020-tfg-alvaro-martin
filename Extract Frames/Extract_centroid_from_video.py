@@ -48,6 +48,9 @@ def Extract_Frames():
     black = (0, 0, 0)
     black_img = create_blank(w, h, rgb_color=black)
 
+    dataX = []
+    dataY = []
+
     # List all the videos
     for video in os.listdir(folder_path):
         if video.endswith(".MP4"):
@@ -66,6 +69,7 @@ def Extract_Frames():
 
             # List all the frames
             while (cap.isOpened()):
+
                 ret, frame = cap.read()
                 if ret == False:
                     break
@@ -104,6 +108,26 @@ def Extract_Frames():
                     cX = int(M["m10"] / M["m00"])
                     cY = int(M["m01"] / M["m00"])
 
+                    dataX.append(cY)
+                    dataY.append(cX)
+
+                    '''
+                    testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
+                    print('Puting the test data into the right shape...')
+                    to_test_net = Lstm(model_file=model_path, framework="tensorflow")
+
+                    gap = 30
+                    to_test_net.test(testX, testY, gap, data_type, dim)
+
+                    predict = self.model.predict(test_x)
+                    predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
+
+                    error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
+
+
+
+                    '''
+
                     cv2.circle(black_img, (cX, cY), 5, (246, 209, 81), -1)
                     cv2.imwrite('Real_Trails.png', black_img)
                     cv2.circle(dilation_image, (cX, cY), 6, (0, 0, 0), 1)
@@ -123,7 +147,11 @@ def Extract_Frames():
     cap.release()
     cv2.destroyAllWindows()
 
+    return dataX, dataY
+
 if __name__ == '__main__':
     folder_path = '/Users/Martin/Desktop/Nuevas tomas/'
-    Extract_Frames()
+    dataX, dataY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
+    print(dataX)
+    print(dataY)

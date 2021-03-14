@@ -199,6 +199,7 @@ if __name__ == '__main__':
             to_test_net = ConvolutionLstm(model_file=model_path, framework="keras")
     else:
         parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
+        print(testX)
         if net_type == "NOREC":
             print('Puting the test data into the right shape...')
             to_test_net = Mlp(model_file=model_path, framework="tensorflow")
