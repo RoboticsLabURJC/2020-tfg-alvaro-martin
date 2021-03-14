@@ -29,10 +29,10 @@ def create_blank(width, height, rgb_color=(0, 0, 0)):
     return image
 
 ''' Resize image '''
-def resize(width, height):
+def resize(img, width, height):
 
     dim = (width, height)
-    resized = cv2.resize(black_image, dim, interpolation = cv2.INTER_AREA)
+    resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
 
     return resized
 
@@ -43,8 +43,12 @@ def Extract_Frames():
     cX = 0
     previous_cX = 0
 
+    max_number_frames = 19
+    gap = max_number_frames + 30
+
     # Create new blank image
-    w, h = 1280, 720
+    #w, h = 1280, 720
+    w, h = 120, 80
     black = (0, 0, 0)
     black_img = create_blank(w, h, rgb_color=black)
 
@@ -65,7 +69,7 @@ def Extract_Frames():
             cap = cv2.VideoCapture(video_path)
             os.chdir(frames_path)
 
-            print('\nVideo #' + str(v) + '---------' + str(video_name))
+            print('\nVideo #' + str(v) + '-----------' + str(video_name) + '\n')
 
             # List all the frames
             while (cap.isOpened()):
@@ -73,6 +77,8 @@ def Extract_Frames():
                 ret, frame = cap.read()
                 if ret == False:
                     break
+
+                frame = resize(frame, 120, 80)
 
                 hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
                 hsv = cv2.bitwise_not(hsv) # Inverted filter color
@@ -108,12 +114,21 @@ def Extract_Frames():
                     cX = int(M["m10"] / M["m00"])
                     cY = int(M["m01"] / M["m00"])
 
-                    dataX.append(cY)
-                    dataY.append(cX)
+                    data_temp_x = []
+                    data_temp_y = []
+
+                    if img_index <= max_number_frames:
+                        data_temp_x.append(cY)
+                        data_temp_x.append(cX)
+                        dataX.append(data_temp_x)
+
+                    if img_index == gap:
+                        data_temp_y.append(cY)
+                        data_temp_y.append(cX)
+                        dataY.append(data_temp_y)
 
                     '''
                     testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
-                    print('Puting the test data into the right shape...')
                     to_test_net = Lstm(model_file=model_path, framework="tensorflow")
 
                     gap = 30
@@ -122,13 +137,13 @@ def Extract_Frames():
                     predict = self.model.predict(test_x)
                     predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
 
-                    error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
+                    get predict_values, real_values
 
 
 
                     '''
 
-                    cv2.circle(black_img, (cX, cY), 5, (246, 209, 81), -1)
+                    cv2.circle(black_img, (cX, cY), 2, (246, 209, 81), -1)
                     cv2.imwrite('Real_Trails.png', black_img)
                     cv2.circle(dilation_image, (cX, cY), 6, (0, 0, 0), 1)
                     cv2.putText(dilation_image, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
@@ -136,7 +151,6 @@ def Extract_Frames():
                     cv2.putText(frame, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
                     if (cX > previous_cX):
-                        print(previous_cX, cX)
                         print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                         cv2.imwrite('HVS+GREY+BIN(ERODE+DILATE) ' + str(img_index) + '.png', dilation_image)
                         cv2.imwrite('ORIGINAL ' + str(img_index) + '.png', frame)
@@ -150,8 +164,14 @@ def Extract_Frames():
     return dataX, dataY
 
 if __name__ == '__main__':
-    folder_path = '/Users/Martin/Desktop/Nuevas tomas/'
+    folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Ultimas/'
     dataX, dataY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
-    print(dataX)
-    print(dataY)
+    print('\n--- DATA X REAL VALUE ---')
+    with open('dataX.txt', 'w') as file:
+            file.write(str(dataX))
+            print(str(dataX))
+    print('\n--- DATA Y GAP + 30 ---')
+    with open('dataY.txt', 'w') as file:
+            file.write(str(dataY))
+            print(str(dataY))

@@ -7,6 +7,8 @@ import cv2
 import sys
 import os
 
+
+np.set_printoptions(threshold=sys.maxsize)
 sys.path.insert(0, '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test')
 #sys.path.insert(0, 'C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/')
 from Utils import utils, frame_utils, test_utils
@@ -49,24 +51,18 @@ class Net(object):
 
     def test(self, test_x, test_y, gap, data_type, dim):
         predict = self.model.predict(test_x)
-        if data_type == "Functions_dataset":
-            maximum = [np.max(np.abs(np.append(test_x[i], test_y[i]))) for i in range(len(test_x))]
-            predict_values = predict
-            real_values = test_y
-            v_to_draw = predict_values
-        elif data_type == "Vectors_dataset":
-            predict_values, real_values, maximum = vect_utils.get_positions(predict, test_y)
-            v_to_draw = predict_values
-        else:
-            raw = True
-            if "modeled" in data_type:
-                raw = False
-            predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
+        with open('predict.txt', 'w') as file:
+                file.write(str(predict))
 
-            if raw:
-                v_to_draw = predict
-            else:
-                v_to_draw = predict_values
+        raw = True
+        if "modeled" in data_type:
+            raw = False
+        predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
+
+        if raw:
+            v_to_draw = predict
+        else:
+            v_to_draw = predict_values
 
         error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
 
@@ -105,7 +101,7 @@ class Net(object):
                 cv2.imwrite('Real_Trails' + str(i) + '.png', black_img)
                 os.chdir(predict_path)
                 cv2.circle(black_img_2, (pr_y, pr_x), 1, (15, 232, 253), -1)
-                cv2.imwrite('Predicted_Trails' + str(i) + '.png', black_img_2)
+                cv2.imwrite('Real_Trails' + str(i) + '.png', black_img_2)
 
         # Calculate stats
         test_utils.get_error_stats(test_x, test_y, v_to_draw, gap, data_type, dim,
@@ -199,14 +195,22 @@ if __name__ == '__main__':
             to_test_net = ConvolutionLstm(model_file=model_path, framework="keras")
     else:
         parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
-        print(testX)
+        with open('testX.txt', 'w') as file:
+                file.write(str(testX))
+                print(str(testX))
+        with open('testY.txt', 'w') as file:
+                file.write(str(testY))
+                print(str(testY))
         if net_type == "NOREC":
             print('Puting the test data into the right shape...')
             to_test_net = Mlp(model_file=model_path, framework="tensorflow")
         else:
             print('Puting the test data into the right shape...')
             to_test_net = Lstm(model_file=model_path, framework="tensorflow")
+            with open('net.txt', 'w') as file:
+                    file.write(str(to_test_net))
 
     gap = parameters.iloc[0]['gap']
+    print(str(gap))
 
     to_test_net.test(testX, testY, gap, data_type, dim)
