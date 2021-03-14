@@ -18,9 +18,9 @@
 # Test dataset path
 #data_path: /Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_var_3000_80_120/linear_10_[None]_test
 #data_path: /Users/Martin/Desktop/Generator_10/Frames_dataset/parabolic_point_255_var_1_6000_80_120/parabolic_10_[None]_test
-data_path: /Users/Martin/Desktop/Generator_10/Frames_dataset/sinusoidal_point_255_fix_1000_80_120/sinusoidal_10_[None]_test
+data_path: /Users/Martin/Desktop/Generator_10/Frames_dataset/sinusoidal_point_255_fix_1000_80_120___30GAP/sinusoidal_10_[None]_test
 
 # Model path
 #model_path: /Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_var_3000_80_120/convLSTM/20_True_relu_categorical_crossentropy_10.h5
 #model_path: /Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/parabolic_point_255_var_1_6000_80_120_Modeled/complex/10_False_tanh_mean_squared_error_10.h5
-model_path: /Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/sinusoidal_point_255_fix_1000_80_120/convLSTM/10_False_relu_categorical_crossentropy_10.h5
+model_path: /Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/sinusoidal_point_255_fix_1000_80_120___30GAP/convLSTM/10_False_relu_categorical_crossentropy_10.h5

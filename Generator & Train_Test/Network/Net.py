@@ -149,10 +149,10 @@ class Net(object):
                 black_img[:] = color
                 black_img_2[:] = color
 
-                cv2.circle(black_img, (real_y, real_x), 1, (246, 209, 81), -1)
-                cv2.imwrite('Real_Trails' + str(i) + '.png', black_img)
-                cv2.circle(black_img_2, (pr_y, pr_x), 1, (15, 232, 253), -1)
-                cv2.imwrite('Predicted_Trails' + str(i) + '.png', black_img_2)
+                #cv2.circle(black_img, (real_y, real_x), 1, (246, 209, 81), -1)
+                #cv2.imwrite('Real_Trails' + str(i) + '.png', black_img)
+                #cv2.circle(black_img_2, (pr_y, pr_x), 1, (15, 232, 253), -1)
+                #cv2.imwrite('Predicted_Trails' + str(i) + '.png', black_img_2)
 
 
         # Calculate stats
