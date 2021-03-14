@@ -52,9 +52,8 @@ def Extract_Frames():
     black = (0, 0, 0)
 
     testX = []
-    testY = []
     dataX = []
-    dataY = []
+    testY = []
 
     # List all the videos
     for video in os.listdir(folder_path):
@@ -73,10 +72,8 @@ def Extract_Frames():
 
             if len(dataX) != 0:
                 testX.append(dataX)
-                testY.append(dataY)
 
             dataX = []
-            dataY = []
 
             print('\nVideo #' + str(v) + '-----------' + str(video_name) + '\n')
 
@@ -136,7 +133,7 @@ def Extract_Frames():
                     if img_index == gap:
                         data_temp_y.append(float(cY))
                         data_temp_y.append(float(cX))
-                        dataY.append(data_temp_y)
+                        testY.append(data_temp_y)
 
                     '''
                     testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
@@ -170,7 +167,6 @@ def Extract_Frames():
                     cv2.waitKey(1)
 
     testX.append(dataX)
-    testY.append(dataY)
     cap.release()
     cv2.destroyAllWindows()
 
