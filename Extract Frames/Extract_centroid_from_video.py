@@ -43,7 +43,7 @@ def Extract_Frames():
     cX = 0
     previous_cX = 0
 
-    max_number_frames = 25
+    max_number_frames = 20
     gap = max_number_frames + 30
 
     # Create new blank image
@@ -127,8 +127,8 @@ def Extract_Frames():
                     data_temp_y = []
 
                     if img_index <= max_number_frames:
-                        data_temp_x.append(float(cY))
-                        data_temp_x.append(float(cX))
+                        data_temp_x.append(np.array(cY))
+                        data_temp_x.append(np.array(cX))
                         dataX.append(data_temp_x)
 
                         cv2.circle(dilation_image, (cX, cY), 3, (0, 0, 0), -1)
@@ -136,17 +136,23 @@ def Extract_Frames():
                         cv2.circle(frame, (cX, cY), 3, (0, 0, 0), -1)
                         #cv2.putText(frame, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
-                        if (cX > previous_cX):
+                        if (cX >= previous_cX):
                             print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             cv2.imwrite('HVS+GREY+BIN(ERODE+DILATE) ' + str(img_index) + '.png', dilation_image)
                             cv2.imwrite('ORIGINAL ' + str(img_index) + '.png', frame)
                             cv2.circle(black_img, (cX, cY), 1, (246, 209, 81), -1)
                             cv2.imwrite('Real_Trails.png', black_img)
 
-                    if (img_index >= gap) and (img_index <= gap + 20):
-                        data_temp_y.append(float(cY))
-                        data_temp_y.append(float(cX))
+                    if (img_index == gap):
+                        data_temp_y.append(np.array(cY))
+                        data_temp_y.append(np.array(cX))
                         testY.append(data_temp_y)
+                        print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
+                        cv2.circle(black_img, (cX, cY), 1, (128, 0, 224), -1)
+                        cv2.imwrite('Real_Trails.png', black_img)
+
+                    if (img_index > gap) and (img_index <= gap + 20):
+
                         print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                         cv2.circle(black_img, (cX, cY), 1, (15, 232, 253), -1)
                         cv2.imwrite('Real_Trails.png', black_img)
@@ -179,16 +185,21 @@ def Extract_Frames():
     return testX, testY
 
 if __name__ == '__main__':
-    folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
+    folder_path = '/Users/Martin/Desktop/Nuevas tomas/'
+    #folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
     testX, testY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
-
+    os.chdir(folder_path)
     print('\n--- DATA X REAL VALUE ---')
-    with open('dataX.txt', 'w') as file:
-            file.write(str(testX))
-            print(np.array(testX))
+    encabezado = 'x y'
+    testX = np.array(testX)
+    testX = testX.reshape(testX.shape[0], -1)
+    np.savetxt('try.txt', testX, header=encabezado)
+    #with open('First 20.txt', 'w') as file:
+    #        file.write(str(testX))
+            #print(np.array(testX))
 
     print('\n--- DATA Y GAP + 30 ---')
-    with open('dataY.txt', 'w') as file:
+    with open('GAP + 30.txt', 'w') as file:
             file.write(str(testY))
             print(np.array(testY))

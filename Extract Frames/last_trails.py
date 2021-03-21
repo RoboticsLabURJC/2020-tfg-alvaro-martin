@@ -195,14 +195,18 @@ if __name__ == '__main__':
             to_test_net = ConvolutionLstm(model_file=model_path, framework="keras")
     else:
         parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
-        with open('testX.txt', 'w') as file:
-                file.write(str(testX))
-                print((testX))
-                print(type(testX))
-        with open('testY.txt', 'w') as file:
-                file.write(str(testY))
-                print((testY))
-                print(type(testX))
+        #with open('/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/P1070380.MP4_frames/dataX.txt', 'r') as input_file:
+        loaded_arr = np.loadtxt("/Users/Martin/Desktop/Nuevas tomas/try.txt")
+        #with open('/Users/Martin/Desktop/Nuevas tomas/First 20.txt', 'r') as input_file:
+        #        lines_of_file = [line for line in input_file]
+        #        lines = np.array(lines_of_file)
+                #lines = np.array(file.readlines())
+        print(np.array(loaded_arr))
+        print(type(loaded_arr))
+        #with open('testY.txt', 'w') as file:
+        #        file.write(str(testY))
+        print((testX))
+        print(type(testX))
 
         if net_type == "NOREC":
             print('Puting the test data into the right shape...')
@@ -213,7 +217,8 @@ if __name__ == '__main__':
             with open('net.txt', 'w') as file:
                     file.write(str(to_test_net))
 
-    gap = parameters.iloc[0]['gap']
+    gap = 30
+    #gap = parameters.iloc[0]['gap']
     print(str(gap))
 
     to_test_net.test(testX, testY, gap, data_type, dim)
