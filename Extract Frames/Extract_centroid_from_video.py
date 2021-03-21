@@ -43,7 +43,7 @@ def Extract_Frames():
     cX = 0
     previous_cX = 0
 
-    max_number_frames = 19
+    max_number_frames = 25
     gap = max_number_frames + 30
 
     # Create new blank image
@@ -69,6 +69,7 @@ def Extract_Frames():
             cap = cv2.VideoCapture(video_path)
             os.chdir(frames_path)
             black_img = create_blank(w, h, rgb_color=black)
+
 
             if len(dataX) != 0:
                 testX.append(dataX)
@@ -130,10 +131,28 @@ def Extract_Frames():
                         data_temp_x.append(float(cX))
                         dataX.append(data_temp_x)
 
-                    if img_index == gap:
+                        cv2.circle(dilation_image, (cX, cY), 3, (0, 0, 0), -1)
+                        #cv2.putText(dilation_image, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
+                        cv2.circle(frame, (cX, cY), 3, (0, 0, 0), -1)
+                        #cv2.putText(frame, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
+
+                        if (cX > previous_cX):
+                            print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
+                            cv2.imwrite('HVS+GREY+BIN(ERODE+DILATE) ' + str(img_index) + '.png', dilation_image)
+                            cv2.imwrite('ORIGINAL ' + str(img_index) + '.png', frame)
+                            cv2.circle(black_img, (cX, cY), 1, (246, 209, 81), -1)
+                            cv2.imwrite('Real_Trails.png', black_img)
+
+                    if (img_index >= gap) and (img_index <= gap + 20):
                         data_temp_y.append(float(cY))
                         data_temp_y.append(float(cX))
                         testY.append(data_temp_y)
+                        print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
+                        cv2.circle(black_img, (cX, cY), 1, (15, 232, 253), -1)
+                        cv2.imwrite('Real_Trails.png', black_img)
+
+                    img_index += 1
+                    cv2.waitKey(1)
 
                     '''
                     testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
@@ -151,20 +170,7 @@ def Extract_Frames():
 
                     '''
 
-                    cv2.circle(dilation_image, (cX, cY), 3, (0, 0, 0), -1)
-                    #cv2.putText(dilation_image, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
-                    cv2.circle(frame, (cX, cY), 3, (0, 0, 0), -1)
-                    #cv2.putText(frame, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
-                    if (cX > previous_cX):
-                        print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
-                        cv2.imwrite('HVS+GREY+BIN(ERODE+DILATE) ' + str(img_index) + '.png', dilation_image)
-                        cv2.imwrite('ORIGINAL ' + str(img_index) + '.png', frame)
-                        cv2.circle(black_img, (cX, cY), 5, (246, 209, 81), -1)
-                        cv2.imwrite('Real_Trails.png', black_img)
-
-                    img_index += 1
-                    cv2.waitKey(1)
 
     testX.append(dataX)
     cap.release()
@@ -173,7 +179,7 @@ def Extract_Frames():
     return testX, testY
 
 if __name__ == '__main__':
-    folder_path = '/Users/Martin/Desktop/Nuevas tomas/'#Prueba crudas pelota golf/Ultimas/'
+    folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
     testX, testY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
 
