@@ -80,19 +80,18 @@ class Net(object):
             self.output_shape = kwargs['output_shape']
 
 
-
     def test(self, test_x, test_y, gap, data_type, dim):
         predict = self.model.predict(test_x)
-        with open('predict.txt', 'w') as file:
-                file.write(str(predict))
+        #with open('predict.txt', 'w') as file:
+        #        file.write(str(predict))
 
         raw = True
         if "modeled" in data_type:
             raw = False
         predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
-        print(real_values)
+        #print(real_values)
+        print('\n---- Predicted Values -----\n')
         print(predict_values)
-
 
         if raw:
             v_to_draw = predict
@@ -115,27 +114,15 @@ class Net(object):
 
                 w, h = 120, 80
                 black = (0, 0, 0)
-                black_img = np.zeros((h, w, 3), np.uint8)
-                black_img_2 = np.zeros((h, w, 3), np.uint8)
+                black_img = create_blank(w, h, rgb_color=black)
 
-                # Since OpenCV uses BGR, convert the color first
-                color = tuple(reversed(black))
-                # Fill image with color
-                black_img[:] = color
-                black_img_2[:] = color
+                vs_path = folder_path + '/_real_trails vs predicted'
+                os.makedirs(vs_path,exist_ok=True)
 
-                #folder_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled_30GAP/simple/'
-                real_path = folder_path + '/_real_trails'
-                os.makedirs(real_path,exist_ok=True)
-                predict_path = folder_path + '/_predicted_trails'
-                os.makedirs(predict_path,exist_ok=True)
-
-                os.chdir(real_path)
+                os.chdir(vs_path)
                 cv2.circle(black_img, (real_y, real_x), 1, (246, 209, 81), -1)
-                cv2.imwrite('Real_Trails' + str(i) + '.png', black_img)
-                os.chdir(predict_path)
-                cv2.circle(black_img_2, (pr_y, pr_x), 1, (15, 232, 253), -1)
-                cv2.imwrite('Real_Trails' + str(i) + '.png', black_img_2)
+                cv2.circle(black_img, (pr_y, pr_x), 1, (15, 232, 253), -1)
+                cv2.imwrite('Real vs Predicted' + str(i) + '.png', black_img)
 
         # Calculate stats
         test_utils.get_error_stats(test_x, test_y, v_to_draw, gap, data_type, dim,
@@ -180,12 +167,12 @@ def Extract_Frames():
     cX = 0
     previous_cX = 0
 
-    max_number_frames = 20
-    gap = max_number_frames + 30
+    max_number_frames = 19
+    gap = max_number_frames + 28
 
     # Create new blank image
+    #w, h = 360, 240
     w, h = 120, 80
-    #w, h = 120, 80
     black = (0, 0, 0)
 
     testX = []
@@ -197,7 +184,7 @@ def Extract_Frames():
         if video.endswith(".MP4"):
             video_name = video
             video_path = folder_path + video
-            img_index = 1
+            img_index = 0
             v += 1
 
             frames_path = folder_path + '/' + video_name + '_frames'
@@ -206,7 +193,6 @@ def Extract_Frames():
             cap = cv2.VideoCapture(video_path)
             os.chdir(frames_path)
             black_img = create_blank(w, h, rgb_color=black)
-
 
             if len(dataX) != 0:
                 testX.append(dataX)
@@ -263,7 +249,8 @@ def Extract_Frames():
                     data_temp_x = []
                     data_temp_y = []
 
-                    if img_index and img_index <= max_number_frames:
+                    if img_index <= max_number_frames:
+                        print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                         data_temp_x.append(np.array(cY))
                         data_temp_x.append(np.array(cX))
                         dataX.append(data_temp_x)
@@ -274,7 +261,6 @@ def Extract_Frames():
                         #cv2.putText(frame, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
                         if (cX >= previous_cX):
-                            print ('Frame#' + str(img_index) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             cv2.imwrite('HVS+GREY+BIN(ERODE+DILATE) ' + str(img_index) + '.png', dilation_image)
                             cv2.imwrite('ORIGINAL ' + str(img_index) + '.png', frame)
                             cv2.circle(black_img, (cX, cY), 1, (246, 209, 81), -1)
@@ -297,24 +283,6 @@ def Extract_Frames():
                     img_index += 1
                     cv2.waitKey(1)
 
-                    '''
-                    testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
-                    to_test_net = Lstm(model_file=model_path, framework="tensorflow")
-
-                    gap = 30
-                    to_test_net.test(testX, testY, gap, data_type, dim)
-
-                    predict = self.model.predict(test_x)
-                    predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
-
-                    get predict_values, real_values
-
-
-
-                    '''
-
-
-
     testX.append(dataX)
     cap.release()
     cv2.destroyAllWindows()
@@ -333,12 +301,6 @@ if __name__ == '__main__':
             file.write(str(testX))
             print(testX)
 
-    print('\n--- GAP + 30 ---')
-    with open('GAP + 30.txt', 'w') as file:
-            testY = (np.array(testY))
-            file.write(str(testY))
-            print(testY)
-
     data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_1000_80_120_30GAP/linear_30_[None]_test'
     model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled_30GAP/simple/10_False_tanh_mean_squared_error_10.h5'
 
@@ -348,35 +310,27 @@ if __name__ == '__main__':
     if "modeled" in model_path.lower():
         data_path = data_path + "/modeled_samples"
     sample_type = data_path.split('/')[-1]
-    #print(sample_type)
     data_type = data_type + "_" + sample_type
     samples_dir = data_path.split('/')[6]
     dim = (int(samples_dir.split('_')[-3]), int(samples_dir.split('_')[-2]))
 
-    #print('\n')
-    #print("Dataset: " + data_path)
+
     print('\n')
     print("Model: " + model_path)
     print('\n')
-
     print("Evaluating with " + data_type + " a " + complexity + " " + net_type + " model")
-
-    #if "modeled" in model_path.lower():
-    #    data_path = data_path + "/modeled_samples"
-
-    #parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
-
     print('Puting the test data into the right shape...')
     # Load the model
     #to_test_net = load_model(model_path, compile = True)
     to_test_net = Lstm(model_file=model_path, framework="tensorflow")
-    #with open('net.txt', 'w') as file:
-    #        file.write(str(to_test_net))
 
     gap = 30
-    #gap = parameters.iloc[0]['gap']
-    #print(str(gap))
-    print(data_type)
-    print(dim)
     os.chdir(folder_path)
+
+    print('\n--- GAP + 30 ---')
+    with open('GAP + 30.txt', 'w') as file:
+            testY = (np.array(testY))
+            file.write(str(testY))
+            print(testY)
+            
     to_test_net.test(testX, testY, gap, data_type, dim)
