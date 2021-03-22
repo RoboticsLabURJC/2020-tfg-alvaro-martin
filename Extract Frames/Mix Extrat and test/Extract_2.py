@@ -64,6 +64,7 @@ class Net(object):
                 self.model = load_model(kwargs['model_file'])
             else:
                 self.model = tf.keras.models.load_model(kwargs['model_file'])
+                print('Modelo Cargado')
         else:
             if self.framework == "keras":
                 self.model = Sequential()
@@ -89,6 +90,9 @@ class Net(object):
         if "modeled" in data_type:
             raw = False
         predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
+        print(real_values)
+        print(predict_values)
+
 
         if raw:
             v_to_draw = predict
@@ -96,8 +100,7 @@ class Net(object):
             v_to_draw = predict_values
 
         error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
-
-        with open(self.model_path + 'error_result.txt', 'w') as file:
+        with open(folder_path + '/error_result.txt', 'w') as file:
             for i in range(error.shape[0]):
                 file.write("Processed sample " + str(i) + ": \n")
                 file.write("Target position: " + str(real_values[i]) + "\n")
@@ -121,7 +124,7 @@ class Net(object):
                 black_img[:] = color
                 black_img_2[:] = color
 
-                folder_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled/simple/'
+                #folder_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled_30GAP/simple/'
                 real_path = folder_path + '/_real_trails'
                 os.makedirs(real_path,exist_ok=True)
                 predict_path = folder_path + '/_predicted_trails'
@@ -136,29 +139,16 @@ class Net(object):
 
         # Calculate stats
         test_utils.get_error_stats(test_x, test_y, v_to_draw, gap, data_type, dim,
-                                   error, x_error, y_error, relative_error, self.model_path)
+                                   error, x_error, y_error, relative_error, folder_path)
 
 class Lstm(Net):
     def __init__(self, **kwargs):
         Net.__init__(self, "lstm", **kwargs)
         if 'model_file' not in kwargs.keys():
-            if kwargs['data_type'] == "Vector":
-                self.create_vector_model()
-            else:  # kwargs['data_type'] == "Frame"
-                if kwargs['complexity'] == "simple":
-                    self.create_frame_simple_model()
-                else:
-                    self.create_frame_complex_model()
-
-    def create_vector_model(self):
-        print("Creating function LSTM model")
-        self.model.add(LSTM(25, input_shape=self.input_shape))
-
-        if self.dropout:
-            self.model.add(Dropout(self.drop_percentage))
-
-        self.model.add(Dense(self.output_shape, activation="softmax"))
-        self.model.compile(loss=self.loss, optimizer='adam')
+            if kwargs['complexity'] == "simple":
+                self.create_frame_simple_model()
+            else:
+                self.create_frame_complex_model()
 
     def create_frame_simple_model(self):
         print("Creating frame simple LSTM model")
@@ -183,7 +173,6 @@ class Lstm(Net):
 
         self.model.add(Dense(self.output_shape))
         self.model.compile(loss=self.loss, optimizer='adam')
-
 
 def Extract_Frames():
 
@@ -256,10 +245,10 @@ def Extract_Frames():
                 # Binary Mode
                 ret,binary_gray = cv2.threshold(gray_image,100,255,cv2.THRESH_BINARY)
 
-                kernel = np.ones((3,3), np.uint8)       # 3x3 matrix
+                kernel = np.ones((2,2), np.uint8)       # 3x3 matrix
                 erosion_image = cv2.erode(binary_gray, kernel, iterations=1)
 
-                kernel = np.ones((5,5), np.uint8)     # 10x10 matrix
+                kernel = np.ones((2,2), np.uint8)     # 10x10 matrix
                 dilation_image = cv2.dilate(erosion_image, kernel, iterations=1)
 
                 # calculate moments of binary image
@@ -274,14 +263,14 @@ def Extract_Frames():
                     data_temp_x = []
                     data_temp_y = []
 
-                    if img_index <= max_number_frames:
+                    if img_index and img_index <= max_number_frames:
                         data_temp_x.append(np.array(cY))
                         data_temp_x.append(np.array(cX))
                         dataX.append(data_temp_x)
 
-                        cv2.circle(dilation_image, (cX, cY), 3, (0, 0, 0), -1)
+                        cv2.circle(dilation_image, (cX, cY), 1, (0, 0, 0), -1)
                         #cv2.putText(dilation_image, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
-                        cv2.circle(frame, (cX, cY), 3, (0, 0, 0), -1)
+                        cv2.circle(frame, (cX, cY), 1, (0, 0, 0), -1)
                         #cv2.putText(frame, "here", (cX - 10, cY - 15),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
                         if (cX >= previous_cX):
@@ -333,8 +322,8 @@ def Extract_Frames():
     return testX, testY
 
 if __name__ == '__main__':
-    folder_path = '/Users/Martin/Desktop/Nuevas tomas/'
-    #folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
+    #folder_path = '/Users/Martin/Desktop/Nuevas tomas/'
+    folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
     testX, testY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
     os.chdir(folder_path)
@@ -362,7 +351,7 @@ if __name__ == '__main__':
     #print(sample_type)
     data_type = data_type + "_" + sample_type
     samples_dir = data_path.split('/')[6]
-    dim = (int(samples_dir.split('_')[-2]), int(samples_dir.split('_')[-2]))
+    dim = (int(samples_dir.split('_')[-3]), int(samples_dir.split('_')[-2]))
 
     #print('\n')
     #print("Dataset: " + data_path)
@@ -378,6 +367,8 @@ if __name__ == '__main__':
     #parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
 
     print('Puting the test data into the right shape...')
+    # Load the model
+    #to_test_net = load_model(model_path, compile = True)
     to_test_net = Lstm(model_file=model_path, framework="tensorflow")
     #with open('net.txt', 'w') as file:
     #        file.write(str(to_test_net))
@@ -387,4 +378,5 @@ if __name__ == '__main__':
     #print(str(gap))
     print(data_type)
     print(dim)
+    os.chdir(folder_path)
     to_test_net.test(testX, testY, gap, data_type, dim)
