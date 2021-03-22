@@ -190,16 +190,18 @@ if __name__ == '__main__':
     testX, testY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
     os.chdir(folder_path)
-    print('\n--- DATA X REAL VALUE ---')
-    encabezado = 'x y'
-    testX = np.array(testX)
-    testX = testX.reshape(testX.shape[0], -1)
-    np.savetxt('try.txt', testX, header=encabezado)
-    #with open('First 20.txt', 'w') as file:
-    #        file.write(str(testX))
-            #print(np.array(testX))
+    print('\n--- REAL VALUES 20 FIRST ---')
+    #encabezado = 'x y'
+    #testX = np.array(testX)
+    #testX = testX.reshape(testX.shape[0], -1)
+    #np.save('try2', testX)
+    with open('First 20.txt', 'w') as file:
+            testX = (np.array(testX))
+            file.write(str(testX))
+            print(testX)
 
-    print('\n--- DATA Y GAP + 30 ---')
+    print('\n--- GAP + 30 ---')
     with open('GAP + 30.txt', 'w') as file:
+            testY = (np.array(testY))
             file.write(str(testY))
-            print(np.array(testY))
+            print(testY)

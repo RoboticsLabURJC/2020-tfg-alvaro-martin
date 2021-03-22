@@ -203,8 +203,8 @@ if __name__ == '__main__':
         #        print(lines)
         #        print(type(lines))
 
-        #loaded_arr = np.loadtxt("/Users/Martin/Desktop/Nuevas tomas/First 20.txt")
-        #print((loaded_arr))
+        loaded_arr = np.loadtxt("/Users/Martin/Desktop/Nuevas tomas/First 20.txt")
+        print((loaded_arr))
         #print(type(loaded_arr))
         #with open('testY.txt', 'w') as file:
         #        file.write(str(testY))
@@ -225,5 +225,3 @@ if __name__ == '__main__':
     print(str(gap))
 
     to_test_net.test(testX, testY, gap, data_type, dim)
-    print(data_type)
-    print(dim)
