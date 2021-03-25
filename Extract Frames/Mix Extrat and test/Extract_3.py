@@ -80,7 +80,7 @@ class Net(object):
             self.output_shape = kwargs['output_shape']
 
 
-    def test(self, test_x, test_y, gap, data_type, dim):
+    def test(self, test_x, test_y, gap, data_type, dim, z):
         predict = self.model.predict(test_x)
         #with open('predict.txt', 'w') as file:
         #        file.write(str(predict))
@@ -89,7 +89,8 @@ class Net(object):
         if "modeled" in data_type:
             raw = False
         predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
-        #print(real_values)
+        print('\n---- Real Values -----\n')
+        print(real_values)
         print('\n---- Predicted Values -----\n')
         print(predict_values)
 
@@ -99,19 +100,32 @@ class Net(object):
             v_to_draw = predict_values
 
         error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
-        with open(folder_path + '/error_result.txt', 'w') as file:
+
+        with open(folder_path + '/error_result.txt', 'a') as file:
             for i in range(error.shape[0]):
                 file.write("Processed sample " + str(i) + ": \n")
                 file.write("Target position: " + str(real_values[i]) + "\n")
                 file.write("Position: " + str(predict_values[i]) + "\n")
-                file.write("Error: " + str(np.round(error[i], 2)) + " (" + str(np.round(relative_error[i], 2)) + "%)\n")
+                #file.write("Error: " + str(np.round(error[i], 2)) + " (" + str(np.round(relative_error[i], 2)) + "%)\n")
                 file.write("--------------------------------------------------------------\n")
 
                 real_x = int(real_values[i][0])
                 real_y = int(real_values[i][1])
                 pr_x = int(predict_values[i][0])
                 pr_y = int(predict_values[i][1])
+                f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/Interface'+ str(z) + '.png'
+                im = cv2.imread(f)
 
+                os.chdir('/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/')
+                cv2.circle(im, (pr_y, pr_x), 1, (0, 0, 0), 1)
+                cv2.imwrite('Interface'+ str(z) + '.png', im)
+                # Custom window
+                cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
+                cv2.imshow('See the trails', im)
+                cv2.resizeWindow('See the trails', 600, 400)
+                cv2.waitKey(150)
+
+                '''
                 w, h = 120, 80
                 black = (0, 0, 0)
                 black_img = create_blank(w, h, rgb_color=black)
@@ -127,7 +141,7 @@ class Net(object):
         # Calculate stats
         test_utils.get_error_stats(test_x, test_y, v_to_draw, gap, data_type, dim,
                                    error, x_error, y_error, relative_error, folder_path)
-
+        '''
 class Lstm(Net):
     def __init__(self, **kwargs):
         Net.__init__(self, "lstm", **kwargs)
@@ -249,19 +263,11 @@ def Extract_Frames():
                     data_temp_y = []
                     if (cX >= previous_cX):
 
-                        if (img_index <= max_number_frames + 20):
+                        if (img_index <= max_number_frames + 19):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             data_temp_x.append(np.array(cY))
                             data_temp_x.append(np.array(cX))
                             dataX.append(data_temp_x)
-
-                            for j in dataX:
-                                    cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
-                                    cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
-
-                            f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/Interface'+ str(img_index+1) + '.png'
-                            im = cv2.imread(f)
-                            cv2.imshow('See the trails of the ball', im)
 
                         elif (img_index >= gap) and (img_index < gap + 20):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
@@ -269,29 +275,32 @@ def Extract_Frames():
                             data_temp_y.append(np.array(cX))
                             GAP_data.append(data_temp_y)
 
-                            for j in dataX:
-                                    cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
-                                    cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+                        else:
+                            pass
 
-                            for j in GAP_data:
-                                    cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
-                                    cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+                    if (img_index < gap + 20):
 
-                            f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/Interface'+ str(img_index+1) + '.png'
-                            im = cv2.imread(f)
-                            cv2.imshow('See the trails of the ball', im)
+                        for j in dataX:
+                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
+                                cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+
+                        for j in GAP_data:
+                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
+                                cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+
+                        f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/Interface'+ str(img_index+1) + '.png'
+                        im = cv2.imread(f)
+                        # Custom window
+                        cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
+                        cv2.imshow('See the trails', im)
+                        cv2.resizeWindow('See the trails', 600, 400)
 
                     img_index += 1
-                    cv2.waitKey(1)
+                    cv2.waitKey(150)
 
     FIRST_data.append(dataX)
     cap.release()
     cv2.destroyAllWindows()
-
-    #for f in os.listdir('/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/'):
-    #    im = cv2.imread(f) #read image in greyscale
-    #    cv2.waitKey(500)
-    #    cv2.destroyAllWindows()
 
     return FIRST_data, GAP_data
 
@@ -301,36 +310,19 @@ if __name__ == '__main__':
     FIRST_data, GAP_data = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
 
-    FIRST_data = (np.array(FIRST_data))
-    GAP_data = (np.array(GAP_data))
-
-    init = 0
-    buffer = 20
-
-    for j in range(40):
-        if init <= 19:
-            print(str(j))
-            print(str(FIRST_data[0][init:buffer]))
-            #print('PREDICTED ----')
-            #print(str(GAP_data[init]))
-            #print('PREDICTED ----')
-            init += 1
-            buffer += 1
-
-'''
+    '''
     os.chdir(folder_path)
 
     print('\n--- REAL VALUES 40 FIRST ---')
     with open('First 40.txt', 'w') as file:
-            FIRST_data = (np.array(FIRST_data))
             file.write(str(FIRST_data))
             print(FIRST_data)
 
     print('\n--- GAP + 20 ---')
     with open('GAP + 20.txt', 'w') as file:
-            GAP_data = (np.array(GAP_data))
             file.write(str(GAP_data))
             print(GAP_data)
+    '''
 
     data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_1000_80_120_30GAP/linear_30_[None]_test'
     model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled_30GAP/simple/10_False_tanh_mean_squared_error_10.h5'
@@ -351,13 +343,27 @@ if __name__ == '__main__':
     print('\n')
     print("Evaluating with " + data_type + " a " + complexity + " " + net_type + " model")
     print('Puting the test data into the right shape...')
-    # Load the model
-    #to_test_net = load_model(model_path, compile = True)
     to_test_net = Lstm(model_file=model_path, framework="tensorflow")
 
     gap = 30
     os.chdir(folder_path)
-'''
 
+    init = 0
+    buffer = 20
 
-    #to_test_net.test(FIRST_data, GAP_data, gap, data_type, dim)
+    for j in range(40):
+        if init <= 19:
+            ok = []
+            ko = []
+            ok.append(FIRST_data[0][init:buffer])
+            ok = (np.array(ok))
+
+            ko.append(GAP_data[init])
+            ko = (np.array(ko))
+            init += 1
+            buffer += 1
+            to_test_net.test(ok, ko, gap, data_type, dim, init+50)
+            cv2.destroyAllWindows()
+
+        # Load the model
+        #to_test_net = load_model(model_path, compile = True)

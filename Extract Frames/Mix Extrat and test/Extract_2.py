@@ -291,7 +291,8 @@ def Extract_Frames():
 
 if __name__ == '__main__':
     #folder_path = '/Users/Martin/Desktop/Nuevas tomas/'
-    folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
+    #folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
+    folder_path = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/'
     testX, testY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
     os.chdir(folder_path)
@@ -332,5 +333,5 @@ if __name__ == '__main__':
             testY = (np.array(testY))
             file.write(str(testY))
             print(testY)
-            
+
     to_test_net.test(testX, testY, gap, data_type, dim)
