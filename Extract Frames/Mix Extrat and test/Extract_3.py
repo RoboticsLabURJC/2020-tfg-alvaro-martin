@@ -259,6 +259,10 @@ def Extract_Frames():
                                     cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
                                     cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
+                            f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/Interface'+ str(img_index+1) + '.png'
+                            im = cv2.imread(f)
+                            cv2.imshow('See the trails of the ball', im)
+
                         elif (img_index >= gap) and (img_index < gap + 20):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             data_temp_y.append(np.array(cY))
@@ -273,12 +277,21 @@ def Extract_Frames():
                                     cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
                                     cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
+                            f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/Interface'+ str(img_index+1) + '.png'
+                            im = cv2.imread(f)
+                            cv2.imshow('See the trails of the ball', im)
+
                     img_index += 1
                     cv2.waitKey(1)
 
     FIRST_data.append(dataX)
     cap.release()
     cv2.destroyAllWindows()
+
+    #for f in os.listdir('/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/'):
+    #    im = cv2.imread(f) #read image in greyscale
+    #    cv2.waitKey(500)
+    #    cv2.destroyAllWindows()
 
     return FIRST_data, GAP_data
 
