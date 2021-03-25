@@ -82,8 +82,6 @@ class Net(object):
 
     def test(self, test_x, test_y, gap, data_type, dim, z):
         predict = self.model.predict(test_x)
-        #with open('predict.txt', 'w') as file:
-        #        file.write(str(predict))
 
         raw = True
         if "modeled" in data_type:
@@ -113,31 +111,13 @@ class Net(object):
                 real_y = int(real_values[i][1])
                 pr_x = int(predict_values[i][0])
                 pr_y = int(predict_values[i][1])
-                f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/Interface'+ str(z) + '.png'
-                im = cv2.imread(f)
 
-                os.chdir('/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/')
-                cv2.circle(im, (pr_y, pr_x), 1, (0, 0, 0), 1)
-                cv2.imwrite('Interface'+ str(z) + '.png', im)
-                # Custom window
-                cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
-                cv2.imshow('See the trails', im)
-                cv2.resizeWindow('See the trails', 600, 400)
-                cv2.waitKey(150)
+                predicted_points.append([pr_y, pr_x])
 
-                '''
-                w, h = 120, 80
-                black = (0, 0, 0)
-                black_img = create_blank(w, h, rgb_color=black)
 
-                vs_path = folder_path + '/_real_trails vs predicted'
-                os.makedirs(vs_path,exist_ok=True)
+        return predicted_points
 
-                os.chdir(vs_path)
-                cv2.circle(black_img, (real_y, real_x), 1, (246, 209, 81), -1)
-                cv2.circle(black_img, (pr_y, pr_x), 1, (15, 232, 253), -1)
-                cv2.imwrite('Real vs Predicted' + str(i) + '.png', black_img)
-
+        '''
         # Calculate stats
         test_utils.get_error_stats(test_x, test_y, v_to_draw, gap, data_type, dim,
                                    error, x_error, y_error, relative_error, folder_path)
@@ -310,20 +290,6 @@ if __name__ == '__main__':
     FIRST_data, GAP_data = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
 
-    '''
-    os.chdir(folder_path)
-
-    print('\n--- REAL VALUES 40 FIRST ---')
-    with open('First 40.txt', 'w') as file:
-            file.write(str(FIRST_data))
-            print(FIRST_data)
-
-    print('\n--- GAP + 20 ---')
-    with open('GAP + 20.txt', 'w') as file:
-            file.write(str(GAP_data))
-            print(GAP_data)
-    '''
-
     data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_1000_80_120_30GAP/linear_30_[None]_test'
     model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled_30GAP/simple/10_False_tanh_mean_squared_error_10.h5'
 
@@ -349,7 +315,9 @@ if __name__ == '__main__':
     os.chdir(folder_path)
 
     init = 0
+    z = init + 50
     buffer = 20
+    predicted_points = []
 
     for j in range(40):
         if init <= 19:
@@ -361,9 +329,24 @@ if __name__ == '__main__':
             ko.append(GAP_data[init])
             ko = (np.array(ko))
             init += 1
+            z += 1
             buffer += 1
-            to_test_net.test(ok, ko, gap, data_type, dim, init+50)
-            cv2.destroyAllWindows()
+            predicted_points = to_test_net.test(ok, ko, gap, data_type, dim, init+49)
+            print(predicted_points)
+
+            for j in predicted_points:
+                f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/Interface'+ str(z) + '.png'
+                im = cv2.imread(f)
+
+                os.chdir('/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070278.MP4_frames/')
+                cv2.circle(im, (int(j[0]), int(j[1])), 1, (0, 0, 0), 1)
+                cv2.imwrite('Interface'+ str(z) + '.png', im)
+                # Custom window
+                cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
+                cv2.imshow('See the trails', im)
+                cv2.resizeWindow('See the trails', 600, 400)
+                cv2.waitKey(150)
+                cv2.destroyAllWindows()
 
         # Load the model
         #to_test_net = load_model(model_path, compile = True)
