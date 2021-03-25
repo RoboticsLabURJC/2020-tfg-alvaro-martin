@@ -254,17 +254,24 @@ def Extract_Frames():
                             data_temp_x.append(np.array(cY))
                             data_temp_x.append(np.array(cX))
                             dataX.append(data_temp_x)
-                            cv2.circle(frame, (cX, cY), 1, (246, 209, 81), -1)
-                            cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
-                        if (img_index >= gap) and (img_index < gap + 20):
+                            for j in dataX:
+                                    cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
+                                    cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+
+                        elif (img_index >= gap) and (img_index < gap + 20):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             data_temp_y.append(np.array(cY))
                             data_temp_y.append(np.array(cX))
                             GAP_data.append(data_temp_y)
-                            cv2.circle(frame, (cX, cY), 1, (246, 209, 81), -1)
-                            #cv2.circle(black_img, (cX, cY), 1, (128, 0, 224), -1)
-                            cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+
+                            for j in dataX:
+                                    cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
+                                    cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+
+                            for j in GAP_data:
+                                    cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
+                                    cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
                     img_index += 1
                     cv2.waitKey(1)
@@ -291,9 +298,9 @@ if __name__ == '__main__':
         if init <= 19:
             print(str(j))
             print(str(FIRST_data[0][init:buffer]))
-            print('PREDICTED ----')
-            print(str(GAP_data[init]))
-            print('PREDICTED ----')
+            #print('PREDICTED ----')
+            #print(str(GAP_data[init]))
+            #print('PREDICTED ----')
             init += 1
             buffer += 1
 
