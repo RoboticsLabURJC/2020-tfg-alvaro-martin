@@ -223,7 +223,8 @@ if __name__ == '__main__':
     gap = 30
     #gap = parameters.iloc[0]['gap']
     print(str(gap))
-
+    print(testX)
+    print(testY)
     to_test_net.test(testX, testY, gap, data_type, dim)
     print(data_type)
     print(dim)

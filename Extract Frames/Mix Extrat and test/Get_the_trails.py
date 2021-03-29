@@ -32,17 +32,6 @@ from keras.layers import Dense, Dropout, Conv1D, MaxPooling1D, Conv2D, MaxPoolin
 from keras.utils import vis_utils
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
-"""Create new image filled with certain color in RGB"""
-def create_blank(width, height, rgb_color=(0, 0, 0)):
-
-    # Create black blank image
-    image = np.zeros((height, width, 3), np.uint8)
-    # Since OpenCV uses BGR, convert the color first
-    color = tuple(reversed(rgb_color))
-    # Fill image with color
-    image[:] = color
-
-    return image
 
 ''' Resize image '''
 def resize(img, width, height):
@@ -79,51 +68,20 @@ class Net(object):
             self.input_shape = kwargs['input_shape']
             self.output_shape = kwargs['output_shape']
 
-
-    def test(self, test_x, test_y, gap, data_type, dim, z):
+    def test(self, test_x, test_y, gap, data_type, dim):
         predict = self.model.predict(test_x)
         print(predict)
-
 
         raw = True
         if "modeled" in data_type:
             raw = False
         predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
-        print('\n---- Real Values -----\n')
-        print(real_values)
-        print('\n---- Predicted Values -----\n')
-        print(predict_values)
 
-        if raw:
-            v_to_draw = predict
-        else:
-            v_to_draw = predict_values
+        predict_values = ([(int(predict_values[0][0])/2), (int(predict_values[0][1]*0.8))])
 
-        error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
-
-        with open(folder_path + '/error_result.txt', 'a') as file:
-            for i in range(error.shape[0]):
-                file.write("Processed sample " + str(i) + ": \n")
-                file.write("Real: " + str(real_values[i]) + "\n")
-                file.write("Esperada: " + str(predict_values[i]) + "\n")
-                #file.write("Error: " + str(np.round(error[i], 2)) + " (" + str(np.round(relative_error[i], 2)) + "%)\n")
-                file.write("--------------------------------------------------------------\n")
-
-                real_x = int(real_values[i][1])
-                real_y = int(real_values[i][0])
-                pr_x = int(predict_values[i][1])
-                pr_y = int(predict_values[i][0])
-
-                predicted_points.append([int(pr_x*0.8), int(pr_y/2)])
+        return (real_values, predict_values)
 
 
-        return predicted_points
-
-        '''
-        # Calculate stats
-        test_utils.get_error_stats(test_x, test_y, v_to_draw, gap, data_type, dim,
-                                   error, x_error, y_error, relative_error, folder_path)
-        '''
 class Lstm(Net):
     def __init__(self, **kwargs):
         Net.__init__(self, "lstm", **kwargs)
@@ -157,6 +115,7 @@ class Lstm(Net):
         self.model.add(Dense(self.output_shape))
         self.model.compile(loss=self.loss, optimizer='adam')
 
+
 def Extract_Frames():
 
     v = 0
@@ -164,12 +123,7 @@ def Extract_Frames():
     previous_cX = 0
 
     max_number_frames = 19
-    gap = max_number_frames + 25
-
-    # Create new blank image
-    #w, h = 360, 240
-    w, h = 120, 80
-    black = (0, 0, 0)
+    gap = max_number_frames + 30
 
     FIRST_data = []
     dataX = []
@@ -188,7 +142,6 @@ def Extract_Frames():
 
             cap = cv2.VideoCapture(video_path)
             os.chdir(frames_path)
-            #black_img = create_blank(w, h, rgb_color=black)
 
             if len(dataX) != 0:
                 FIRST_data.append(dataX)
@@ -212,8 +165,6 @@ def Extract_Frames():
 
                 # Threshold in HSV space
                 lower = np.array([225, 0, 0]) # Orange
-                #lower = np.array([0, 0, 160]) # Green Background
-                #lower = np.array([0, 0, 160]) # Black background
                 upper = np.array([255, 255, 255])
 
                 # The black region in the mask has the value of 0
@@ -245,7 +196,7 @@ def Extract_Frames():
                     data_temp_y = []
                     if (cX >= previous_cX):
 
-                        if (img_index <= max_number_frames + 19):
+                        if (img_index <= max_number_frames + 20):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             data_temp_x.append(np.array(cY))
                             data_temp_x.append(np.array(cX))
@@ -266,10 +217,6 @@ def Extract_Frames():
                                 cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
-                        for j in GAP_data:
-                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
-                                cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
-
                         f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(img_index+1) + '.png'
                         im = cv2.imread(f)
                         # Custom window
@@ -280,17 +227,16 @@ def Extract_Frames():
                     img_index += 1
                     cv2.waitKey(150)
 
+
     FIRST_data.append(dataX)
     cap.release()
     cv2.destroyAllWindows()
 
-    return FIRST_data, GAP_data
+    return np.array(FIRST_data), np.array(GAP_data)
+
 
 if __name__ == '__main__':
     folder_path = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/'
-    #folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
-    FIRST_data, GAP_data = Extract_Frames()
-    print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
 
     data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_1000_80_120_30GAP/linear_30_[None]_test'
     model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled_30GAP/simple/10_False_tanh_mean_squared_error_10.h5'
@@ -314,43 +260,49 @@ if __name__ == '__main__':
     to_test_net = Lstm(model_file=model_path, framework="tensorflow")
 
     gap = 30
-    os.chdir(folder_path)
+
+    FIRST_data, GAP_data = Extract_Frames()
 
     init = 0
-    z = init + 50
     buffer = 20
+    frames_to_predict = 19
+    real_points = []
     predicted_points = []
 
-    for j in range(40):
-        if init <= 19:
+    for j in FIRST_data[0]:
+        if init <= frames_to_predict:
             ok = []
             ko = []
             ok.append(FIRST_data[0][init:buffer])
             ok = (np.array(ok))
-
             ko.append(GAP_data[init])
             ko = (np.array(ko))
+
+            print('Input numero ----- '+ str(init+1))
+            real_points, predicted_points = to_test_net.test(ok, ko, gap, data_type, dim)
+
+            print('BUFFER ----'+ str(init+1))
+            print(np.array(ok))
+            print('input + 30 frames gap ----- '+ str(init+1))
+            print(np.array(ko))
+
+            print('REAL ----- '+ str(init+1))
+            print(np.array(real_points))
+
+            print('PREDICTED ----- '+ str(init+1))
+            print(np.array(predicted_points))
+
+            f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(init+50) + '.png'
+            im = cv2.imread(f)
+            cv2.circle(im, (int(real_points[0][1]), int(real_points[0][0])), 1, (246, 209, 81), 1)
+            cv2.imwrite('Interface'+ str(init+50) + '.png', im)
+            cv2.circle(im, (int(predicted_points[1]), int(predicted_points[0])), 1, (0, 0, 0), 1)
+            cv2.imwrite('Interface'+ str(init+50) + '.png', im)
+            # Custom window
+            cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
+            cv2.imshow('See the trails', im)
+            cv2.resizeWindow('See the trails', 600, 400)
+            cv2.waitKey(150)
+
             init += 1
-            z += 1
             buffer += 1
-            predicted_points = to_test_net.test(ok, ko, gap, data_type, dim, init+44)
-            print(ok)
-            print(ko)
-            print(predicted_points)
-
-            for j in predicted_points:
-                f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(z) + '.png'
-                im = cv2.imread(f)
-
-                os.chdir('/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/')
-                cv2.circle(im, (int(j[0]), int(j[1])), 1, (0, 0, 0), 1)
-                cv2.imwrite('Interface'+ str(z) + '.png', im)
-                # Custom window
-                cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
-                cv2.imshow('See the trails', im)
-                cv2.resizeWindow('See the trails', 600, 400)
-                cv2.waitKey(150)
-                cv2.destroyAllWindows()
-
-        # Load the model
-        #to_test_net = load_model(model_path, compile = True)

@@ -52,6 +52,39 @@ def resize(img, width, height):
 
     return resized
 
+
+def paint_predicted_frames(FIRST_data, GAP_data, z):
+    os.chdir('/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/')
+    init = z-50
+    buffer = z-30
+
+    ok = []
+    ko = []
+    ok.append(FIRST_data[0][init:buffer])
+    ok = (np.array(ok))
+
+    ko.append(GAP_data[init])
+    ko = (np.array(ko))
+    buffer += 1
+    predicted_points = to_test_net.test(ok, ko, gap, data_type, dim, z)
+    print(ok)
+    print(ko)
+    print(predicted_points)
+
+    #for j in predicted_points:
+    f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(z-1) + '.png'
+    print(f)
+    im = cv2.imread(f)
+
+    cv2.circle(im, (int(predicted_points[0][1]), int(predicted_points[0][1])), 1, (0, 0, 0), 1)
+    cv2.imwrite('Predicted'+ str(init) + '.png', im)
+    # Custom window
+    cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
+    cv2.imshow('See the trails', im)
+    cv2.resizeWindow('See the trails', 600, 400)
+    cv2.waitKey(150)
+    cv2.destroyAllWindows()
+
 class Net(object):
 
     def __init__(self, net_type, **kwargs):
@@ -93,6 +126,10 @@ class Net(object):
         print(real_values)
         print('\n---- Predicted Values -----\n')
         print(predict_values)
+        print('\n')
+
+        predicted_points = []
+
 
         if raw:
             v_to_draw = predict
@@ -164,7 +201,7 @@ def Extract_Frames():
     previous_cX = 0
 
     max_number_frames = 19
-    gap = max_number_frames + 25
+    gap = max_number_frames + 30
 
     # Create new blank image
     #w, h = 360, 240
@@ -250,6 +287,7 @@ def Extract_Frames():
                             data_temp_x.append(np.array(cY))
                             data_temp_x.append(np.array(cX))
                             dataX.append(data_temp_x)
+                            FIRST_data.append(dataX)
 
                         elif (img_index >= gap) and (img_index < gap + 20):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
@@ -269,6 +307,7 @@ def Extract_Frames():
                         for j in GAP_data:
                                 cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+                                paint_predicted_frames(FIRST_data, GAP_data, img_index)
 
                         f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(img_index+1) + '.png'
                         im = cv2.imread(f)
@@ -277,10 +316,13 @@ def Extract_Frames():
                         cv2.imshow('See the trails', im)
                         cv2.resizeWindow('See the trails', 600, 400)
 
+
+
+
+
                     img_index += 1
                     cv2.waitKey(150)
 
-    FIRST_data.append(dataX)
     cap.release()
     cv2.destroyAllWindows()
 
@@ -289,7 +331,6 @@ def Extract_Frames():
 if __name__ == '__main__':
     folder_path = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/'
     #folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
-    FIRST_data, GAP_data = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
 
     data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_1000_80_120_30GAP/linear_30_[None]_test'
@@ -316,41 +357,8 @@ if __name__ == '__main__':
     gap = 30
     os.chdir(folder_path)
 
-    init = 0
-    z = init + 50
-    buffer = 20
-    predicted_points = []
+    FIRST_data, GAP_data = Extract_Frames()
 
-    for j in range(40):
-        if init <= 19:
-            ok = []
-            ko = []
-            ok.append(FIRST_data[0][init:buffer])
-            ok = (np.array(ok))
 
-            ko.append(GAP_data[init])
-            ko = (np.array(ko))
-            init += 1
-            z += 1
-            buffer += 1
-            predicted_points = to_test_net.test(ok, ko, gap, data_type, dim, init+44)
-            print(ok)
-            print(ko)
-            print(predicted_points)
-
-            for j in predicted_points:
-                f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(z) + '.png'
-                im = cv2.imread(f)
-
-                os.chdir('/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/')
-                cv2.circle(im, (int(j[0]), int(j[1])), 1, (0, 0, 0), 1)
-                cv2.imwrite('Interface'+ str(z) + '.png', im)
-                # Custom window
-                cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
-                cv2.imshow('See the trails', im)
-                cv2.resizeWindow('See the trails', 600, 400)
-                cv2.waitKey(150)
-                cv2.destroyAllWindows()
-
-        # Load the model
-        #to_test_net = load_model(model_path, compile = True)
+    # Load the model
+    #to_test_net = load_model(model_path, compile = True)
