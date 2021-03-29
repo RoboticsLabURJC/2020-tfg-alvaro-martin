@@ -128,6 +128,7 @@ def Extract_Frames():
     FIRST_data = []
     dataX = []
     GAP_data = []
+    FINAL = []
 
     # List all the videos
     for video in os.listdir(folder_path):
@@ -216,7 +217,10 @@ def Extract_Frames():
                             data_temp_y.append(np.array(cY))
                             data_temp_y.append(np.array(cX))
 
+
                             FIRST_data.append(dataX)
+                            GAP_data.append(data_temp_y)
+
                             ok.append(FIRST_data[0][init:buffer])
                             ok = np.array(ok)
                             print(ok)
@@ -237,10 +241,10 @@ def Extract_Frames():
 
                             print('PREDICTED ----- '+ str(init+1))
                             print(np.array(predicted_points))
-                            cv2.circle(frame, (int(real_points[0][1]), int(real_points[0][0])), 1, (246, 209, 81), 1)
-                            cv2.circle(frame, (int(predicted_points[1]), int(predicted_points[0])), 1, (0, 0, 0), 1)
-                            cv2.imwrite('Interface'+ str(init+50) + '.png', frame)
-
+                            #cv2.circle(frame, (int(real_points[0][1]), int(real_points[0][0])), 1, (246, 209, 81), 1)
+                            #cv2.circle(frame, (int(predicted_points[1]), int(predicted_points[0])), 1, (0, 0, 0), 1)
+                            #cv2.imwrite('Interface'+ str(init+50) + '.png', frame)
+                            FINAL.append(predicted_points)
                             #for j in dataX:
                             #        cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
                             #        cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
@@ -255,6 +259,15 @@ def Extract_Frames():
 
                         for j in dataX:
                                 cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
+                                #cv2.circle(frame, (int(FINAL[j][1]), int(FINAL[j][0])), 1, (0, 0, 0), 1)
+                                cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+
+                        for j in GAP_data:
+                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
+                                cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
+
+                        for j in FINAL:
+                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (0, 0, 0), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
                         f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(img_index+1) + '.png'
