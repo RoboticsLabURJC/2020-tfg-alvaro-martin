@@ -77,7 +77,8 @@ class Net(object):
             raw = False
         predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
 
-        predict_values = ([(int(predict_values[0][0])/2), (int(predict_values[0][1]*0.8))])
+        #predict_values = ([(int(predict_values[0][0])/2), (int(predict_values[0][1]*0.8))])
+        predict_values = ([(round(int(predict_values[0][0]), 0)), (int(predict_values[0][1]))])
 
         return (real_values, predict_values)
 
@@ -126,9 +127,9 @@ def Extract_Frames():
     gap = max_number_frames + 30
 
     FIRST_data = []
-    dataX = []
     GAP_data = []
     FINAL = []
+    dataX = []
 
     # List all the videos
     for video in os.listdir(folder_path):
@@ -190,8 +191,7 @@ def Extract_Frames():
                 M = cv2.moments(dilation_image)
                 previous_cX = cX
 
-                real_points = []
-                predicted_points = []
+
 
                 if int((M["m10"]) != 0) or int((M["m10"]) != 0) or int((M["m10"]) != 0) or int((M["m10"]) != 0):
 
@@ -202,7 +202,8 @@ def Extract_Frames():
                     ko = []
                     data_temp_x = []
                     data_temp_y = []
-                    #FIRST_data = []
+                    real_points = []
+                    predicted_points = []
 
                     if (cX >= previous_cX):
 
@@ -217,16 +218,13 @@ def Extract_Frames():
                             data_temp_y.append(np.array(cY))
                             data_temp_y.append(np.array(cX))
 
-
                             FIRST_data.append(dataX)
                             GAP_data.append(data_temp_y)
 
                             ok.append(FIRST_data[0][init:buffer])
                             ok = np.array(ok)
-                            print(ok)
                             ko.append(data_temp_y)
                             ko = np.array(ko)
-                            print(ko)
 
                             print('Input numero ----- '+ str(init+1))
                             real_points, predicted_points = to_test_net.test(ok, ko, gap, data_type, dim)
@@ -236,18 +234,12 @@ def Extract_Frames():
                             print('input + 30 frames gap ----- '+ str(init+1))
                             print(np.array(ko))
 
-                            print('REAL ----- '+ str(init+1))
+                            print('REAL ----- COMPROBANDO'+ str(init+1))
                             print(np.array(real_points))
 
-                            print('PREDICTED ----- '+ str(init+1))
+                            print('PREDICTED  ----- REDONDEADO '+ str(init+1))
                             print(np.array(predicted_points))
-                            #cv2.circle(frame, (int(real_points[0][1]), int(real_points[0][0])), 1, (246, 209, 81), 1)
-                            #cv2.circle(frame, (int(predicted_points[1]), int(predicted_points[0])), 1, (0, 0, 0), 1)
-                            #cv2.imwrite('Interface'+ str(init+50) + '.png', frame)
                             FINAL.append(predicted_points)
-                            #for j in dataX:
-                            #        cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
-                            #        cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
                             init += 1
                             buffer += 1
@@ -259,7 +251,6 @@ def Extract_Frames():
 
                         for j in dataX:
                                 cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
-                                #cv2.circle(frame, (int(FINAL[j][1]), int(FINAL[j][0])), 1, (0, 0, 0), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
                         for j in GAP_data:
@@ -270,39 +261,40 @@ def Extract_Frames():
                                 cv2.circle(frame, (int(j[1]), int(j[0])), 1, (0, 0, 0), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
-                        f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(img_index+1) + '.png'
+                        f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070393.MP4_frames/Interface'+ str(img_index+1) + '.png'
                         im = cv2.imread(f)
+
                         # Custom window
                         cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
                         cv2.imshow('See the trails', im)
-                        cv2.resizeWindow('See the trails', 600, 400)
+                        cv2.resizeWindow('See the trails', 900, 600)
 
                     img_index += 1
-                    cv2.waitKey(300)
+                    cv2.waitKey(250)
 
-
-    #
     cap.release()
     cv2.destroyAllWindows()
-
-    #return np.array(FIRST_data), np.array(GAP_data)
 
 
 if __name__ == '__main__':
     folder_path = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/'
-
-    data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_1000_80_120_30GAP/linear_30_[None]_test'
-    model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_1000_80_120_Modeled_30GAP/simple/10_False_tanh_mean_squared_error_10.h5'
+    data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_2000_80_120_30GAP/linear_30_[None]_test'
+    model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_2000_80_120_30GAP_Modeled/simple/10_False_tanh_mean_squared_error_10.h5'
 
     data_type = data_path.split('/')[6]
-    net_type = model_path.split('/')[7]
-    complexity = model_path.split('/')[10]
+    print(data_type)
+    net_type = model_path.split('/')[9]
+    print(net_type)
+    complexity = model_path.split('/')[12]
     if "modeled" in model_path.lower():
         data_path = data_path + "/modeled_samples"
     sample_type = data_path.split('/')[-1]
     data_type = data_type + "_" + sample_type
+    print(data_type)
     samples_dir = data_path.split('/')[6]
+    print(samples_dir)
     dim = (int(samples_dir.split('_')[-3]), int(samples_dir.split('_')[-2]))
+    print(dim)
 
 
     print('\n')
@@ -314,51 +306,4 @@ if __name__ == '__main__':
 
     gap = 30
 
-    #FIRST_data, GAP_data = Extract_Frames()
-
     Extract_Frames()
-    '''
-    init = 0
-    buffer = 20
-    frames_to_predict = 19
-    real_points = []
-    predicted_points = []
-
-    for j in FIRST_data[0]:
-        if init <= frames_to_predict:
-            ok = []
-            ko = []
-            ok.append(FIRST_data[0][init:buffer])
-            ok = (np.array(ok))
-            ko.append(GAP_data[init])
-            ko = (np.array(ko))
-
-            print('Input numero ----- '+ str(init+1))
-            real_points, predicted_points = to_test_net.test(ok, ko, gap, data_type, dim)
-
-            print('BUFFER ----'+ str(init+1))
-            print(np.array(ok))
-            print('input + 30 frames gap ----- '+ str(init+1))
-            print(np.array(ko))
-
-            print('REAL ----- '+ str(init+1))
-            print(np.array(real_points))
-
-            print('PREDICTED ----- '+ str(init+1))
-            print(np.array(predicted_points))
-
-            f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070380.MP4_frames/Interface'+ str(init+50) + '.png'
-            im = cv2.imread(f)
-            cv2.circle(im, (int(real_points[0][1]), int(real_points[0][0])), 1, (246, 209, 81), 1)
-            cv2.imwrite('Interface'+ str(init+50) + '.png', im)
-            cv2.circle(im, (int(predicted_points[1]), int(predicted_points[0])), 1, (0, 0, 0), 1)
-            cv2.imwrite('Interface'+ str(init+50) + '.png', im)
-            # Custom window
-            cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
-            cv2.imshow('See the trails', im)
-            cv2.resizeWindow('See the trails', 600, 400)
-            cv2.waitKey(150)
-
-            init += 1
-            buffer += 1
-    '''

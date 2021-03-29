@@ -16,8 +16,10 @@ from Network import Net
 if __name__ == '__main__':
     conf = utils.get_config_file()
     data_type = conf['data_path'].split('/')[6]
-    net_type = conf['model_path'].split('/')[7]
-    complexity = conf['model_path'].split('/')[10]
+    print(data_type)
+    net_type = conf['model_path'].split('/')[9]
+    print(net_type)
+    complexity = conf['model_path'].split('/')[12]
 
     print('\n')
     print("Dataset: " + conf['data_path'])
@@ -28,60 +30,41 @@ if __name__ == '__main__':
     print("Evaluating with " + data_type + " a " + complexity + " " + net_type + " model")
 
     # Load data
-    if data_type == "Functions_dataset":
-        parameters, test_set = func_utils.read_function_data(conf['data_path'])
-        gap = float(parameters[0][3])
-        dim = None
-
-        print('Puting the test data into the right shape...')
-        testX, testY = func_utils.reshape_function_data(test_set)
-
-        to_test_net = Net.Mlp(model_file=conf['model_path'], framework="keras")
-
-    elif data_type == "Vectors_dataset":
-        parameters, test_set = vect_utils.read_vector_data(conf['data_path'])
-        gap = parameters.iloc[0]['gap']
-        dim = None
-
-        print('Puting the test data into the right shape...')
-        testX, testY = vect_utils.reshape_vector_data(test_set)
+  # data_type == "Frames_dataset
+    if "modeled" in conf['model_path'].lower():
+        data_path = conf['data_path'] + "/modeled_samples"
+    else:
+        data_path = conf['data_path'] + "/raw_samples"
+    print(data_path)
+    print('\n')
+    sample_type = data_path.split('/')[-1]
+    print(sample_type)
+    data_type = data_type + "_" + sample_type
+    print(data_type)
+    samples_dir = data_path.split('/')[6]
+    print(samples_dir)
+    dim = (int(samples_dir.split('_')[-3]), int(samples_dir.split('_')[-2]))
+    print(dim)
+    if sample_type == "raw_samples":
+        gauss_pixel = "gauss" in conf['model_path'].lower()
+        print("Gauss:", gauss_pixel)
         if net_type == "NOREC":
-            to_test_net = Net.Convolution1D(model_file=conf['model_path'], framework="keras")
+            print('Puting the test data into the right shape...')
+            parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, gauss_pixel)
+            to_test_net = Net.Convolution2D(model_file=conf['model_path'], framework="keras")
         else:
-            to_test_net = Net.Lstm(model_file=conf['model_path'], framework="keras")
+            print('Puting the test data into the right shape...')
+            parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, gauss_pixel, True)
+            to_test_net = Net.ConvolutionLstm(model_file=conf['model_path'], framework="keras")
+    else:
+        parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
+        if net_type == "NOREC":
+            print('Puting the test data into the right shape...')
+            to_test_net = Net.Mlp(model_file=conf['model_path'], framework="tensorflow")
+        else:
+            print('Puting the test data into the right shape...')
+            to_test_net = Net.Lstm(model_file=conf['model_path'], framework="tensorflow")
 
-    else:  # data_type == "Frames_dataset
-        if "modeled" in conf['model_path'].lower():
-            data_path = conf['data_path'] + "/modeled_samples"
-        else:
-            data_path = conf['data_path'] + "/raw_samples"
-        print(data_path)
-        print('\n')
-        sample_type = data_path.split('/')[-1]
-        print(sample_type)
-        data_type = data_type + "_" + sample_type
-        samples_dir = data_path.split('/')[6]
-        dim = (int(samples_dir.split('_')[-2]), int(samples_dir.split('_')[-1]))
-        if sample_type == "raw_samples":
-            gauss_pixel = "gauss" in conf['model_path'].lower()
-            print("Gauss:", gauss_pixel)
-            if net_type == "NOREC":
-                print('Puting the test data into the right shape...')
-                parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, gauss_pixel)
-                to_test_net = Net.Convolution2D(model_file=conf['model_path'], framework="keras")
-            else:
-                print('Puting the test data into the right shape...')
-                parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, gauss_pixel, True)
-                to_test_net = Net.ConvolutionLstm(model_file=conf['model_path'], framework="keras")
-        else:
-            parameters, testX, testY = frame_utils.read_frame_data(data_path, sample_type, False)
-            if net_type == "NOREC":
-                print('Puting the test data into the right shape...')
-                to_test_net = Net.Mlp(model_file=conf['model_path'], framework="tensorflow")
-            else:
-                print('Puting the test data into the right shape...')
-                to_test_net = Net.Lstm(model_file=conf['model_path'], framework="tensorflow")
-
-        gap = parameters.iloc[0]['gap']
+    gap = parameters.iloc[0]['gap']
 
     to_test_net.test(testX, testY, gap, data_type, dim)

@@ -116,6 +116,7 @@ class Net(object):
             if "modeled" in data_type:
                 raw = False
             predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
+            print(real_values, predict_values)
 
             if raw:
                 v_to_draw = predict
