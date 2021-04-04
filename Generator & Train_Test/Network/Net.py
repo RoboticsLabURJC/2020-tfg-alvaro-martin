@@ -103,6 +103,8 @@ class Net(object):
 
     def test(self, test_x, test_y, gap, data_type, dim):
         predict = self.model.predict(test_x)
+        print('PREDICT ---')
+        print(predict)
         if data_type == "Functions_dataset":
             maximum = [np.max(np.abs(np.append(test_x[i], test_y[i]))) for i in range(len(test_x))]
             predict_values = predict
@@ -116,6 +118,7 @@ class Net(object):
             if "modeled" in data_type:
                 raw = False
             predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
+            print('DESPUES DE GET POSITIONS ---')
             print(real_values, predict_values)
 
             if raw:

@@ -70,7 +70,7 @@ class Net(object):
 
     def test(self, test_x, test_y, gap, data_type, dim):
         predict = self.model.predict(test_x)
-        #print(predict)
+        print(predict)
 
         raw = True
         if "modeled" in data_type:
@@ -126,13 +126,14 @@ def Extract_Frames():
     max_number_frames = 19
     gap = max_number_frames + 30
 
+    FIRST_data = []
+    GAP_data = []
+    FINAL = []
+    dataX = []
+
     # List all the videos
     for video in os.listdir(folder_path):
         if video.endswith(".MP4"):
-            FIRST_data = []
-            GAP_data = []
-            FINAL = []
-            dataX = []
             video_name = video
             video_path = folder_path + video
             init = 0
@@ -148,6 +149,8 @@ def Extract_Frames():
 
             if len(dataX) != 0:
                 FIRST_data.append(dataX)
+
+            dataX = []
 
             print('\nVideo #' + str(v) + '-----------' + str(video_name) + '\n')
 
@@ -188,6 +191,8 @@ def Extract_Frames():
                 M = cv2.moments(dilation_image)
                 previous_cX = cX
 
+
+
                 if int((M["m10"]) != 0) or int((M["m10"]) != 0) or int((M["m10"]) != 0) or int((M["m10"]) != 0):
 
                     cX = int(M["m10"] / M["m00"])
@@ -202,7 +207,7 @@ def Extract_Frames():
 
                     if (cX >= previous_cX):
 
-                        if (img_index <= max_number_frames + 30):
+                        if (img_index <= max_number_frames + 20):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             data_temp_x.append(np.array(cY))
                             data_temp_x.append(np.array(cX))
@@ -226,13 +231,14 @@ def Extract_Frames():
 
                             print('BUFFER ----'+ str(init+1))
                             print(np.array(ok))
+                            print('input + 30 frames gap ----- '+ str(init+1))
+                            print(np.array(ko))
 
                             print('REAL ----- COMPROBANDO'+ str(init+1))
                             print(np.array(real_points))
 
                             print('PREDICTED  ----- REDONDEADO '+ str(init+1))
                             print(np.array(predicted_points))
-                            print('\n')
                             FINAL.append(predicted_points)
 
                             init += 1
@@ -241,27 +247,27 @@ def Extract_Frames():
                         else:
                             pass
 
-                        if (img_index < gap + 20):
+                    if (img_index < gap + 20):
 
-                            for j in dataX:
-                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (230, 0, 115), 1)
+                        for j in dataX:
+                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
-                            for j in GAP_data:
-                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (230, 0, 115), 1)
+                        for j in GAP_data:
+                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (246, 209, 81), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
-                            for j in FINAL:
-                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (30, 30, 240), 1)
+                        for j in FINAL:
+                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (0, 0, 0), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
-                            f = frames_path +'/Interface'+ str(img_index+1) + '.png'
-                            im = cv2.imread(f)
+                        f = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/P1070393.MP4_frames/Interface'+ str(img_index+1) + '.png'
+                        im = cv2.imread(f)
 
-                            # Custom window
-                            cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
-                            cv2.imshow('See the trails', im)
-                            cv2.resizeWindow('See the trails', 900, 600)
+                        # Custom window
+                        cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
+                        cv2.imshow('See the trails', im)
+                        cv2.resizeWindow('See the trails', 900, 600)
 
                     img_index += 1
                     cv2.waitKey(200)
@@ -271,7 +277,7 @@ def Extract_Frames():
 
 
 if __name__ == '__main__':
-    folder_path = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/NEW RED/'
+    folder_path = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/'
     data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_2000_80_120_30GAP/linear_30_[None]_test'
     model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_2000_80_120_30GAP_Modeled/simple/10_False_tanh_mean_squared_error_10.h5'
 

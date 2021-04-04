@@ -70,7 +70,7 @@ class Net(object):
 
     def test(self, test_x, test_y, gap, data_type, dim):
         predict = self.model.predict(test_x)
-        #print(predict)
+        print(predict)
 
         raw = True
         if "modeled" in data_type:
@@ -78,7 +78,10 @@ class Net(object):
         predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
 
         #predict_values = ([(int(predict_values[0][0])/2), (int(predict_values[0][1]*0.8))])
-        predict_values = ([(round(int(predict_values[0][0]), 0)), (int(predict_values[0][1]))])
+        #predict_values = ([(round(int(predict_values[0][0]), 0)), (int(predict_values[0][1]))])
+
+        #test_utils.get_error_stats(test_x, test_y, predict_values, gap, data_type, dim,
+        #                           error, x_error, y_error, relative_error, self.model_path)
 
         return (real_values, predict_values)
 
@@ -122,17 +125,18 @@ def Extract_Frames():
     v = 0
     cX = 0
     previous_cX = 0
-
     max_number_frames = 19
-    gap = max_number_frames + 30
+    gap = 30
 
     # List all the videos
     for video in os.listdir(folder_path):
+
+        FIRST_data = []
+        GAP_data = []
+        FINAL = []
+        dataX = []
+
         if video.endswith(".MP4"):
-            FIRST_data = []
-            GAP_data = []
-            FINAL = []
-            dataX = []
             video_name = video
             video_path = folder_path + video
             init = 0
@@ -148,6 +152,8 @@ def Extract_Frames():
 
             if len(dataX) != 0:
                 FIRST_data.append(dataX)
+
+            dataX = []
 
             print('\nVideo #' + str(v) + '-----------' + str(video_name) + '\n')
 
@@ -188,6 +194,8 @@ def Extract_Frames():
                 M = cv2.moments(dilation_image)
                 previous_cX = cX
 
+
+
                 if int((M["m10"]) != 0) or int((M["m10"]) != 0) or int((M["m10"]) != 0) or int((M["m10"]) != 0):
 
                     cX = int(M["m10"] / M["m00"])
@@ -202,46 +210,52 @@ def Extract_Frames():
 
                     if (cX >= previous_cX):
 
-                        if (img_index <= max_number_frames + 30):
+                        if (img_index <= max_number_frames + gap):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             data_temp_x.append(np.array(cY))
                             data_temp_x.append(np.array(cX))
                             dataX.append(data_temp_x)
 
-                        elif (img_index >= gap) and (img_index < gap + 20):
-                            print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
-                            data_temp_y.append(np.array(cY))
-                            data_temp_y.append(np.array(cX))
+                        elif (img_index >= max_number_frames + gap) and (img_index < max_number_frames + gap + 20):
+                            if buffer <= 39:
+                                print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
+                                data_temp_y.append(np.array(cY))
+                                data_temp_y.append(np.array(cX))
 
-                            FIRST_data.append(dataX)
-                            GAP_data.append(data_temp_y)
+                                FIRST_data.append(dataX)
+                                GAP_data.append(data_temp_y)
 
-                            ok.append(FIRST_data[0][init:buffer])
-                            ok = np.array(ok)
-                            ko.append(data_temp_y)
-                            ko = np.array(ko)
+                                ok.append(FIRST_data[0][init:buffer])
+                                ok = np.array(ok)
+                                ko.append(data_temp_y)
+                                ko = np.array(ko)
+                                print(ko)
 
-                            print('Input numero ----- '+ str(init+1))
-                            real_points, predicted_points = to_test_net.test(ok, ko, gap, data_type, dim)
+                                #print('PREDICT SIN REDONDEAR ----- '+ str(init+1))
+                                real_points, predicted_points = to_test_net.test(ok, ko, gap, data_type, dim)
+                                print(str(gap)+'--gap')
+                                print(str(img_index)+'--img')
 
-                            print('BUFFER ----'+ str(init+1))
-                            print(np.array(ok))
+                                print('BUFFER ----- '+ str(init+1))
+                                print(np.array(ok))
+                                #print('input + 30 frames gap ----- '+ str(init+1))
+                                #print(np.array(ko))
 
-                            print('REAL ----- COMPROBANDO'+ str(init+1))
-                            print(np.array(real_points))
+                                print('REAL ----- COMPROBANDO '+ str(init+1))
+                                print(np.array(real_points))
 
-                            print('PREDICTED  ----- REDONDEADO '+ str(init+1))
-                            print(np.array(predicted_points))
-                            print('\n')
-                            FINAL.append(predicted_points)
+                                print('PREDICTED  ----- REDONDEADO '+ str(init+1))
+                                print(np.array(predicted_points))
+                                FINAL.append(predicted_points)
+                                print('\n')
 
-                            init += 1
-                            buffer += 1
+                                init += 1
+                                buffer += 1
 
                         else:
                             pass
 
-                        if (img_index < gap + 20):
+                        if (img_index < max_number_frames + gap + 20):
 
                             for j in dataX:
                                 cv2.circle(frame, (int(j[1]), int(j[0])), 1, (230, 0, 115), 1)
@@ -252,10 +266,15 @@ def Extract_Frames():
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
                             for j in FINAL:
-                                cv2.circle(frame, (int(j[1]), int(j[0])), 1, (30, 30, 240), 1)
+                                #t = int(j[0][0])
+                                #print(t)
+                                #if t <= 0:
+                                #    t = 1
+                                #    print(t)
+                                cv2.circle(frame, (int(t), int(j[0][0])), 1, (30, 30, 240), 1)
                                 cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
 
-                            f = frames_path +'/Interface'+ str(img_index+1) + '.png'
+                            f = frames_path + '/Interface'+ str(img_index+1) + '.png'
                             im = cv2.imread(f)
 
                             # Custom window
@@ -264,24 +283,27 @@ def Extract_Frames():
                             cv2.resizeWindow('See the trails', 900, 600)
 
                     img_index += 1
-                    cv2.waitKey(200)
+                    cv2.waitKey(120)
 
     cap.release()
     cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
+
     folder_path = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/NEW RED/'
-    data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_2000_80_120_30GAP/linear_30_[None]_test'
-    model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_2000_80_120_30GAP_Modeled/simple/10_False_tanh_mean_squared_error_10.h5'
+    data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_var_20000_80_120_30GAP/linear_30_[None]_test'
+    model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_var_20000_80_120_30GAP_Modeled/complex/10_False_tanh_mean_squared_error_10.h5'
 
     data_type = data_path.split('/')[6]
     print(data_type)
     net_type = model_path.split('/')[9]
     print(net_type)
     complexity = model_path.split('/')[12]
+
     if "modeled" in model_path.lower():
         data_path = data_path + "/modeled_samples"
+
     sample_type = data_path.split('/')[-1]
     data_type = data_type + "_" + sample_type
     print(data_type)
@@ -297,7 +319,6 @@ if __name__ == '__main__':
     print("Evaluating with " + data_type + " a " + complexity + " " + net_type + " model")
     print('Puting the test data into the right shape...')
     to_test_net = Lstm(model_file=model_path, framework="tensorflow")
-
     gap = 30
 
     Extract_Frames()
