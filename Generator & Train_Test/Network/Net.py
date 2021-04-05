@@ -119,7 +119,7 @@ class Net(object):
                 raw = False
             predict_values, real_values, maximum = frame_utils.get_positions(predict, test_y, dim, raw)
             print('DESPUES DE GET POSITIONS ---')
-            print(real_values, predict_values)
+            print(real_values, predict_values, maximum)
 
             if raw:
                 v_to_draw = predict

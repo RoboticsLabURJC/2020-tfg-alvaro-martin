@@ -68,7 +68,7 @@ class Net(object):
             self.input_shape = kwargs['input_shape']
             self.output_shape = kwargs['output_shape']
 
-    def test(self, test_x, test_y, gap, data_type, dim):
+    def test(self, test_x, test_y, data_type, dim):
         predict = self.model.predict(test_x)
         #print(predict)
 
@@ -80,7 +80,7 @@ class Net(object):
         #predict_values = ([(int(predict_values[0][0])/2), (int(predict_values[0][1]*0.8))])
         predict_values = ([(round(int(predict_values[0][0]), 0)), (int(predict_values[0][1]))])
 
-        return (real_values, predict_values)
+        return (real_values, predict_values, maximum)
 
 
 class Lstm(Net):
@@ -117,6 +117,22 @@ class Lstm(Net):
         self.model.compile(loss=self.loss, optimizer='adam')
 
 
+def get_errors(buffer, real_values, predict_values, maximum):
+    error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
+
+    with open(folder_path + 'error_result.txt', 'w') as file:
+        for i in range(error.shape[0]):
+            file.write("Processed sample " + str(i) + ": \n")
+            file.write("Target position: " + str(real_values[i]) + "\n")
+            file.write("Position: " + str(predict_values[i]) + "\n")
+            file.write("Error: " + str(np.round(error[i], 2)) + " (" + str(np.round(relative_error[i], 2)) + "%)\n")
+            file.write("--------------------------------------------------------------\n")
+
+    # Calculate stats
+    test_utils.get_error_stats(buffer, real_values, predict_values, 30, data_type, dim,
+                               error, x_error, y_error, relative_error, folder_path)
+
+
 def Extract_Frames():
 
     v = 0
@@ -133,6 +149,8 @@ def Extract_Frames():
             GAP_data = []
             FINAL = []
             dataX = []
+            result_buffer = []
+            max = []
             video_name = video
             video_path = folder_path + video
             init = 0
@@ -193,12 +211,12 @@ def Extract_Frames():
                     cX = int(M["m10"] / M["m00"])
                     cY = int(M["m01"] / M["m00"])
 
-                    ok = []
-                    ko = []
                     data_temp_x = []
                     data_temp_y = []
                     real_points = []
                     predicted_points = []
+                    ok = []
+                    ko = []
 
                     if (cX >= previous_cX):
 
@@ -208,21 +226,23 @@ def Extract_Frames():
                             data_temp_x.append(np.array(cX))
                             dataX.append(data_temp_x)
 
-                        elif (img_index >= gap) and (img_index < gap + 20):
+                        elif (img_index >= gap) and (img_index <= gap + 20):
                             print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
                             data_temp_y.append(np.array(cY))
                             data_temp_y.append(np.array(cX))
 
-                            FIRST_data.append(dataX)
+                            FIRST_data =[dataX]
                             GAP_data.append(data_temp_y)
 
                             ok.append(FIRST_data[0][init:buffer])
                             ok = np.array(ok)
+                            result_buffer.append(ok[0])
                             ko.append(data_temp_y)
                             ko = np.array(ko)
 
                             print('Input numero ----- '+ str(init+1))
-                            real_points, predicted_points = to_test_net.test(ok, ko, gap, data_type, dim)
+                            real_points, predicted_points, maximum = to_test_net.test(ok, ko, data_type, dim)
+                            max.append(maximum)
 
                             print('BUFFER ----'+ str(init+1))
                             print(np.array(ok))
@@ -234,6 +254,7 @@ def Extract_Frames():
                             print(np.array(predicted_points))
                             print('\n')
                             FINAL.append(predicted_points)
+                            print('\n')
 
                             init += 1
                             buffer += 1
@@ -268,6 +289,17 @@ def Extract_Frames():
 
     cap.release()
     cv2.destroyAllWindows()
+    print(np.array(result_buffer))
+    print('\n')
+    print(np.array(GAP_data))
+    print('\n')
+    print(np.array(FINAL))
+    print('\n')
+    print(np.array(max))
+    print('\n')
+
+    get_errors(np.array(result_buffer), np.array(GAP_data), np.array(FINAL), np.array(max))
+
 
 
 if __name__ == '__main__':
