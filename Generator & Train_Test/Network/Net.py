@@ -127,6 +127,7 @@ class Net(object):
                 v_to_draw = predict_values
 
         error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
+        print(error, x_error, y_error, relative_error)
 
         with open(self.model_path + 'error_result.txt', 'w') as file:
             for i in range(error.shape[0]):

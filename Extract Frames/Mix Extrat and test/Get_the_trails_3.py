@@ -119,6 +119,7 @@ class Lstm(Net):
 
 def get_errors(buffer, real_values, predict_values, maximum):
     error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
+    print(error, x_error, y_error, relative_error)
 
     with open(folder_path + 'error_result.txt', 'w') as file:
         for i in range(error.shape[0]):
@@ -242,7 +243,7 @@ def Extract_Frames():
 
                             print('Input numero ----- '+ str(init+1))
                             real_points, predicted_points, maximum = to_test_net.test(ok, ko, data_type, dim)
-                            max.append(maximum)
+                            max.append(maximum[0])
 
                             print('BUFFER ----'+ str(init+1))
                             print(np.array(ok))
@@ -291,11 +292,7 @@ def Extract_Frames():
     cv2.destroyAllWindows()
     print(np.array(result_buffer))
     print('\n')
-    print(np.array(GAP_data))
-    print('\n')
-    print(np.array(FINAL))
-    print('\n')
-    print(np.array(max))
+    print(np.array(GAP_data),(np.array(FINAL)), (np.array(max)))
     print('\n')
 
     get_errors(np.array(result_buffer), np.array(GAP_data), np.array(FINAL), np.array(max))
