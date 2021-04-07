@@ -119,7 +119,7 @@ class Lstm(Net):
 
 def get_errors(buffer, real_values, predict_values, maximum):
     error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
-    print(error, x_error, y_error, relative_error)
+    #print(error, x_error, y_error, relative_error)
 
     with open(folder_path + 'error_result.txt', 'w') as file:
         for i in range(error.shape[0]):
@@ -286,7 +286,7 @@ def Extract_Frames():
                             cv2.resizeWindow('See the trails', 900, 600)
 
                     img_index += 1
-                    cv2.waitKey(100)
+                    cv2.waitKey(70)
 
     cap.release()
     cv2.destroyAllWindows()
