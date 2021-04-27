@@ -18,7 +18,7 @@ class Frames(object):
         self.n_points = n_points
         self.gap = gap
         # x = x0 + ux*t
-        self.f = lambda t, x0, u_x: x0 + u_x + t
+        self.f = lambda t, x0, moment: x0 + t + moment
         self.g = None
         self.dof_type = dof_type
         self.parameters = []
@@ -27,29 +27,23 @@ class Frames(object):
 
     def get_sample(self):
         x0 = 0
-        limit = int(self.w / (self.n_points + self.gap))
-        if self.shape.type == "Circle":
-            x0 = self.shape.r
-            limit = int((self.w - self.shape.r) / (self.n_points + self.gap))
-
-        u_x = random.randint(1, limit)
-        #print(u_x)
 
         if self.dof_type == 'fix':
             y0 = int(self.h / 2)
         else:
             y0 = None
-        self.parameters = [x0, u_x, y0]
-        #print(self.parameters)
+        self.parameters = [x0, y0]
 
-        positions_x, positions_y = self.get_positions(x0, u_x, y0)
+        positions_x, positions_y = self.get_positions(x0, y0)
+
+        print(positions_x, positions_y)
 
 
         for i in range(self.n_points + 1):
             self.raw_sample.append(self.get_image(positions_x[i], positions_y[i]))
             self.modeled_sample.append([positions_x[i], positions_y[i]])
 
-    def get_positions(self, x0, u_x, y0):
+    def get_positions(self, x0, y0):
         init_y0 = y0
         while True:
             if y0 is None:
@@ -57,29 +51,36 @@ class Frames(object):
                 self.parameters[-1] = y0
 
             if self.type == 'Linear':
-                t = [0,1,2]
-                rand = random.choice(t)
-                numbers_x = [self.f(x, x0, rand) for x in range(self.n_points)]
-                print(numbers_x)
-                numbers_x.append(self.f(self.n_points + self.gap - 1, x0, u_x))
-                print('\n')
-                print(numbers_x)
+                definitive = []
+                x = 0
+                prev_x = 0
+                numbers_x = self.f(0, 0, 0)
+                while len(definitive) < 20:
+                    prev_x = numbers_x
+                    rand = np.random.choice([0,1,2,2,2,2,2,2,2,2,2,2,3])
+                    #print(rand)
+                    numbers_x = self.f(x, x0, rand)
+                    x += 1
+                    if prev_x < numbers_x:
+                        definitive.append(numbers_x)
+                    else:
+                        continue
+
+                rand = np.random.choice([20,30,30,40])
+                definitive.append(self.f(numbers_x + self.gap, x0, rand))
                 m = np.round(random.uniform(-self.h/10, self.h/10), 2)
                 self.parameters.append(m)
-                numbers_y = [int(self.g(n_x, y0, m)) for n_x in numbers_x]
+                numbers_y = [int(self.g(n_x, y0, m)) for n_x in definitive]
 
 
 
-            if self.is_valid(numbers_x, numbers_y):
-                #print('numbers')
-                #print(numbers_x, numbers_y)
-                #print('\n')
+            if self.is_valid(definitive, numbers_y):
                 break
             else:
                 self.parameters = self.parameters[0:2]
                 y0 = init_y0
 
-        return numbers_x, numbers_y
+        return definitive, numbers_y
 
     def is_valid(self, values_x, values_y):
         max_val_x = np.max(values_x)

@@ -43,7 +43,7 @@ if __name__ == '__main__':
     print(data_type)
     samples_dir = data_path.split('/')[6]
     print(samples_dir)
-    dim = (int(samples_dir.split('_')[-3]), int(samples_dir.split('_')[-2]))
+    dim = (int(samples_dir.split('_')[-2]), int(samples_dir.split('_')[-1]))
     print(dim)
     if sample_type == "raw_samples":
         gauss_pixel = "gauss" in conf['model_path'].lower()

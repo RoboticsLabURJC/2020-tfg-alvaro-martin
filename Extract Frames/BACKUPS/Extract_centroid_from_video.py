@@ -11,9 +11,12 @@ Exports are Original with the centroid and dilated also with the centroid.
 __author__ = "Alvaro Martin"
 __date__ = "13/03/2021"
 
-import os
+import os, sys
 import numpy as np
 import cv2
+
+
+np.set_printoptions(threshold=sys.maxsize)
 
 
 """Create new image filled with certain color in RGB"""
@@ -185,8 +188,8 @@ def Extract_Frames():
     return testX, testY
 
 if __name__ == '__main__':
-    folder_path = '/Users/Martin/Desktop/Nuevas tomas/'
-    #folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
+    #folder_path = '/Users/Martin/Desktop/Nuevas tomas/'
+    folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
     testX, testY = Extract_Frames()
     print("\n----- DONE. ALL IMAGES PROCESSED -----\n")
     os.chdir(folder_path)

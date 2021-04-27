@@ -42,7 +42,7 @@ if __name__ == '__main__':
     print('Training with frames')
     data_model = conf['data_model']
     samples_dir = data_dir.split('/')[6]
-    dim = (int(samples_dir.split('_')[-3]), int(samples_dir.split('_')[-2]))
+    dim = (int(samples_dir.split('_')[-2]), int(samples_dir.split('_')[-1]))
     complexity = conf['complexity']
 
     # Load data
