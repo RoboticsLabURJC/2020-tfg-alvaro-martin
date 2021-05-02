@@ -41,7 +41,10 @@ class Frames(object):
 
         for i in range(self.n_points + 1):
             self.raw_sample.append(self.get_image(positions_x[i], positions_y[i]))
-            self.modeled_sample.append([positions_x[i], positions_y[i]])
+            self.modeled_sample.append([i ,positions_x[i], positions_y[i]])
+            if i == 20:
+                self.modeled_sample.append([i+30 ,positions_x[i], positions_y[i]])
+
 
     def get_positions(self, x0, y0):
         init_y0 = y0
@@ -55,12 +58,12 @@ class Frames(object):
                 x = 0
                 prev_x = 0
                 numbers_x = self.f(0, 0, 0)
+                print(numbers_x)
                 while len(definitive) < 20:
                     prev_x = numbers_x
-                    rand = np.random.choice([0,1,2,2,2,2,2,2,2,2,2,2,3])
-                    #print(rand)
-                    numbers_x = self.f(x, x0, rand)
                     x += 1
+                    rand = np.random.choice([0,1,2,2,2,2,2,2,2,2,2,2,3])
+                    numbers_x = self.f(x, x0, rand)
                     if prev_x < numbers_x:
                         definitive.append(numbers_x)
                     else:
@@ -102,7 +105,7 @@ class Frames(object):
         return image
 
     def save(self, image_path, filename, sample_file_path):
-        sample_df = pd.DataFrame(columns=['x', 'y'])
+        sample_df = pd.DataFrame(columns=['frame','x', 'y'])
 
         for i, image in enumerate(self.raw_sample):
             if i == 0:
