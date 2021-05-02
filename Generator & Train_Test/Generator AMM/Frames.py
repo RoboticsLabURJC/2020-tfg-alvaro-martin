@@ -42,8 +42,6 @@ class Frames(object):
         for i in range(self.n_points + 1):
             self.raw_sample.append(self.get_image(positions_x[i], positions_y[i]))
             self.modeled_sample.append([i ,positions_x[i], positions_y[i]])
-            if i == 20:
-                self.modeled_sample.append([i+30 ,positions_x[i], positions_y[i]])
 
 
     def get_positions(self, x0, y0):
@@ -57,20 +55,25 @@ class Frames(object):
                 definitive = []
                 x = 0
                 prev_x = 0
-                numbers_x = self.f(0, 0, 0)
-                print(numbers_x)
-                while len(definitive) < 20:
-                    prev_x = numbers_x
-                    x += 1
-                    rand = np.random.choice([0,1,2,2,2,2,2,2,2,2,2,2,3])
-                    numbers_x = self.f(x, x0, rand)
-                    if prev_x < numbers_x:
+                while len(definitive) < 80:
+                    if len(definitive) == 0:
+                        numbers_x = self.f(0, 1, 0)
+                        definitive.append(numbers_x)
+                    elif len(definitive) == 1:
+                        numbers_x = self.f(1, 1, 0)
                         definitive.append(numbers_x)
                     else:
-                        continue
+                        prev_x = numbers_x
+                        x += 1
+                        rand = np.random.choice([0,1,2,2,2,2,2,2,2,2,2,2,3])
+                        numbers_x = self.f(x, x0, rand)
+                        if prev_x < numbers_x:
+                            definitive.append(numbers_x)
+                        else:
+                            continue
 
-                rand = np.random.choice([20,30,30,40])
-                definitive.append(self.f(numbers_x + self.gap, x0, rand))
+                #rand = np.random.choice([20,30,30,40])
+                #definitive.append(self.f(numbers_x + self.gap, x0, rand))
                 m = np.round(random.uniform(-self.h/10, self.h/10), 2)
                 self.parameters.append(m)
                 numbers_y = [int(self.g(n_x, y0, m)) for n_x in definitive]
