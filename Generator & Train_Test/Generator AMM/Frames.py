@@ -55,7 +55,7 @@ class Frames(object):
                 definitive = []
                 x = 0
                 prev_x = 0
-                while len(definitive) < 80:
+                while len(definitive) < 70:
                     if len(definitive) == 0:
                         numbers_x = self.f(0, 1, 0)
                         definitive.append(numbers_x)
@@ -65,7 +65,7 @@ class Frames(object):
                     else:
                         prev_x = numbers_x
                         x += 1
-                        rand = np.random.choice([0,1,2,2,2,2,2,2,2,2,2,2,3])
+                        rand = np.random.choice([0,1,2,2,2,2,2,2,3,3,3,3])
                         numbers_x = self.f(x, x0, rand)
                         if prev_x < numbers_x:
                             definitive.append(numbers_x)

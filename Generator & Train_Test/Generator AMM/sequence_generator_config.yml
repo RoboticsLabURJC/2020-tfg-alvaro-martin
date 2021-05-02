@@ -25,7 +25,7 @@ circle_parameters:
 n_samples: 50
 
 # Number of know points (x values)
-n_points: 79
+n_points: 69
 
 # Gap between last know and to predict samples
 gap: 30
