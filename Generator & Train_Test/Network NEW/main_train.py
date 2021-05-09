@@ -35,18 +35,28 @@ def read_frame_data(f_path, sample_type, gauss_pixel, channels=False):
 
 def get_modeled_samples(samples_paths):
     frame = []
-    dataX = []
-    dataY = []
+    buffer = []
+    GAP = []
+    i = 0
+    buf = 20
 
     for p in samples_paths:
+        print(p)
         sample = pd.read_csv(p)
         positions = sample.values.astype(np.float)
-        #print(positions)
-        frame.append(positions[:][0])
-        #dataX.append(positions[1])
-        #dataY.append(positions[-1])
+        frame.append(positions[:])
+        print(frame)
+        for i in range(69):
+            if buf <= 39:
+                print(i)
+                print(buf)
+                buffer.append(frame[0][i:buf])
+                GAP.append(frame[0][buf+29])
+                i += 1
+                buf += 1
 
-    return np.array(frame), np.array(dataX), np.array(dataY)
+
+    return np.array(frame), np.array(buffer), np.array(GAP)
 
 
 def get_files(dir_path):
@@ -184,9 +194,9 @@ if __name__ == '__main__':
     frames, trainX, trainY = read_frame_data(data_dir + 'train/', 'modeled_samples', gauss_pixel)
     print('FRAMES ---------------------------')
     print(frames)
-    print('TRAIN X ---------------------------')
+    print('20 entradas de buffer como entrada ---------------------------')
     print(trainX)
-    print('TRAIN Y ---------------------------')
+    print('Salida: gap + 30 frames despues del ultimo del buffer ---------------------------')
     print(trainY)
     #_, frames_val, valX, valY = frame_utils.read_frame_data(data_dir + 'val/', 'modeled_samples', gauss_pixel)
     #train_data = (frames, trainX, trainY)
