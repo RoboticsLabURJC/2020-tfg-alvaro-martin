@@ -284,7 +284,7 @@ def Extract_Frames():
 
                             # Custom window
                             cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
-                            cv2.imshow('See the trails', im)
+                            #cv2.imshow('See the trails', im)
                             cv2.resizeWindow('See the trails', 900, 600)
 
                     img_index += 1
@@ -302,7 +302,7 @@ def Extract_Frames():
 
 
 if __name__ == '__main__':
-    folder_path = '/Users/Martin/Desktop/Nuevas tomas/Prueba Interfaz/NEW RED/'
+    folder_path = '/Users/Martin/Desktop/Prueba crudas pelota golf/Naranja/100 fps/'
     data_path = '/Users/Martin/Desktop/Generator_10/Frames_dataset/linear_point_255_fix_2000_80_120_30GAP/linear_30_[None]_test'
     model_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/REC/Frames_dataset/linear_point_255_fix_2000_80_120_30GAP_Modeled/simple/10_False_tanh_mean_squared_error_10.h5'
 

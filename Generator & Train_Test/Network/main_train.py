@@ -95,7 +95,7 @@ if __name__ == '__main__':
         loss = conf['modeled_frame_loss']
         gauss_pixel = False
         activation = conf['modeled_activation']
-        dim = (int(samples_dir.split('_')[-3]), int(samples_dir.split('_')[-2]))
+        dim = (int(samples_dir.split('_')[-2]), int(samples_dir.split('_')[-1]))
         filename = root + "_Modeled/" + complexity
 
         _, trainX, trainY = frame_utils.read_frame_data(data_dir + 'train/', 'modeled_samples', gauss_pixel)
