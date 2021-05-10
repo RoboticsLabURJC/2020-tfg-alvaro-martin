@@ -6,7 +6,29 @@ import yaml
 from matplotlib import pyplot as plt
 import pandas as pd
 
+from keras.models import Sequential, load_model
+from keras.layers import Dense, Dropout, Conv1D, MaxPooling1D, Conv2D, MaxPooling2D, Flatten, LSTM, ConvLSTM2D, TimeDistributed
+from keras.utils import vis_utils
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+
+import tensorflow as tf
+
+from time import time
+
 np.set_printoptions(threshold=sys.maxsize)
+
+
+def save_history(model_history, dir_path):
+    # plot the training loss and accuracy
+    plt.style.use("ggplot")
+    n_epochs = len(model_history.epoch)
+    plt.figure()
+    plt.plot(np.arange(0, n_epochs), model_history.history["loss"], label="train_loss")
+    plt.plot(np.arange(0, n_epochs), model_history.history["val_loss"], label="val_loss")
+    plt.xlabel("Epoch #")
+    plt.ylabel("Loss/Accuracy")
+    plt.legend(loc="lower left")
+    plt.savefig(dir_path + '_history.png')
 
 
 def get_config_file():
@@ -37,24 +59,21 @@ def get_modeled_samples(samples_paths):
     frame = []
     buffer = []
     GAP = []
-    i = 0
-    buf = 20
+    num_sample = 0
 
     for p in samples_paths:
-        print(p)
+        i = 0
+        buf = 20
         sample = pd.read_csv(p)
         positions = sample.values.astype(np.float)
         frame.append(positions[:])
-        print(frame)
         for i in range(69):
             if buf <= 39:
-                print(i)
-                print(buf)
-                buffer.append(frame[0][i:buf])
-                GAP.append(frame[0][buf+29])
+                buffer.append(frame[num_sample][i:buf])
+                GAP.append(frame[num_sample][buf+29])
                 i += 1
                 buf += 1
-
+        num_sample += 1
 
     return np.array(frame), np.array(buffer), np.array(GAP)
 
@@ -93,7 +112,7 @@ class Net(object):
             self.output_shape = kwargs['output_shape']
 
     def train(self, n_epochs, batch_size, patience, root, data_train, data_val, batch_data, gauss_pixel, channels):
-        utils.check_dirs(root)
+        #utils.check_dirs(root)
 
         name = root + '/' + str(batch_size) + '_' + str(self.dropout) + '_' + self.activation + '_' + \
             self.loss + '_' + str(patience)
@@ -116,7 +135,7 @@ class Net(object):
             n_epochs = len(model_history.epoch)
 
         self.save_properties(patience, n_epochs, round(end_time-start_time, 2), name + '_properties')
-        utils.save_history(model_history, name)
+        save_history(model_history, name)
 
     def save_properties(self, patience, epochs, train_time, file_path):
         if self.framework == "keras":
@@ -196,20 +215,32 @@ if __name__ == '__main__':
     print(frames)
     print('20 entradas de buffer como entrada ---------------------------')
     print(trainX)
+    print(len(trainX))
     print('Salida: gap + 30 frames despues del ultimo del buffer ---------------------------')
     print(trainY)
-    #_, frames_val, valX, valY = frame_utils.read_frame_data(data_dir + 'val/', 'modeled_samples', gauss_pixel)
-    #train_data = (frames, trainX, trainY)
-    #print(train_data)
-    #val_data = (valX, valY)
-    #print(frames_val, val_data)
+    print(len(trainY))
+    train_data = (trainX, trainY)
+
+
+    frames_val, valX, valY = read_frame_data(data_dir + 'val/', 'modeled_samples', gauss_pixel)
+
+    val_data = (valX, valY)
+
+    print('\n')
+    print(valX)
+    print(len(valX))
+    print(valY)
+    print(len(valY))
 
     # Model settings
-    #in_dim = trainX.shape[1:]
-    #out_dim = np.prod(in_dim[1:])
-    #to_train_net = Net.Lstm(activation=activation, loss=loss, dropout=dropout,
-                                #drop_percentage=drop_percentage, input_shape=in_dim, output_shape=out_dim,
-                                #complexity=complexity, data_type="Frame", framework="keras")
+    in_dim = trainX.shape[1:]
+    out_dim = np.prod(in_dim[1:])
+    print(in_dim)
+    print(out_dim)
 
-    #print('Training')
-    #to_train_net.train(n_epochs, batch_size, patience, filename, train_data, val_data, batch_data, gauss_pixel, channels)
+    to_train_net = Lstm(activation=activation, loss=loss, dropout=dropout,
+                                drop_percentage=drop_percentage, input_shape=in_dim, output_shape=out_dim,
+                                complexity=complexity, data_type="Frame", framework="keras")
+
+    print('Training')
+    to_train_net.train(n_epochs, batch_size, patience, filename, train_data, val_data, batch_data, gauss_pixel, channels)
