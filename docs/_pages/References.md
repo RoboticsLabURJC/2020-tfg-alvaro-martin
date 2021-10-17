@@ -8,7 +8,7 @@ sidebar:
 
 ## TFGs
 
-  -[Pablo Moreno's TFM](https://gsyc.urjc.es/jmplaza/students/tfm-kibotics-torneos-pablo_moreno-2020.pdf).
+  -[Nuria Oyaga's TFM](https://github.com/RoboticsLabURJC/2017-tfm-nuria-oyaga).
 
 
 ## Programs
@@ -18,4 +18,3 @@ sidebar:
   -[Robotics Academy](https://jderobot.github.io/RoboticsAcademy/)
 
   -[Unibotics](https://unibotics.org/)
-  

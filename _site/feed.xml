@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-10-17T19:56:20+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">TFG RRNN Blog</title><subtitle>Programming Robot Intelligence</subtitle><author><name>Álvaro Martín Menacho</name></author><entry><title type="html">Week 14. TURN Server</title><link href="http://localhost:4000/turn%20protocol/Week-14/" rel="alternate" type="text/html" title="Week 14. TURN Server" /><published>2021-09-27T00:00:00+02:00</published><updated>2021-09-27T00:00:00+02:00</updated><id>http://localhost:4000/turn%20protocol/Week-14</id><content type="html" xml:base="http://localhost:4000/turn%20protocol/Week-14/">&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;This week I’ve been a bit more busy with the course beginning, but I’ve made some updates. While testing the Follow Line Game Synchronous on different subnets, appeared 
+an issue, wich is that if the users are behind some types of NATs, the connection with only a STUN server won’t work. In order to solve this problem I read in many articles
+that in this cases a TURN server is needed.&lt;/p&gt;
+
+&lt;p&gt;Before deploying a TURN server in our test machine, I started by reading how the STUN protocol works and how a client communicates with the server (&lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc5766&quot;&gt;rfc5766&lt;/a&gt;).
+When I knew how the protocol worked, I started to deploy the server on our machine using &lt;a href=&quot;https://github.com/coturn/coturn&quot;&gt;coturn&lt;/a&gt;, an open-source TURN server developed in C Languaje.
+I got stuck many times while &lt;a href=&quot;https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/&quot;&gt;testing&lt;/a&gt; the server was working fine, but finally I solved every issue. This is the configuration I used to deploy the server in a Docker Container:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;host coturn/coturn &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--log-file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;stdout &lt;span class=&quot;nt&quot;&gt;--listening-port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;20500 &lt;span class=&quot;nt&quot;&gt;--listening-ip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;212.128.254.32 &lt;span class=&quot;nt&quot;&gt;--relay-ip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;212.128.254.32 &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;danielhervas:danielhervas &lt;span class=&quot;nt&quot;&gt;--lt-cred-mech&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--verbose&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--realm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;test.unibotics.org
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Turn Protocol" /><category term="logbook" /><category term="Turn" /><category term="RoboticsAcademy" /><summary type="html">drone cat mouse</summary></entry><entry><title type="html">Week 13. Follow Line Game and Drone Cat Mouse tests</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Week-13/" rel="alternate" type="text/html" title="Week 13. Follow Line Game and Drone Cat Mouse tests" /><published>2021-09-20T00:00:00+02:00</published><updated>2021-09-20T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Week-13</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Week-13/">&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;On this week I’ve refactored Drone Cat Mouse game on RoboticsAcademy. Also tested it on Unibotics and works fine.
+Also, I’ve tested Follow Line Game Async on Unibotics test deployment and it worked correctly.
+So now, every project is in the protuction repository.&lt;/p&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="RoboticsAcademy" /><summary type="html">drone cat mouse</summary></entry><entry><title type="html">Week 12. Drone Cat Mouse Game.</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Week-12/" rel="alternate" type="text/html" title="Week 12. Drone Cat Mouse Game." /><published>2021-09-14T00:00:00+02:00</published><updated>2021-09-14T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Week-12</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Week-12/">&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;The main task I’ve been doing this week is to add a new game for Unibotics called Drone Cat Mouse Game. Also, I’ve worked on the asynchronous follow line game adding the 
+missing difficulty (Medium) to the difficulty selector. I’ve created the users bot1, bot2 and bot3 wich will contain the code for each difficulty of a game.
+Looking at follow line game synchronous I’ve researched about WebRTC and concluded on that we need a TURN server in order to bypass the NAT connection issues.&lt;/p&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="RoboticsAcademy" /><summary type="html">drone cat mouse</summary></entry><entry><title type="html">Week 11. Vacuum Cleaner evaluator optimised and Sync Follow Lime Game Demo.</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Week-11/" rel="alternate" type="text/html" title="Week 11. Vacuum Cleaner evaluator optimised and Sync Follow Lime Game Demo." /><published>2021-09-04T00:00:00+02:00</published><updated>2021-09-04T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Week-11</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Week-11/">&lt;h1 id=&quot;week-11-vacuum-cleaner-evaluator-optimised-and-sync-follow-lime-game-demo&quot;&gt;Week 11. Vacuum Cleaner evaluator optimised and Sync Follow Lime Game Demo.&lt;/h1&gt;
+
+&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;This week I have worked on optimizing the Vacuum Cleaner game evaluator. What I have done is to use a matrix array for the checkpoints instead of 
+using just a ine dimension array for searching the closer cell to the vacuum. As the canvas height and width are the dimensions of the circuit, with the coordinates given to the &lt;em&gt;fillCell&lt;/em&gt; function, they are proccessed in order to get a floored integer corresponding to the coordinates of the closer 
+cell to the vacuum.&lt;/p&gt;
+
+&lt;p&gt;Also, I have recorded a video demo for the synchronous follow line game. Here it is:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/ejctBqdSErA&quot;&gt;&lt;img src=&quot;https://img.youtube.com/vi/ejctBqdSErA/0.jpg&quot; alt=&quot;Follow Line Game Synchronous Demo&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="RoboticsAcademy" /><summary type="html">syncronous exercise</summary></entry><entry><title type="html">Week 10. Synchronous Follow Line Game Update.</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Week-10/" rel="alternate" type="text/html" title="Week 10. Synchronous Follow Line Game Update." /><published>2021-08-29T00:00:00+02:00</published><updated>2021-08-29T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Week-10</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Week-10/">&lt;h1 id=&quot;week-10-synchronous-follow-line-game-update&quot;&gt;Week 10. Synchronous Follow Line Game Update.&lt;/h1&gt;
+
+&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;On this week I’ve worked on many things, first of all, I’ve recorder a video for the Follow Line Game Asynchronous exercise, and with this, 
+I’ve found some bugs and fixed them. Here is the Follow Line Game Aynchronous Demo:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=cdpJvTWEBHU&quot;&gt;&lt;img src=&quot;https://img.youtube.com/vi/cdpJvTWEBHU/0.jpg&quot; alt=&quot;Follow Line Game Aynchronous Demo&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After fixing every existent bug, I started working on the Synchronous Follow Line Game, and I made many changes to it, these are the follwing:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Birds Eye vía DataChannels to the guest&lt;/li&gt;
+  &lt;li&gt;Implemented data channels in order to sync both browsers&lt;/li&gt;
+  &lt;li&gt;One template based exercise, now the exercise will use only one html and not a different one for each peer (Host and Guest)&lt;/li&gt;
+  &lt;li&gt;The connection and code status now is stored in the front end&lt;/li&gt;
+  &lt;li&gt;Deleted guest.html template&lt;/li&gt;
+  &lt;li&gt;Now WebRTC files are in &lt;strong&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unibotics-exercises/static/assets/exercises/follow_line_game_sync/js/webrtc&lt;/code&gt;&lt;/strong&gt; directory and not in the webserver&lt;/li&gt;
+  &lt;li&gt;The code status is renamed for both users, now is displayed as “Host Code” and “Guest Code”. Also, it has been moved on the template to the control navbar&lt;/li&gt;
+  &lt;li&gt;No button needed to see the chat, now the user will be able to see the chat under the text editor. A button will be implemented in order to hide the code editor&lt;/li&gt;
+  &lt;li&gt;Navbar buttons that are not usefull on this game mode are deleted&lt;/li&gt;
+  &lt;li&gt;Fix distance evaluator bug&lt;/li&gt;
+  &lt;li&gt;On birds-eye canvas, now the guest player username is displayed on the top of the car beacon&lt;/li&gt;
+  &lt;li&gt;noVNC stream now is cropped by the host before being streamed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Also, here are some screenshots for the host and the guest interfaces.&lt;/p&gt;
+
+&lt;figure class=&quot;half &quot;&gt;
+  
+    
+      &lt;a href=&quot;/assets/images/hostsync.png&quot;&gt;
+        &lt;img src=&quot;/assets/images/hostsync.png&quot; alt=&quot;Host POV&quot; /&gt;
+      &lt;/a&gt;
+    
+  
+    
+      &lt;a href=&quot;/assets/images/guestsync.png&quot;&gt;
+        &lt;img src=&quot;/assets/images/guestsync.png&quot; alt=&quot;Guest POV&quot; /&gt;
+      &lt;/a&gt;
+    
+  
+  
+    &lt;figcaption&gt;
+&lt;/figcaption&gt;
+  
+&lt;/figure&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="RoboticsAcademy" /><summary type="html">syncronous exercise</summary></entry><entry><title type="html">Weeks 7 to 9. Follow Line Game Sync Demo.</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Weeks-7-to-9/" rel="alternate" type="text/html" title="Weeks 7 to 9. Follow Line Game Sync Demo." /><published>2021-08-19T00:00:00+02:00</published><updated>2021-08-19T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Weeks-7-to-9</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Weeks-7-to-9/">&lt;h1 id=&quot;weeks-7-to-9-follow-line-game-demo&quot;&gt;Weeks 7 to 9. Follow Line Game Demo.&lt;/h1&gt;
+
+&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;On these weeks I’ve been working mostly on having a solid prototype for the Synchronous Follow Line Game. For the most of the time, I’ve worked on the server side, designing the Server Socket Layer that is the one that manages the signaling beetween the users for stablishing the DataChannel that will be used by both users in order to send GUI information, session closing and streamm restarts (RoomConsumer). Also, the server handles the signaling for the WebRTC stream, that needs a different consumer (StreamConsumer) this one won’t be using rooms so all of this functionallity implemented for RoomConsumer is gone. Here is a visual example:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/pLOXuRsD9K0&quot;&gt;&lt;img src=&quot;https://img.youtube.com/vi/pLOXuRsD9K0/0.jpg&quot; alt=&quot;Follow Line Game Sync Demo&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Here is an schema of how the system works:&lt;/p&gt;
+
+&lt;figure class=&quot; &quot;&gt;
+  
+    
+      &lt;a href=&quot;/assets/images/diagrama_sincrono.png&quot;&gt;
+        &lt;img src=&quot;/assets/images/diagrama_sincrono.png&quot; alt=&quot;working schema&quot; /&gt;
+      &lt;/a&gt;
+    
+  
+  
+    &lt;figcaption&gt;
+&lt;/figcaption&gt;
+  
+&lt;/figure&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="RoboticsAcademy" /><summary type="html">syncronous exercise</summary></entry><entry><title type="html">Week 6. Teleoperator mode and Circuit Selector</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Week-6/" rel="alternate" type="text/html" title="Week 6. Teleoperator mode and Circuit Selector" /><published>2021-07-23T00:00:00+02:00</published><updated>2021-07-23T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Week-6</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Week-6/">&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;This week I have worked on creating a Teleoperator mode and a Circuit Selector for the follow_line exercise of Robotics Academy. It has been a really tough work but finally 
+its done.&lt;/p&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="week 6" /><category term="RoboticsAcademy" /><summary type="html">syncronous exercise</summary></entry><entry><title type="html">Week 5. Working with new circuits</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Week-5/" rel="alternate" type="text/html" title="Week 5. Working with new circuits" /><published>2021-07-18T00:00:00+02:00</published><updated>2021-07-18T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Week-5</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Week-5/">&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;This week I have worked on pulling my content to the test.unibotics.org machine on the urjc labs, also I have implemented a new exercise prototype, in this one the user is 
+able to select a circuit to run the code in. Finally, for this circuits I have implemented a system that, from the manager-3.1.py when the exercise is launched, an argument is passed
+to the host GUI wich is an string with the circuit name, in order that map.py knows wich scale will be applied to the coordinate conversion. Here is a demo of the multiple circuit selector:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=ObXV41_9Slw&quot;&gt;&lt;img src=&quot;https://img.youtube.com/vi/ObXV41_9Slw/0.jpg&quot; alt=&quot;Circuit selector demo&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="WebRTC" /><category term="week 5" /><summary type="html">syncronous exercise</summary></entry><entry><title type="html">Week 4. First prototype of WebRTC Exercise</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Week-4/" rel="alternate" type="text/html" title="Week 4. First prototype of WebRTC Exercise" /><published>2021-07-05T00:00:00+02:00</published><updated>2021-07-05T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Week-4</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Week-4/">&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;On this week I’ve worked on having two working brains, one for each car (Host and Guest). Now we are able to run code on both of the cars.&lt;/p&gt;
+
+&lt;p&gt;Also, I’ve added the bird-eye for the Guest car, so now we can see both of the cars on the canvas birds eye map.&lt;/p&gt;
+
+&lt;p&gt;The last I got to say is that I’ve developed a library that allows to calculate the distance between the two cars using an array of checkpoints along the circuit.
+Here is a visual example for the final template:&lt;/p&gt;
+
+&lt;figure class=&quot; &quot;&gt;
+  
+    
+      &lt;a href=&quot;/assets/images/final_template.png&quot;&gt;
+        &lt;img src=&quot;/assets/images/final_template.png&quot; alt=&quot;final template&quot; /&gt;
+      &lt;/a&gt;
+    
+  
+  
+    &lt;figcaption&gt;Final template for WebRTC-prototype
+&lt;/figcaption&gt;
+  
+&lt;/figure&gt;
+
+&lt;p&gt;Here is a video demonstration for the WebRTC-prototype exercise:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=oG6KbqC_fkY&quot;&gt;&lt;img src=&quot;https://img.youtube.com/vi/oG6KbqC_fkY/0.jpg&quot; alt=&quot;WebRTC-prototype exercise&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="WebRTC" /><category term="week 3" /><summary type="html">syncronous exercise</summary></entry><entry><title type="html">Week 3. Working with the first prototype for syncronous exercise</title><link href="http://localhost:4000/django%20channels/websockets/webrtc/Week-3/" rel="alternate" type="text/html" title="Week 3. Working with the first prototype for syncronous exercise" /><published>2021-07-04T00:00:00+02:00</published><updated>2021-07-04T00:00:00+02:00</updated><id>http://localhost:4000/django%20channels/websockets/webrtc/Week-3</id><content type="html" xml:base="http://localhost:4000/django%20channels/websockets/webrtc/Week-3/">&lt;h1 id=&quot;week-3-webrtc-prototype&quot;&gt;Week 3. webRTC-prototype&lt;/h1&gt;
+
+&lt;p&gt;Hello all!&lt;/p&gt;
+
+&lt;p&gt;On this week I have created a new exercise named webRTC-prototype. For this exercise, I haver designed two
+ templates (one for the host and the other one for the guest).&lt;/p&gt;
+
+&lt;p&gt;On the host side, I’ve addapted my noVNC streaming code in order the host is able to stream it’s Gazebo 
+screen to its friend.&lt;/p&gt;
+
+&lt;p&gt;For the guest side, the template I’ve designed doesn’t contain any gazebo controls, for this first version 
+only the host willl be able to control the exercution of the codes.&lt;/p&gt;
+
+&lt;p&gt;Finally, I’ve been studying the docker-side code and I’ve found the path for the f1 model that is 
+displayed in Gazebo scenario. With this, I cloned the f1 model, and, used blender in order to change
+ the car color. The f1_guest is green color and also its script is publishing in other ROS topics starting 
+by “F1ROSGuest/”.&lt;/p&gt;
+
+&lt;p&gt;Here are some screenshots of the templates for the new exercise:&lt;/p&gt;
+
+&lt;figure class=&quot;half &quot;&gt;
+  
+    
+      &lt;a href=&quot;/assets/images/host.png&quot;&gt;
+        &lt;img src=&quot;/assets/images/host.png&quot; alt=&quot;host screenshot&quot; /&gt;
+      &lt;/a&gt;
+    
+  
+    
+      &lt;a href=&quot;/assets/images/guest.png&quot;&gt;
+        &lt;img src=&quot;/assets/images/guest.png&quot; alt=&quot;guest screenshot&quot; /&gt;
+      &lt;/a&gt;
+    
+  
+  
+    &lt;figcaption&gt;
+&lt;/figcaption&gt;
+  
+&lt;/figure&gt;</content><author><name>Daniel Hervás Rodao</name></author><category term="Django Channels" /><category term="WebSockets" /><category term="WebRTC" /><category term="logbook" /><category term="Django" /><category term="WebSockets" /><category term="WebRTC" /><category term="week 3" /><summary type="html">syncronous exercise</summary></entry></feed>

@@ -7,19 +7,15 @@ header:
   actions:
     #- label: "<i class='fas fa-download'></i> Install now"
     #  url: "/installation/"
-excerpt: 
-  Daniel Hervás Rodao
+excerpt:
+  Álvaro Martín Menacho
 
 ---
 
 {% include feature_row %}
 
-Hello all!
-
-My name is Daniel Hervás Rodao and this will be the blog where I will post updates from my TFG every week.
-I will try my best for the quality of my posts.
+My name is Álvaro Martín Menacho and this will be the blog where I will post updates from my TFG every week.
 
 TFG Tutor: [Jose Maria Cañas](https://gsyc.urjc.es/jmplaza/)
 
-TFG Co-Tutor: [David Roldán Álvarez](https://gestion2.urjc.es/pdi/ver/david.roldan)
-
+TFG Tutor: [Inmaculada Mora Jiménez](https://gestion2.urjc.es/pdi/ver/inmaculada.mora)
