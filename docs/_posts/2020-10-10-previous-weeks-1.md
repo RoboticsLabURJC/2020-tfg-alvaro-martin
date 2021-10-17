@@ -1,6 +1,6 @@
 ---
-title: "Previous weeks - "
-excerpt: "A new degree of freedom is added to the linear motion."
+title: "Previous weeks - Getting the basics"
+excerpt: "Learning basics and generating the firsts datadhets"
 
 sidebar:
   nav: "docs"
@@ -15,7 +15,7 @@ tags:
 - studying
 - training
 
-author: NuriaOF
+author: Álvaro Martín Menacho
 pinned: false
 
 
