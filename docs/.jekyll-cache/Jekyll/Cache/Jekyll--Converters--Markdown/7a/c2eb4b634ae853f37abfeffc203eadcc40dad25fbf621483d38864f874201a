@@ -1,0 +1,25 @@
+I"�<h1 id="weeks-7-to-9-follow-line-game-demo">Weeks 7 to 9. Follow Line Game Demo.</h1>
+
+<p>Hello all!</p>
+
+<p>On these weeks I’ve been working mostly on having a solid prototype for the Synchronous Follow Line Game. For the most of the time, I’ve worked on the server side, designing the Server Socket Layer that is the one that manages the signaling beetween the users for stablishing the DataChannel that will be used by both users in order to send GUI information, session closing and streamm restarts (RoomConsumer). Also, the server handles the signaling for the WebRTC stream, that needs a different consumer (StreamConsumer) this one won’t be using rooms so all of this functionallity implemented for RoomConsumer is gone. Here is a visual example:</p>
+
+<p><a href="https://youtu.be/pLOXuRsD9K0"><img src="https://img.youtube.com/vi/pLOXuRsD9K0/0.jpg" alt="Follow Line Game Sync Demo" /></a></p>
+
+<p>Here is an schema of how the system works:</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/diagrama_sincrono.png">
+        <img src="/assets/images/diagrama_sincrono.png" alt="working schema" />
+      </a>
+    
+  
+  
+    <figcaption>
+</figcaption>
+  
+</figure>
+
+:ET

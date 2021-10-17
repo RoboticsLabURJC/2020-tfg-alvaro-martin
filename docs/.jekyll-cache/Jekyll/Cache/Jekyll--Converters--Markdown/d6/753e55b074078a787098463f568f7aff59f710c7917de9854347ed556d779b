@@ -1,0 +1,27 @@
+I"�<p>Hello all!</p>
+
+<p>On this week I’ve worked on having two working brains, one for each car (Host and Guest). Now we are able to run code on both of the cars.</p>
+
+<p>Also, I’ve added the bird-eye for the Guest car, so now we can see both of the cars on the canvas birds eye map.</p>
+
+<p>The last I got to say is that I’ve developed a library that allows to calculate the distance between the two cars using an array of checkpoints along the circuit.
+Here is a visual example for the final template:</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/final_template.png">
+        <img src="/assets/images/final_template.png" alt="final template" />
+      </a>
+    
+  
+  
+    <figcaption>Final template for WebRTC-prototype
+</figcaption>
+  
+</figure>
+
+<p>Here is a video demonstration for the WebRTC-prototype exercise:</p>
+
+<p><a href="https://www.youtube.com/watch?v=oG6KbqC_fkY"><img src="https://img.youtube.com/vi/oG6KbqC_fkY/0.jpg" alt="WebRTC-prototype exercise" /></a></p>
+:ET

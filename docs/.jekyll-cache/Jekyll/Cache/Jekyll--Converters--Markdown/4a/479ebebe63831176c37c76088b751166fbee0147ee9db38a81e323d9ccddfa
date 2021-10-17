@@ -1,0 +1,12 @@
+I"ç<h1 id="week-11-vacuum-cleaner-evaluator-optimised-and-sync-follow-lime-game-demo">Week 11. Vacuum Cleaner evaluator optimised and Sync Follow Lime Game Demo.</h1>
+
+<p>Hello all!</p>
+
+<p>This week I have worked on optimizing the Vacuum Cleaner game evaluator. What I have done is to use a matrix array for the checkpoints instead of 
+using just a ine dimension array for searching the closer cell to the vacuum. As the canvas height and width are the dimensions of the circuit, with the coordinates given to the <em>fillCell</em> function, they are proccessed in order to get a floored integer corresponding to the coordinates of the closer 
+cell to the vacuum.</p>
+
+<p>Also, I have recorded a video demo for the synchronous follow line game. Here it is:</p>
+
+<p><a href="https://youtu.be/ejctBqdSErA"><img src="https://img.youtube.com/vi/ejctBqdSErA/0.jpg" alt="Follow Line Game Synchronous Demo" /></a></p>
+:ET

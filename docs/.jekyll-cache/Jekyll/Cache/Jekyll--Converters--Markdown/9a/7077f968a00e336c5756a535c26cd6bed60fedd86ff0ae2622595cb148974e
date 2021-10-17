@@ -1,0 +1,49 @@
+I"%	<h1 id="week-10-synchronous-follow-line-game-update">Week 10. Synchronous Follow Line Game Update.</h1>
+
+<p>Hello all!</p>
+
+<p>On this week I’ve worked on many things, first of all, I’ve recorder a video for the Follow Line Game Asynchronous exercise, and with this, 
+I’ve found some bugs and fixed them. Here is the Follow Line Game Aynchronous Demo:</p>
+
+<p><a href="https://www.youtube.com/watch?v=cdpJvTWEBHU"><img src="https://img.youtube.com/vi/cdpJvTWEBHU/0.jpg" alt="Follow Line Game Aynchronous Demo" /></a></p>
+
+<p>After fixing every existent bug, I started working on the Synchronous Follow Line Game, and I made many changes to it, these are the follwing:</p>
+
+<ul>
+  <li>Birds Eye vía DataChannels to the guest</li>
+  <li>Implemented data channels in order to sync both browsers</li>
+  <li>One template based exercise, now the exercise will use only one html and not a different one for each peer (Host and Guest)</li>
+  <li>The connection and code status now is stored in the front end</li>
+  <li>Deleted guest.html template</li>
+  <li>Now WebRTC files are in <strong><code class="language-plaintext highlighter-rouge">unibotics-exercises/static/assets/exercises/follow_line_game_sync/js/webrtc</code></strong> directory and not in the webserver</li>
+  <li>The code status is renamed for both users, now is displayed as “Host Code” and “Guest Code”. Also, it has been moved on the template to the control navbar</li>
+  <li>No button needed to see the chat, now the user will be able to see the chat under the text editor. A button will be implemented in order to hide the code editor</li>
+  <li>Navbar buttons that are not usefull on this game mode are deleted</li>
+  <li>Fix distance evaluator bug</li>
+  <li>On birds-eye canvas, now the guest player username is displayed on the top of the car beacon</li>
+  <li>noVNC stream now is cropped by the host before being streamed</li>
+</ul>
+
+<p>Also, here are some screenshots for the host and the guest interfaces.</p>
+
+<figure class="half ">
+  
+    
+      <a href="/assets/images/hostsync.png">
+        <img src="/assets/images/hostsync.png" alt="Host POV" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/guestsync.png">
+        <img src="/assets/images/guestsync.png" alt="Guest POV" />
+      </a>
+    
+  
+  
+    <figcaption>
+</figcaption>
+  
+</figure>
+
+:ET

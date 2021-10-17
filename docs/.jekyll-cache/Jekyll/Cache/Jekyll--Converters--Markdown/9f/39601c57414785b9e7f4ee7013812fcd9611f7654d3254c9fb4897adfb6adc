@@ -1,0 +1,22 @@
+I"<p>Hello all!</p>
+
+<p>On this week I have been using the web version of the Follow Line exercise, it has been fun, I have addapted to the new platform the code that I implemented last year 
+on Robotics course. Here is a visual example of my version:</p>
+
+<p><a href="https://www.youtube.com/watch?v=3Naf1Z5AvUM"><img src="https://img.youtube.com/vi/3Naf1Z5AvUM/0.jpg" alt="Visual example" /></a></p>
+
+<p>In addition, I’ve also researched about Django framework for python, I have been following
+the 3 first tutorials from the official documentation. I’ve learnt the following:</p>
+<ul>
+  <li>Request and Responses</li>
+  <li>Models and the admin site</li>
+  <li>Views and templates</li>
+</ul>
+
+<p>So summing up, what I’ve done during this week is the following:</p>
+<ul>
+  <li>I have been been using JdeRobot framework as an user, and it works really good.</li>
+  <li>Addapted my Follow Line code to this version, and tested the dockericed exercise, it works great!</li>
+  <li>Researched about Django framework</li>
+</ul>
+:ET

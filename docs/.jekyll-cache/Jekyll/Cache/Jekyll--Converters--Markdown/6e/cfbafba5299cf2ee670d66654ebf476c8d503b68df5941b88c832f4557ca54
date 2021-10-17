@@ -1,0 +1,12 @@
+I"<p>Hello all!</p>
+
+<p>This week I have been researching about Django Channels, WebSockets and WebRTC.
+With all of this, I have implemented some projects:</p>
+<ul>
+  <li>Text Chat with Django Channels</li>
+  <li>VideoChat with Django Channels (text and signaling server) + WebRTC</li>
+  <li>VideoChat with Django Channels + WebRTC streaming noVNC canvas</li>
+</ul>
+
+<p><a href="https://www.youtube.com/watch?v=ORyWEPVyGJo"><img src="https://img.youtube.com/vi/ORyWEPVyGJo/0.jpg" alt="noVNC Stream via WebRTC" /></a></p>
+:ET

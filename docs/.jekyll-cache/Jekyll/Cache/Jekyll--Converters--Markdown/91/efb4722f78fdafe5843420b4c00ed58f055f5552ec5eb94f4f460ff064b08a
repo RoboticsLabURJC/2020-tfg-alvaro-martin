@@ -1,0 +1,8 @@
+I"Õ<p>Hello all!</p>
+
+<p>This week I have worked on pulling my content to the test.unibotics.org machine on the urjc labs, also I have implemented a new exercise prototype, in this one the user is 
+able to select a circuit to run the code in. Finally, for this circuits I have implemented a system that, from the manager-3.1.py when the exercise is launched, an argument is passed
+to the host GUI wich is an string with the circuit name, in order that map.py knows wich scale will be applied to the coordinate conversion. Here is a demo of the multiple circuit selector:</p>
+
+<p><a href="https://www.youtube.com/watch?v=ObXV41_9Slw"><img src="https://img.youtube.com/vi/ObXV41_9Slw/0.jpg" alt="Circuit selector demo" /></a></p>
+:ET

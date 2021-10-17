@@ -1,0 +1,41 @@
+I"B<h1 id="week-3-webrtc-prototype">Week 3. webRTC-prototype</h1>
+
+<p>Hello all!</p>
+
+<p>On this week I have created a new exercise named webRTC-prototype. For this exercise, I haver designed two
+ templates (one for the host and the other one for the guest).</p>
+
+<p>On the host side, I’ve addapted my noVNC streaming code in order the host is able to stream it’s Gazebo 
+screen to its friend.</p>
+
+<p>For the guest side, the template I’ve designed doesn’t contain any gazebo controls, for this first version 
+only the host willl be able to control the exercution of the codes.</p>
+
+<p>Finally, I’ve been studying the docker-side code and I’ve found the path for the f1 model that is 
+displayed in Gazebo scenario. With this, I cloned the f1 model, and, used blender in order to change
+ the car color. The f1_guest is green color and also its script is publishing in other ROS topics starting 
+by “F1ROSGuest/”.</p>
+
+<p>Here are some screenshots of the templates for the new exercise:</p>
+
+<figure class="half ">
+  
+    
+      <a href="/assets/images/host.png">
+        <img src="/assets/images/host.png" alt="host screenshot" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/guest.png">
+        <img src="/assets/images/guest.png" alt="guest screenshot" />
+      </a>
+    
+  
+  
+    <figcaption>
+</figcaption>
+  
+</figure>
+
+:ET
