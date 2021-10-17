@@ -24,10 +24,10 @@ pinned: false
 
 Hello all!
 
-This is my first post on this logbook, here I will be posting every
+This is my first post on this logbook, here I will be posting every 
 progress I make on my TFG.
 
 On this week I will be doing the following:
 - First of all, realise how Github Pages found.
-- Read the TFM of Nuria Oyaga.
+- Read the TFM of Pablo Moreno.
 - Reasearch about Robotics Academy exercises.
