@@ -16,12 +16,12 @@ minimal_mistakes_skin    : "neon"
 
 # Site Settings
 #locale                   : "en-US"
-title                    : "TFG Blog"
+title                    : "TFG RRNN Blog"
 title_separator          : "-"
 subtitle                 : Unibotics Platform Gamification
-name                     : "Daniel Hervás"
+name                     : "Álvaro Martín"
 description              : "Programming Robot Intelligence"
-url                      : http://jderobot.github.io
+url                      : http://roboticslaburjc.github.io/2020-tfg-alvaro-martin/
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : JdeRobot
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
@@ -122,15 +122,15 @@ analytics:
 # PROFILE
 # Site Author
 author:
-  name             : "Daniel Hervás Rodao"
-  avatar           : "/assets/images/profile.png"
-  bio              : "Telematics Engineering Student"
-  location         : "Móstoles, Madrid"
+  name             : "Álvaro Martín Menacho"
+  avatar           : "/assets/images/FOTO_CV.png"
+  bio              : "Audiovisual and Multimedia Engineering"
+  location         : "Álcala de Henares, Madrid"
  # email            : d.hervas.2017@alumnos.urjc.es
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: "mailto: d.hervas.2017@alumnos.urjc"
+      url: "mailto: a.martinmena@alumnos.urjc.es"
    # - label: "About Me"
    #   icon: "fas fa-fw fa-link"
     #  url: "dhrodao.github.io"
@@ -139,10 +139,28 @@ author:
     #  url: "https://twitter.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/dhrodao"
+      url: "https://github.com/Martinnello"
     #- label: "Youtube"
     #  icon: "fab fa-fw fa-youtube"
     #  url: "https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ"
+
+
+
+# Site Footer
+footer:
+links:
+  - label: "Twitter"
+    icon: "fab fa-fw fa-twitter-square"
+    url: "https://twitter.com/roboticslaburjc"
+  - label: "GitHub"
+    icon: "fab fa-fw fa-github"
+    url: "https://github.com/RoboticsLabURJC"
+  #- label: "GitLab"
+  #  icon: "fab fa-fw fa-gitlab"
+  #  url:
+  - label: "Youtube"
+    icon: "fab fa-fw fa-youtube"
+    url: "https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ"
 
 
 #################################################################################
@@ -339,4 +357,3 @@ defaults:
       comments: true
       share: true
       related: true
-
