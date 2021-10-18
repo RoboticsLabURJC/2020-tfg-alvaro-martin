@@ -1,5 +1,5 @@
 ---
-title: "Previous weeks - Testing the model"
+title: "Previous weeks - Testing RAW models"
 excerpt: "Getting results with max relative mean error"
 
 sidebar:
@@ -26,8 +26,6 @@ pinned: false
 This week I was testing the training models with raw samples instead of modeled.
 
 These are the results I obteined:
-
-## Testing networks with MODELED samples
 
 {% include figure image_path="/assets/images/logbook/previous_weeks_5/Resultados.png" alt="Resultados" %}
 

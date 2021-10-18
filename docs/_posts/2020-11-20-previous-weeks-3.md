@@ -1,5 +1,5 @@
 ---
-title: "Previous weeks - Testing the model"
+title: "Previous weeks - Testing MODELED samples"
 excerpt: "Getting results with max relative mean error"
 
 sidebar:
