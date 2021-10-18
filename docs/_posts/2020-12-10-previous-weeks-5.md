@@ -37,7 +37,7 @@ These are the results I obteined:
 
 ## convLSTM 1 with 1000 samples Linear 1DOF
 
-{% include figure image_path="/assets/images/logbook/previous_weeks_5/convLSTM1_1000_linear.png" alt="convLSTM1_1000_linear" %}
+{% include figure image_path="/assets/images/logbook/previous_weeks_5/convLSTM1_1000_linear_1DOF.png" alt="convLSTM1_1000_linear_1DOF" %}
 
 ## convLSTM 1 with 1000 samples Linear 2DOF
 
