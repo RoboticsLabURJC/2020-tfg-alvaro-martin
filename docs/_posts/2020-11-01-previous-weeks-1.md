@@ -90,4 +90,4 @@ split:
   fraction_validation: 0.1
 
 
-# The standar of datashet I have been using is 10000 samples raw and 20000 samples for modeled and 10000 for raw images
+## The standar of datashet I have been using is 10000 samples raw and 20000 samples for modeled and 10000 for raw images

@@ -21,7 +21,7 @@ pinned: false
 
 ---
 
-## New data
+## Training Networks
 
 Now that we have the proper datashets created to train different models of Neural Networks with Deep Learning is time to check if the conclusions made by Nuria are the same with my models. I keeped the models which give her the least mean realative error after making the test.
 
@@ -29,7 +29,7 @@ For training the network I have been using the scripts main_train.py and net_tra
 
 As you can see the code is very similar to the generator script, where you can chenge some basics like:
  - the complexity of the model (simple, complex, convLSTM, complex_convLSTM)
- - tyoe of Net (Recurrent or Non recurrent), the activation function which decides, whether a neuron should be activated or not by calculating weighted sum and further adding bias with it
+ - type of Net (Recurrent or Non recurrent), the activation function which decides, whether a neuron should be activated or not by calculating weighted sum and further adding bias with it
  - loss function (generate predictions, compare them with the actual values and then compute what is known as a loss, it has to be as low as possible)
  - batch data: taking data by groups, for large datashets
  - number of epochs
@@ -46,7 +46,7 @@ complexity: complex
 
 ### Root to save the model
 root:  /Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/
-###root:  C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Models/
+### root:  C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Models/
 
 ### Type of the net to train (NoRec, Rec)
 net_type: Rec
@@ -101,13 +101,13 @@ All the training models are located in [link](https://github.com/RoboticsLabURJC
 
 ## LSTM1
 
-{% include figure image_path="/assets/images/logbook/previous_weeks_2/Net1.png" alt="Net1" %}
+{% include figure image_path="/assets/images/logbook/previous_weeks_2/NET1.png" alt="NET1" %}
 
 {% include figure image_path="/assets/images/logbook/previous_weeks_2/Resultados_LSTM1.png" alt="Resultados_LSTM1" %}
 
 ## LSTM4
 
-{% include figure image_path="/assets/images/logbook/previous_weeks_2/Net4.png" alt="Net4" %}
+{% include figure image_path="/assets/images/logbook/previous_weeks_2/NET4.png" alt="NET4" %}
 
 {% include figure image_path="/assets/images/logbook/previous_weeks_2/Resultados_LSTM4.png" alt="Resultados_LSTM4" %}
 
