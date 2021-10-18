@@ -24,7 +24,6 @@ pinned: false
 ## Getting the right models
 
 
-
 After the productive meeting with Nuria I managed to obtain my own Neural Network models with LSTM1 and LSTM4 for the hole week I have been training models in order to use them in the next steps, use the prediction with the images captures by a camera.
 For now, I only have been training with modeled samples datashet.
 
