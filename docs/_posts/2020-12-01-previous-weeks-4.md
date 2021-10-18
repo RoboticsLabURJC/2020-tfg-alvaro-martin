@@ -30,6 +30,8 @@ For now, I only have been training with modeled samples datashet.
 
 These are the results I obteined:
 
+## Testing networks with MODELED samples
+
 {% include figure image_path="/assets/images/logbook/previous_weeks_4/Resultados.png" alt="Resultados" %}
 
 I continue the training of different networks with the generated data.
