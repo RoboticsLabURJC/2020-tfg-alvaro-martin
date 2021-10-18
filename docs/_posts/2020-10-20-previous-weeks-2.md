@@ -1,6 +1,6 @@
 ---
-title: "Previous weeks - Change in initial height"
-excerpt: "Linear motion is further complicated by letting the point start at a random height."
+title: "Previous weeks - Training the models"
+excerpt: "With generated datashet and getting familiarized with the networks"
 
 sidebar:
   nav: "docs"
@@ -15,32 +15,103 @@ tags:
 - studying
 - training
 
-author: NuriaOF
+author: Álvaro Martín Menacho
 pinned: false
 
 
 ---
 
 ## New data
-Since we have obtained a good result with the frames that include a linear motion we proceed to increase a degree of freedom in this type of data letting the point start at a random height. In the following [link](https://roboticslaburjc.github.io/2017-tfm-nuria-oyaga/previous%20work/datasets/) you can find a description of this new type of images.
 
-## Non Recurrent Neural Networks 
-I used the same structure that in the previous training
-{% include figure image_path="/assets/images/logbook/media/Models/Non-Recurrent/Frame_point_linear/5000_samples_y0/15_False_relu_categorical_crossentropy_10_properties.png" alt="2D Convolutional network structure" %}
-As I mentioned earlier, with this new degree of freedom the complexity of the problem increases and, as expected, the performance of the network is not good.
-{% include figure image_path="/assets/images/logbook/media/Models/Non-Recurrent/Frame_point_linear/5000_samples_y0/15_False_relu_categorical_crossentropy_10_history.png" alt="Loss history" %}
-{% include figure image_path="/assets/images/logbook/media/Models/Non-Recurrent/Frame_point_linear/5000_samples_y0/15_False_relu_categorical_crossentropy_10_error_hist.png" alt="Error histogram" %}
-{% include figure image_path="/assets/images/logbook/media/Models/Non-Recurrent/Frame_point_linear/5000_samples_y0/15_False_relu_categorical_crossentropy_10_rel_error_hist.png" alt="Relative error histogram" %}
-In the next image you can see target frame in the samples where the errors (absolute and relative) are maximum. Consequently, the error made is very high.
-{% include figure image_path="/assets/images/logbook/media/Models/Non-Recurrent/Frame_point_linear/5000_samples_y0/15_False_relu_categorical_crossentropy_10_max_error.png" alt="Relative and absolute error" %}
+Now that we have the proper datashets created to train different models of Neural Networks with Deep Learning is time to check if the conclusions made by Nuria are the same with my models. I keeped the models which give her the least mean realative error after making the test.
 
-## Recurrent Neural Networks
-I used the same structure that in the previous training:
-{% include figure image_path="/assets/images/logbook/media/Models/Recurrent/Frames/linear_point_255_y0/15_False_relu_categorical_crossentropy_10_properties.png" alt="ConvLSTM network structure" %}
-In this case we obtain a result that we could consider as expected, these networks are able to better capture the temporal relationship and obtain a better performance than in the previous case.
-{% include figure image_path="/assets/images/logbook/media/Models/Recurrent/Frames/linear_point_255_y0/15_False_relu_categorical_crossentropy_10_history.png" alt="Loss history" %}
-{% include figure image_path="/assets/images/logbook/media/Models/Recurrent/Frames/linear_point_255_y0/15_False_relu_categorical_crossentropy_10_error_hist.png" alt="Error histogram" %}
-{% include figure image_path="/assets/images/logbook/media/Models/Recurrent/Frames/linear_point_255_y0/15_False_relu_categorical_crossentropy_10_rel_error_hist.png" alt="Relative error histogram" %}
-In the next image you can see target frame in the samples where the errors (absolute and relative) are maximum. As I mentioned, this type of structure has improved the results and the error made, despite remaining high, is reduced compared to the previous structure.
-{% include figure image_path="/assets/images/logbook/media/Models/Recurrent/Frames/linear_point_255_y0/15_False_relu_categorical_crossentropy_10_max_error.png" alt="Relative and absolute error" %}
-In order to improve the obtained results we will choose to increase the number of samples in consequence with the complexity of the problem and modify the structure of the network in the same way.
+For training the network I have been using the scripts main_train.py and net_train_config.yml located in [link](https://github.com/RoboticsLabURJC/2020-tfg-alvaro-martin/tree/main/Generator%20%26%20Train_Test/Network)
+
+As you can see the code is very similar to the generator script, where you can chenge some basics like:
+ - the complexity of the model (simple, complex, convLSTM, complex_convLSTM)
+ - tyoe of Net (Recurrent or Non recurrent), the activation function which decides, whether a neuron should be activated or not by calculating weighted sum and further adding bias with it
+ - loss function (generate predictions, compare them with the actual values and then compute what is known as a loss, it has to be as low as possible)
+ - batch data: taking data by groups, for large datashets
+ - number of epochs
+ - number of samples
+ - patience: how many epochs are needed to determinate that the train have finished if there is no improve between epochs.
+
+
+
+### Version
+version: 1
+
+### Complexity: simple, complex, convLSTM, complex_convLSTM
+complexity: complex
+
+### Root to save the model
+root:  /Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Generator & Train_Test/Models/
+###root:  C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Models/
+
+### Type of the net to train (NoRec, Rec)
+net_type: Rec
+
+### Activation function
+activation: relu
+modeled_activation: tanh
+
+### Loss function
+raw_frame_loss: categorical_crossentropy
+modeled_frame_loss: mean_squared_error
+
+### Dropout options
+dropout:
+  flag: False
+  percentage: 0.2
+
+### Epochs
+n_epochs: 5000
+
+### Batch size
+batch_size: 10
+
+### Patience
+patience: 15
+
+### Data
+data_dir: /Users/Martin/Desktop/_30/Frames_dataset/linear_var_5000_80_120/linear_30_[None]_
+###data_dir: /Users/Martin/Desktop/Generator_10/Frames_dataset/parabolic_point_255_var_1_6000_80_120/parabolic_10_[None]_
+###data_dir: /Users/Martin/Desktop/Generator_10/Frames_dataset/sinusoidal_point_255_fix_1000_80_120/sinusoidal_10_[None]_
+
+### WINDOWS ······················································
+
+### Data
+###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Datashet_10/Frames_dataset/linear_point_255_var_1_20000_80_120/linear_10_[None]_
+###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Datashet_10/Frames_dataset/parabolic_point_255_var_1_6000_80_120/parabolic_10_[None]_
+###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Datashet_10/Frames_dataset/sinusoidal_point_255_fix_1000_80_120/sinusoidal_10_[None]_
+
+batch_data: False ###True or False
+data_model: modeled ###raw or modeled
+gauss_pixel: False
+
+
+
+
+So I started to understand how the code write in Python works and modified it for my own tests.
+I created my firsts Neural Networks models with LSMT 1 layer (Rec-simple) and LSMT 4 layers(Rec-complex), which are the ones with better performance.
+
+
+
+All the training models are located in [link](https://github.com/RoboticsLabURJC/2020-tfg-alvaro-martin/tree/main/Generator%20%26%20Train_Test/Models)
+
+## LSTM1
+
+{% include figure image_path="/assets/images/logbook/previous_weeks_2/Net1.png" alt="Net1" %}
+
+{% include figure image_path="/assets/images/logbook/previous_weeks_2/Resultados_LSTM1.png" alt="Resultados_LSTM1" %}
+
+## LSTM4
+
+{% include figure image_path="/assets/images/logbook/previous_weeks_2/Net4.png" alt="Net4" %}
+
+{% include figure image_path="/assets/images/logbook/previous_weeks_2/Resultados_LSTM4.png" alt="Resultados_LSTM4" %}
+
+
+The extension of the files is .h5
+
+10_False_tanh_mean_squared_error_10.h5

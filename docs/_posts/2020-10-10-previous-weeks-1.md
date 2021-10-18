@@ -23,8 +23,6 @@ pinned: false
 
 ## How to train the Networks
 
-
-
 After learning basics about how can we implement Neural Networks to predict object in the next frames of a video recording we need to understand how can we train this kind of Networks.
 
 For that, Nuria created a datashet generator that we can use for create linear, parabolic or sinusoidal, defined the height and the weight of the image/frame, color of the point (for raw iamges)
@@ -37,7 +35,7 @@ Modeled images are just coordenates in a text file that give us the current posi
 
 Raw images are .png images created with black and a white pixel indicating the position of the object.
 
-{% include figure image_path="/assets/images/logbook/previous_weeks_1/raw_modeled.png" alt="Raw sample" %}
+{% include figure image_path="/assets/images/logbook/previous_weeks_1/raw_sample.png" alt="Raw sample" %}
 
 Using sequence_generator_config.yml and main_gen.py you can configure the datashet expected chaging number of samples, raw or modeled, percentage of train and test values...
 
@@ -92,4 +90,4 @@ split:
   fraction_validation: 0.1
 
 
-# The standar of datashet I have been using is 10000 samples raw and 20000 samples for modeled and 10000 for raw images 
+# The standar of datashet I have been using is 10000 samples raw and 20000 samples for modeled and 10000 for raw images
