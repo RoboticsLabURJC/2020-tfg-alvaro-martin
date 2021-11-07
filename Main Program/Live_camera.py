@@ -30,7 +30,7 @@ def Video_Live_Capture():
 
     while (True):
         ret, frame = cap.read()
-        #cv2.imshow('Visor', frame)
+        cv2.imshow('Visor', frame)
         # ecl.Extract_Frames_Live()
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -90,15 +90,15 @@ def Video_Live_Capture():
 
             for j in dataX:
                 cv2.circle(frame, (int(j[1]), int(j[0])), 1, (230, 0, 115), 1)
-            cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
-            cv2.imshow('See the trails', frame)
-            cv2.resizeWindow('See the trails', 900, 600)
+                cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
+                cv2.imshow('See the trails', frame)
+                cv2.resizeWindow('See the trails', 900, 600)
 
             img_index += 1
-            if img_index == 30:
+            if img_index == 35:
                 dataX = []
                 img_index = 0
-            cv2.waitKey(10)
+            cv2.waitKey(50)
 
     cap.realease()
     cv2.destroyAllWindows()

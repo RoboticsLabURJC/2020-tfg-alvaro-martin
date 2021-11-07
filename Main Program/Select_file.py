@@ -5,7 +5,7 @@ import PySimpleGUI as sg
 def Select_Video_File():
 
     layout2 = [[sg.Text('Source for File ', size=(15, 1)), sg.InputText(), sg.FileBrowse()],
-             [sg.Submit(), sg.Cancel()]]
+             [sg.Submit('Analize'), sg.Cancel()]]
 
     window2 = sg.Window('Select Video File to get predictions', layout2, auto_size_text=True,
                        auto_size_buttons=True, resizable=True, grab_anywhere=False, border_depth=5,)
