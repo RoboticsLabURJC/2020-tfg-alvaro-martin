@@ -12,4 +12,7 @@ def Select_Video_File():
     event2, values2 = window2.read()
     window2.close()
     file_path = values2[0]
+    print(file_path)
     print(file_path.split('/')[-1])
+
+    return file_path
