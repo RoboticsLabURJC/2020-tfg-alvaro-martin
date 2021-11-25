@@ -1,225 +1,68 @@
-import PySimpleGUI as sg
-
-import cv2
-
 import numpy as np
+import cv2
+import time
 
 
-def main():
+# creating the videocapture object
+# and reading from the input file
+# Change it to 0 if reading from webcam
 
-    sg.theme("LightGreen")
+cap = cv2.VideoCapture('vid.mp4')
 
+# used to record the time when we processed last frame
+prev_frame_time = 0
 
-    # Define the window layout
+# used to record the time at which we processed current frame
+new_frame_time = 0
 
-    layout = [
+# Reading the video file until finished
+while(cap.isOpened()):
 
-        [sg.Text("OpenCV Demo", size=(60, 1), justification="center")],
+	# Capture frame-by-frame
 
-        [sg.Image(filename="", key="-IMAGE-", size=(400,200))],
+	ret, frame = cap.read()
 
-        [sg.Radio("None", "Radio", True, size=(10, 1))],
+	# if video finished or no Video Input
+	if not ret:
+		break
 
-        [
+	# Our operations on the frame come here
+	gray = frame
 
-            sg.Radio("threshold", "Radio", size=(10, 1), key="-THRESH-"),
+	# resizing the frame size according to our need
+	gray = cv2.resize(gray, (500, 300))
 
-            sg.Slider(
+	# font which we will be using to display FPS
+	font = cv2.FONT_HERSHEY_SIMPLEX
+	# time when we finish processing for this frame
+	new_frame_time = time.time()
 
-                (0, 255),
+	# Calculating the fps
 
-                128,
+	# fps will be number of frame processed in given time frame
+	# since their will be most of time error of 0.001 second
+	# we will be subtracting it to get more accurate result
+	fps = 1/(new_frame_time-prev_frame_time)
+	prev_frame_time = new_frame_time
 
-                1,
+	# converting the fps into integer
+	fps = int(fps)
 
-                orientation="h",
+	# converting the fps to string so that we can display it on frame
+	# by using putText function
+	fps = str(fps)
 
-                size=(40, 15),
+	# putting the FPS count on the frame
+	cv2.putText(gray, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
 
-                key="-THRESH SLIDER-",
+	# displaying the frame with fps
+	cv2.imshow('frame', gray)
 
-            ),
+	# press 'Q' if you want to exit
+	if cv2.waitKey(1) & 0xFF == ord('q'):
+		break
 
-        ],
-
-        [
-
-            sg.Radio("canny", "Radio", size=(10, 1), key="-CANNY-"),
-
-            sg.Slider(
-
-                (0, 255),
-
-                128,
-
-                1,
-
-                orientation="h",
-
-                size=(20, 15),
-
-                key="-CANNY SLIDER A-",
-
-            ),
-
-            sg.Slider(
-
-                (0, 255),
-
-                128,
-
-                1,
-
-                orientation="h",
-
-                size=(20, 15),
-
-                key="-CANNY SLIDER B-",
-
-            ),
-
-        ],
-
-        [
-
-            sg.Radio("blur", "Radio", size=(10, 1), key="-BLUR-"),
-
-            sg.Slider(
-
-                (1, 11),
-
-                1,
-
-                1,
-
-                orientation="h",
-
-                size=(40, 15),
-
-                key="-BLUR SLIDER-",
-
-            ),
-
-        ],
-
-        [
-
-            sg.Radio("hue", "Radio", size=(10, 1), key="-HUE-"),
-
-            sg.Slider(
-
-                (0, 225),
-
-                0,
-
-                1,
-
-                orientation="h",
-
-                size=(40, 15),
-
-                key="-HUE SLIDER-",
-
-            ),
-
-        ],
-
-        [
-
-            sg.Radio("enhance", "Radio", size=(10, 1), key="-ENHANCE-"),
-
-            sg.Slider(
-
-                (1, 255),
-
-                128,
-
-                1,
-
-                orientation="h",
-
-                size=(40, 15),
-
-                key="-ENHANCE SLIDER-",
-
-            ),
-
-        ],
-
-        [sg.Button("Exit", size=(10, 1))],
-
-    ]
-
-
-    # Create the window and show it without the plot
-
-    window = sg.Window("OpenCV Integration", layout)
-
-
-    cap = cv2.VideoCapture(0)
-
-
-    while True:
-
-        event, values = window.read(timeout=20)
-
-        if event == "Exit" or event == sg.WIN_CLOSED:
-
-            break
-
-
-        ret, frame = cap.read()
-
-
-        if values["-THRESH-"]:
-
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)[:, :, 0]
-
-            frame = cv2.threshold(
-
-                frame, values["-THRESH SLIDER-"], 255, cv2.THRESH_BINARY
-
-            )[1]
-
-        elif values["-CANNY-"]:
-
-            frame = cv2.Canny(
-
-                frame, values["-CANNY SLIDER A-"], values["-CANNY SLIDER B-"]
-
-            )
-
-        elif values["-BLUR-"]:
-
-            frame = cv2.GaussianBlur(frame, (21, 21), values["-BLUR SLIDER-"])
-
-        elif values["-HUE-"]:
-
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
-            frame[:, :, 0] += int(values["-HUE SLIDER-"])
-
-            frame = cv2.cvtColor(frame, cv2.COLOR_HSV2BGR)
-
-        elif values["-ENHANCE-"]:
-
-            enh_val = values["-ENHANCE SLIDER-"] / 40
-
-            clahe = cv2.createCLAHE(clipLimit=enh_val, tileGridSize=(8, 8))
-
-            lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
-
-            lab[:, :, 0] = clahe.apply(lab[:, :, 0])
-
-            frame = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
-
-
-        imgbytes = cv2.imencode(".png", frame)[1].tobytes()
-
-        window["-IMAGE-"].update(data=imgbytes)
-
-
-    window.close()
-
-
-main()
+# When everything done, release the capture
+cap.release()
+# Destroy the all windows now
+cv2.destroyAllWindows()
