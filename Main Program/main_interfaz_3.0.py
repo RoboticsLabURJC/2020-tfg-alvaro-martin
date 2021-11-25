@@ -16,7 +16,7 @@ def main():
 
         [sg.Text("OpenCV Demo", size=(60, 1), justification="center")],
 
-        [sg.Image(filename="", key="-IMAGE-")],
+        [sg.Image(filename="", key="-IMAGE-", size=(400,200))],
 
         [sg.Radio("None", "Radio", True, size=(10, 1))],
 
@@ -153,7 +153,7 @@ def main():
 
     # Create the window and show it without the plot
 
-    window = sg.Window("OpenCV Integration", layout, location=(800, 400))
+    window = sg.Window("OpenCV Integration", layout)
 
 
     cap = cv2.VideoCapture(0)
