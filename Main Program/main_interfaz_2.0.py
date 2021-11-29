@@ -5,6 +5,7 @@ import Live_camera as LV
 import Select_file as RV
 import Get_trails
 import Preprocessing
+import Get_Logs
 import cv2
 import numpy as np
 import time
@@ -21,13 +22,13 @@ def main():
 
     layout = [
                 [sg.Text("Choose preferences before start", size=(60, 1), justification="center")],
-                [sg.Checkbox("Use Live Recording", default=True, key="-LIVE-")],
+                [sg.Radio("Use Live Recording", "Radio",True, key="-LIVE-"), sg.Radio("Use Recorded File", "Radio", key="-FILE-")],
+                #[sg.Checkbox("Use Live Recording", default=True, key="-LIVE-")],
                 [sg.Checkbox("Preprocessing", default=False, key="-PREPROCESING-"),],
                 [sg.Checkbox("Prediction", default=False, key="-PREDICTIONS-"),],
                 [sg.Checkbox("Log Records", default=False, key="-LOGS-"),],
                 [sg.Text("Try this filters for Live camera", size=(60, 1), justification="center")],
-                [sg.Radio("None", "Radio", True, size=(10, 1))],
-                    [sg.Radio("Binary", "Radio", size=(10, 1), key="-THRESH-"),
+                [sg.Radio("Binary", "Radio", size=(10, 1), key="-THRESH-"),
                         sg.Slider((0, 255),128,1,orientation="h",size=(40, 15),key="-THRESH SLIDER-",),],
                 # HUE
                 [sg.Radio("HUE", "Radio", size=(10, 1), key="-HUE-"),
@@ -36,7 +37,8 @@ def main():
                 [sg.Radio("Enhance", "Radio", size=(10, 1), key="-ENHANCE-"),
                     sg.Slider((1, 255),128,1,orientation="h",size=(40, 15),key="-ENHANCE SLIDER-",),],
                 # BUTTON
-                [sg.Button("Use Recorded File"), sg.Button("Exit")],
+                #[sg.Button("Use Recorded File"),
+                [sg.Button("Exit")],
              ]
     # Create the window and show it without the plot
 
@@ -56,12 +58,13 @@ def main():
     while True:
 
         event, values = window.read(timeout=20)
+        event2, values2 = window2.read(timeout=20)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         ret, frame = cap.read()
 
-        if values["-LIVE-"] == True:
-            event2, values2 = window2.read(timeout=20)
+        #if values["-LIVE-"] == True:
+
         #if values["-LIVE-"] == False:
         #    break
         #    window2.close()
@@ -82,12 +85,16 @@ def main():
             frame = Preprocessing.HSV_GRAY_BIN_ER_DIL(frame)
         elif values["-PREDICTIONS-"] == True:
             print("PREDICTIONS")
-        elif values["-LOGS-"] == True:
-            print("LOGS")
-        elif event == 'Use Recorded File':
+        #elif values["-LOGS-"] == True:
+        #    print("LOGS")
+        #elif event == 'Use Recorded File':
+        elif values["-FILE-"]:
             window2.close()
             video = RV.Select_Video_File()
-            if video:
+            if video and values["-LOGS-"] == True:
+                dataX, GAP_data, FINAL = Get_trails.Extract_Frames(video)
+                Get_Logs.create_log(dataX, GAP_data, FINAL)
+            else:
                 Get_trails.Extract_Frames(video)
         # font which we will be using to display FPS
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -99,7 +106,7 @@ def main():
         # fps will be number of frame processed in given time frame
         # since their will be most of time error of 0.001 second
         # we will be subtracting it to get more accurate result
-        fps = 1/(new_frame_time-prev_frame_time)*10
+        fps = 1/(new_frame_time-prev_frame_time)*5
         prev_frame_time = new_frame_time
 
 

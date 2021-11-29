@@ -14,7 +14,7 @@ def resize(img, width, height):
 def HSV_GRAY_BIN_ER_DIL(frame):
 
   ''' FRAME RESIZED '''
-  frame = resize(frame, 120, 80)
+  #frame = resize(frame, 120, 80)
 
   hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
   hsv = cv2.bitwise_not(hsv) # Inverted filter color

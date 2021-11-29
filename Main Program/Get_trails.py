@@ -217,3 +217,4 @@ def Extract_Frames(video):
 
     cap.release()
     cv2.destroyAllWindows()
+    return dataX, GAP_data, FINAL
