@@ -96,26 +96,11 @@ def main():
                 Get_Logs.create_log(dataX, GAP_data, FINAL)
             else:
                 Get_trails.Extract_Frames(video)
-        # font which we will be using to display FPS
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        # time when we finish processing for this frame
-        new_frame_time = time.time()
 
         # Calculating the fps
-
-        # fps will be number of frame processed in given time frame
-        # since their will be most of time error of 0.001 second
-        # we will be subtracting it to get more accurate result
-        fps = 1/(new_frame_time-prev_frame_time)*5
-        prev_frame_time = new_frame_time
-
-
-        # converting the fps into integer
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        fps = cap.get(cv2.CAP_PROP_FPS)
         fps = int(fps)
-
-
-        # converting the fps to string so that we can display it on frame
-        # by using putText function
         fps = str(fps)
 
         # putting the FPS count on the frame
@@ -127,31 +112,3 @@ def main():
     window2.close()
 
 main()
-
-
-'''
-layout = [[sg.Button('Use Live Recording'), sg.Button('Use Recorded File'), sg.Exit()]]
-
-# image_filename ='play.png', image_size =(50, 50))
-
-window = sg.Window('Get predictions from video', layout, auto_size_text=True,
-                   auto_size_buttons=True, resizable=True, grab_anywhere=True, border_depth=5)
-
-
-while True:             # Event Loop
-    event, values = window.Read()
-    if event in (None, 'Exit'):
-        break
-    if event == 'Use Live Recording':
-        func('Live Video Recording Selected')
-        LV.Video_Live_Capture()
-    elif event == 'Use Recorded File':
-        func('Use Recorded File')
-        video = RV.Select_Video_File()
-        if video:
-            Get_trails.Extract_Frames(video)
-window.Close()
-
-
-
-'''

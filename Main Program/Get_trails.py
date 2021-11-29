@@ -176,6 +176,13 @@ def Extract_Frames(video):
 
                     if (img_index < gap + 20):
 
+                        fps = cap.get(cv2.CAP_PROP_FPS)
+                        fps = int(fps)
+                        fps = str(fps)
+                        font = cv2.FONT_HERSHEY_SIMPLEX
+                        # putting the FPS count on the frame
+                        #cv2.putText(frame, fps+"fps", (1, 20), font, 0.5, (100, 255, 0), 3, cv2.LINE_AA)
+
                         for j in dataX:
                             cv2.circle(frame, (int(j[1]), int(j[0])), 1, (230, 0, 115), 1)
                             cv2.imwrite('Interface'+ str(img_index+1) + '.png', frame)
@@ -190,6 +197,7 @@ def Extract_Frames(video):
 
                         f = frames_path +'/Interface'+ str(img_index+1) + '.png'
                         im = cv2.imread(f)
+
                         # Custom window
                         cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
                         cv2.imshow('See the trails', im)
