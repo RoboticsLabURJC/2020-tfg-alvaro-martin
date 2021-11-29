@@ -190,14 +190,30 @@ def Extract_Frames(video):
 
                         f = frames_path +'/Interface'+ str(img_index+1) + '.png'
                         im = cv2.imread(f)
-
                         # Custom window
                         cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
                         cv2.imshow('See the trails', im)
                         cv2.resizeWindow('See the trails', 900, 600)
 
+                        # show one frame at a time
+                        key = cv2.waitKey(0)
+                        while key not in [ord('q'), ord('a'), ord('n')] :
+                            key = cv2.waitKey(0)
+                        #if key == ord('a'):
+                        #    f = frames_path +'/Interface'+ str(img_index-1) + '.png'
+                        #    im = cv2.imread(f)
+                        #    cv2.imshow('See the trails', im)
+                        #    img_index -= 1
+                        if key == ord('n'):
+                            f = frames_path +'/Interface'+ str(img_index+1) + '.png'
+                            im = cv2.imread(f)
+                            cv2.imshow('See the trails', im)
+
+                        # Quit when 'q' is pressed
+                        if key == ord('q'):
+                            break
                 img_index += 1
-                cv2.waitKey(100)
+                #cv2.waitKey(100)
 
     cap.release()
     cv2.destroyAllWindows()
