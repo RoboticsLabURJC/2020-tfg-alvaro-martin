@@ -4,6 +4,7 @@ import PySimpleGUI as sg
 import Live_camera as LV
 import Select_file as RV
 import Get_trails
+import Get_trails_frame_by_frame
 import Preprocessing
 import Get_Logs
 import cv2
@@ -21,9 +22,8 @@ def main():
     # Define the window layout
 
     layout = [
-                [sg.Text("Choose preferences before start", size=(60, 1), justification="center")],
-                [sg.Radio("Use Live Recording", "Radio",True, key="-LIVE-"), sg.Radio("Use Recorded File", "Radio", key="-FILE-")],
-                #[sg.Checkbox("Use Live Recording", default=True, key="-LIVE-")],
+                [sg.Text("Select configuration before predictions", size=(60, 1), justification="center")],
+                [sg.Radio("Use Live Recording", "Radio",True, key="-LIVE-"), sg.Radio("Use Recorded File", "Radio", key="-FILE-"),sg.Radio("Prediction frame by frame", "Radio", key="-FRAMEBYFRAME-")],
                 [sg.Checkbox("Preprocessing", default=False, key="-PREPROCESING-"),],
                 [sg.Checkbox("Prediction", default=False, key="-PREDICTIONS-"),],
                 [sg.Checkbox("Log Records", default=False, key="-LOGS-"),],
@@ -38,13 +38,13 @@ def main():
                     sg.Slider((1, 255),128,1,orientation="h",size=(40, 15),key="-ENHANCE SLIDER-",),],
                 # BUTTON
                 #[sg.Button("Use Recorded File"),
-                [sg.Button("Exit")],
+                [sg.Button("Exit"), sg.Text("by A.Martin", justification="right")],
              ]
     # Create the window and show it without the plot
 
     layout2 = [[sg.Image(filename="", key="-IMAGE-")]]
 
-    window = sg.Window('Get predictions from video', layout)
+    window = sg.Window('Visual Predictor', layout)
     window2 = sg.Window('Video', layout2)
 
     # used to record the time when we processed last frame
@@ -85,9 +85,6 @@ def main():
             frame = Preprocessing.HSV_GRAY_BIN_ER_DIL(frame)
         elif values["-PREDICTIONS-"] == True:
             print("PREDICTIONS")
-        #elif values["-LOGS-"] == True:
-        #    print("LOGS")
-        #elif event == 'Use Recorded File':
         elif values["-FILE-"]:
             window2.close()
             video = RV.Select_Video_File()
@@ -96,6 +93,14 @@ def main():
                 Get_Logs.create_log(dataX, GAP_data, FINAL)
             else:
                 Get_trails.Extract_Frames(video)
+        elif values["-FRAMEBYFRAME-"]:
+            window2.close()
+            video = RV.Select_Video_File()
+            if video and values["-LOGS-"] == True:
+                dataX, GAP_data, FINAL = Get_trails_frame_by_frame.Extract_Frames(video)
+                Get_Logs.create_log(dataX, GAP_data, FINAL)
+            else:
+                Get_trails_frame_by_frame.Extract_Frames(video)
         # font which we will be using to display FPS
         font = cv2.FONT_HERSHEY_SIMPLEX
         # time when we finish processing for this frame
