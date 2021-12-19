@@ -3,13 +3,15 @@
 import PySimpleGUI as sg
 import Live_camera as LV
 import Select_file as RV
+import FPS
 import Get_trails
 import Get_trails_frame_by_frame
 import Preprocessing
-import Get_Logs
+import Get_Logs_2
 import cv2
 import numpy as np
 import time
+
 
 def func(message):
     print(message)
@@ -46,14 +48,13 @@ def main():
 
     window = sg.Window('Visual Predictor', layout)
     window2 = sg.Window('Video', layout2)
+    cap = cv2.VideoCapture(0)
 
     # used to record the time when we processed last frame
     prev_frame_time = 0
 
     # used to record the time at which we processed current frame
     new_frame_time = 0
-
-    cap = cv2.VideoCapture(0)
 
     while True:
 
@@ -63,11 +64,6 @@ def main():
             break
         ret, frame = cap.read()
 
-        #if values["-LIVE-"] == True:
-
-        #if values["-LIVE-"] == False:
-        #    break
-        #    window2.close()
         if values["-THRESH-"]:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)[:, :, 0]
             frame = cv2.threshold(frame, values["-THRESH SLIDER-"], 255, cv2.THRESH_BINARY)[1]
@@ -90,7 +86,7 @@ def main():
             video = RV.Select_Video_File()
             if video and values["-LOGS-"] == True:
                 dataX, GAP_data, FINAL = Get_trails.Extract_Frames(video)
-                Get_Logs.create_log(dataX, GAP_data, FINAL)
+                Get_Logs_2.create_log(dataX, GAP_data, FINAL)
             else:
                 Get_trails.Extract_Frames(video)
         elif values["-FRAMEBYFRAME-"]:
@@ -98,15 +94,12 @@ def main():
             video = RV.Select_Video_File()
             if video and values["-LOGS-"] == True:
                 dataX, GAP_data, FINAL = Get_trails_frame_by_frame.Extract_Frames(video)
-                Get_Logs.create_log(dataX, GAP_data, FINAL)
+                Get_Logs_2.create_log(dataX, GAP_data, FINAL)
             else:
                 Get_trails_frame_by_frame.Extract_Frames(video)
-        # font which we will be using to display FPS
-        font = cv2.FONT_HERSHEY_SIMPLEX
+
         # time when we finish processing for this frame
         new_frame_time = time.time()
-
-        # Calculating the fps
 
         # fps will be number of frame processed in given time frame
         # since their will be most of time error of 0.001 second
@@ -114,18 +107,7 @@ def main():
         fps = 1/(new_frame_time-prev_frame_time)*5
         prev_frame_time = new_frame_time
 
-
-        # converting the fps into integer
-        fps = int(fps)
-
-
-        # converting the fps to string so that we can display it on frame
-        # by using putText function
-        fps = str(fps)
-
-        # putting the FPS count on the frame
-        frame = Preprocessing.resize(frame, 900, 600)
-        frame = cv2.putText(frame, fps+"fps", (7, 30), font, 1, (100, 255, 0), 3, cv2.LINE_AA)
+        frame = FPS.write_fps(frame, fps)
         imgbytes = cv2.imencode(".png", frame)[1].tobytes()
         window2["-IMAGE-"].update(data=imgbytes)
     window.close()

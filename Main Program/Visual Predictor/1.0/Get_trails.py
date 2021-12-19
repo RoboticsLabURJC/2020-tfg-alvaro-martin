@@ -15,6 +15,8 @@ __date__ = "07/11/2021"
 
 import os
 import cv2
+import time
+import FPS
 import numpy as np
 import Network, Preprocessing
 
@@ -65,6 +67,11 @@ def Extract_Frames(video):
         buffer = 20
         img_index = 0
         v += 1
+        # used to record the time when we processed last frame
+        prev_frame_time = 0
+
+        # used to record the time at which we processed current frame
+        new_frame_time = 0
 
         frames_path = video + '_frames'
         os.makedirs(frames_path,exist_ok=True)
@@ -199,11 +206,24 @@ def Extract_Frames(video):
                         im = cv2.imread(f)
 
                         # Custom window
+                        # time when we finish processing for this frame
+                        new_frame_time = time.time()
+
+                        # fps will be number of frame processed in given time frame
+                        # since their will be most of time error of 0.001 second
+                        # we will be subtracting it to get more accurate result
+                        fps = 1/(new_frame_time-prev_frame_time)
+                        prev_frame_time = new_frame_time
+
+                        im = FPS.write_fps(frame, fps)
                         cv2.namedWindow('See the trails', cv2.WINDOW_KEEPRATIO)
                         cv2.imshow('See the trails', im)
                         cv2.resizeWindow('See the trails', 900, 600)
                 img_index += 1
-                cv2.waitKey(300)
+                # 3 fps
+                #cv2.waitKey(300)
+                # fps of the recorded video
+                cv2.waitKey(110)
 
     cap.release()
     cv2.destroyAllWindows()
