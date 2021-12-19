@@ -5,6 +5,7 @@ import Live_camera as LV
 import Select_file as RV
 import FPS
 import Get_trails
+import Get_trails_logs
 import Get_trails_frame_by_frame
 import Preprocessing
 import Get_Logs_2
@@ -85,8 +86,8 @@ def main():
             window2.close()
             video = RV.Select_Video_File()
             if video and values["-LOGS-"] == True:
-                dataX, GAP_data, FINAL = Get_trails.Extract_Frames(video)
-                Get_Logs_2.create_log(dataX, GAP_data, FINAL)
+                #dataX, GAP_data, FINAL = Get_trails.Extract_Frames(video)
+                Get_trails_logs.Extract_Frames(video)
             else:
                 Get_trails.Extract_Frames(video)
         elif values["-FRAMEBYFRAME-"]:
