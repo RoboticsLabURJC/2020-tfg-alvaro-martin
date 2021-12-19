@@ -148,6 +148,7 @@ def Extract_Frames(video):
                         data_temp_x.append(np.array(cY))
                         data_temp_x.append(np.array(cX))
                         dataX.append(data_temp_x)
+                        Log_value.add_centroid(data_temp_x, img_index)
 
                     elif (img_index >= gap) and (img_index < gap + 20):
                         print ('Frame#' + str(img_index+1) + ' centroid ----- ' + str(cX) + ' ' + str(cY))
@@ -167,16 +168,26 @@ def Extract_Frames(video):
 
                         print('BUFFER ----'+ str(init+1))
                         print(np.array(ok))
-                        Log_value.add_buffer(ok[0])
 
                         print('REAL ----- COMPROBANDO'+ str(init+1))
                         print(np.array(real_points))
-                        Log_value.add_real(real_points[0])
 
                         print('PREDICTED  ----- REDONDEADO '+ str(init+1))
                         print(np.array(predicted_points))
-                        Log_value.add_predicted(predicted_points)
                         print('\n')
+
+                        Log_value.add_predicted(real_points[0],predicted_points, img_index)
+                        Check_values_x = abs((real_points[0][0])-(predicted_points[0]))
+                        Check_values_y = abs((real_points[0][1])-(predicted_points[1]))
+                        if  Check_values_x >= 5:
+                            Log_value.bad_prediction_x(real_points[0][0],predicted_points[0])
+
+                        if  Check_values_y >= 5 :
+                            Log_value.bad_prediction_y(real_points[0][1],predicted_points[1])
+
+                        if Check_values_x <= 5 and Check_values_y <= 5:
+                            Log_value.good_prediction(real_points[0],predicted_points)
+
                         FINAL.append(predicted_points)
 
                         init += 1

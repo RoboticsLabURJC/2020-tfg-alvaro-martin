@@ -8,6 +8,7 @@ import Get_trails
 import Get_trails_logs
 import Get_trails_frame_by_frame
 import Preprocessing
+import Log_value
 import Get_Logs_2
 import cv2
 import numpy as np
@@ -87,7 +88,9 @@ def main():
             video = RV.Select_Video_File()
             if video and values["-LOGS-"] == True:
                 #dataX, GAP_data, FINAL = Get_trails.Extract_Frames(video)
+                Log_value.create_log()
                 Get_trails_logs.Extract_Frames(video)
+                Log_value.end_log()
             else:
                 Get_trails.Extract_Frames(video)
         elif values["-FRAMEBYFRAME-"]:
