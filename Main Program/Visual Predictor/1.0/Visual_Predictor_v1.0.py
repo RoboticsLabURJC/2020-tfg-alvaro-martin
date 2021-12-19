@@ -8,8 +8,8 @@ import Get_trails
 import Get_trails_logs
 import Get_trails_frame_by_frame
 import Preprocessing
+import Live_predictions
 import Log_value
-import Get_Logs_2
 import cv2
 import numpy as np
 import time
@@ -26,12 +26,13 @@ def main():
     # Define the window layout
 
     layout = [
-                [sg.Text("Select configuration before predictions", size=(60, 1), justification="center")],
+                [sg.Text("Select configuration before predictions", size=(65, 3), justification="center")],
                 [sg.Radio("Use Live Recording", "Radio",True, key="-LIVE-"), sg.Radio("Use Recorded File", "Radio", key="-FILE-"),sg.Radio("Prediction frame by frame", "Radio", key="-FRAMEBYFRAME-")],
+                [sg.Text("", size=(65, 1))],
                 [sg.Checkbox("Preprocessing", default=False, key="-PREPROCESING-"),],
                 [sg.Checkbox("Prediction", default=False, key="-PREDICTIONS-"),],
                 [sg.Checkbox("Log Records", default=False, key="-LOGS-"),],
-                [sg.Text("Try this filters for Live camera", size=(60, 1), justification="center")],
+                [sg.Text("Try this filters for Live camera", size=(65, 3), justification="center")],
                 [sg.Radio("Binary", "Radio", size=(10, 1), key="-THRESH-"),
                         sg.Slider((0, 255),128,1,orientation="h",size=(40, 15),key="-THRESH SLIDER-",),],
                 # HUE
@@ -41,8 +42,9 @@ def main():
                 [sg.Radio("Enhance", "Radio", size=(10, 1), key="-ENHANCE-"),
                     sg.Slider((1, 255),128,1,orientation="h",size=(40, 15),key="-ENHANCE SLIDER-",),],
                 # BUTTON
-                #[sg.Button("Use Recorded File"),
-                [sg.Button("Exit"), sg.Text("by A.Martin", justification="right")],
+                [sg.Text("", size=(65, 2))],
+                [sg.Button("Exit", size=(5, 1))],
+                [sg.Text("by A.Martin", size=(65, 2),justification="right")]
              ]
     # Create the window and show it without the plot
 
@@ -83,11 +85,12 @@ def main():
             frame = Preprocessing.HSV_GRAY_BIN_ER_DIL(frame)
         elif values["-PREDICTIONS-"] == True:
             print("PREDICTIONS")
+        #elif values["-LIVE-"] == True:
+            #LV.Video_Live_Capture()
         elif values["-FILE-"]:
             window2.close()
             video = RV.Select_Video_File()
             if video and values["-LOGS-"] == True:
-                #dataX, GAP_data, FINAL = Get_trails.Extract_Frames(video)
                 Log_value.create_log()
                 Get_trails_logs.Extract_Frames(video)
                 Log_value.end_log()
@@ -97,8 +100,9 @@ def main():
             window2.close()
             video = RV.Select_Video_File()
             if video and values["-LOGS-"] == True:
-                dataX, GAP_data, FINAL = Get_trails_frame_by_frame.Extract_Frames(video)
-                Get_Logs_2.create_log(dataX, GAP_data, FINAL)
+                Log_value.create_log()
+                Get_trails_logs.Extract_Frames(video)
+                Log_value.end_log()
             else:
                 Get_trails_frame_by_frame.Extract_Frames(video)
 
