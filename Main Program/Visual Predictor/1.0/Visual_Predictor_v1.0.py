@@ -99,10 +99,10 @@ def main():
             if video and values["-LOGS-"] == True:
                 Log_value.create_log()
                 result_buffer, GAP_data, FINAL, max, data_type, dim = Get_trails_logs.Extract_Frames(video)
+                Log_value.end_log()
                 folder_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Main Program/Visual Predictor/1.0/'
                 Get_errors.get_graphs(np.array(result_buffer), np.array(GAP_data), np.array(FINAL), np.array(max), folder_path, data_type, dim)
                 #Get_trails_logs.Extract_Frames(video)
-                Log_value.end_log()
             else:
                 Get_trails.Extract_Frames(video)
         elif values["-FRAMEBYFRAME-"]:
