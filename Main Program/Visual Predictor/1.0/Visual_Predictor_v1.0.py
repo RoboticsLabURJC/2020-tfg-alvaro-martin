@@ -7,6 +7,7 @@ import FPS
 import Get_trails
 import Get_trails_logs
 import Get_trails_frame_by_frame
+import Get_errors
 import Preprocessing
 import Live_predictions
 import Log_value
@@ -31,6 +32,7 @@ def main():
                 [sg.Text("", size=(65, 1))],
                 [sg.Checkbox("Preprocessing", default=False, key="-PREPROCESING-"),],
                 [sg.Checkbox("Prediction", default=False, key="-PREDICTIONS-"),],
+                [sg.Checkbox("Graphs & stadistics", default=False, key="-GRAPHS-"),],
                 [sg.Checkbox("Log Records", default=False, key="-LOGS-"),],
                 [sg.Text("Try this filters for Live camera", size=(65, 3), justification="center")],
                 [sg.Radio("Binary", "Radio", size=(10, 1), key="-THRESH-"),
@@ -85,14 +87,21 @@ def main():
             frame = Preprocessing.HSV_GRAY_BIN_ER_DIL(frame)
         elif values["-PREDICTIONS-"] == True:
             print("PREDICTIONS")
-        #elif values["-LIVE-"] == True:
-            #LV.Video_Live_Capture()
+        elif values["-GRAPHS-"] == True:
+            print("GRAPHS")
+            #Log_value.create_log()
+            #result_buffer, GAP_data, FINAL, max = Get_trails_logs.Extract_Frames(video)
+            #Get_errors.get_graphs(np.array(result_buffer), np.array(GAP_data), np.array(FINAL), np.array(max))
+            #Log_value.end_log()
         elif values["-FILE-"]:
             window2.close()
             video = RV.Select_Video_File()
             if video and values["-LOGS-"] == True:
                 Log_value.create_log()
-                Get_trails_logs.Extract_Frames(video)
+                result_buffer, GAP_data, FINAL, max, data_type, dim = Get_trails_logs.Extract_Frames(video)
+                folder_path = '/Users/Martin/Desktop/TFG/Proyecto Github/2020-tfg-alvaro-martin/Main Program/Visual Predictor/1.0/'
+                Get_errors.get_graphs(np.array(result_buffer), np.array(GAP_data), np.array(FINAL), np.array(max), folder_path, data_type, dim)
+                #Get_trails_logs.Extract_Frames(video)
                 Log_value.end_log()
             else:
                 Get_trails.Extract_Frames(video)

@@ -58,7 +58,7 @@ class Net(object):
             self.input_shape = kwargs['input_shape']
             self.output_shape = kwargs['output_shape']
 
-    def test(self, test_x, test_y, gap, data_type, dim):
+    def test(self, test_x, test_y, data_type, dim):
         predict = self.model.predict(test_x)
         #print(predict)
 
@@ -70,7 +70,13 @@ class Net(object):
         #predict_values = ([(int(predict_values[0][0])/2), (int(predict_values[0][1]*0.8))])
         predict_values = ([(round(int(predict_values[0][0]), 0)), (int(predict_values[0][1]))])
 
-        return (real_values, predict_values)
+        #error, x_error, y_error, relative_error = test_utils.calculate_error(real_values, predict_values, maximum)
+
+        # Calculate stats
+        #test_utils.get_error_stats(test_x, test_y, v_to_draw, gap, data_type, dim,
+        #                           error, x_error, y_error, relative_error, self.model_path)
+
+        return (real_values, predict_values, maximum)
 
 
 class Lstm(Net):

@@ -62,6 +62,8 @@ def Extract_Frames(video):
         GAP_data = []
         FINAL = []
         dataX = []
+        result_buffer = []
+        max = []
         video_name = video.split('/')[-1]
         video_path = video
         init = 0
@@ -160,11 +162,13 @@ def Extract_Frames(video):
 
                         ok.append(FIRST_data[0][init:buffer])
                         ok = np.array(ok)
+                        result_buffer.append(ok[0])
                         ko.append(data_temp_y)
                         ko = np.array(ko)
 
                         print('Input numero ----- '+ str(init+1))
-                        real_points, predicted_points = to_test_net.test(ok, ko, gap, data_type, dim)
+                        real_points, predicted_points, maximum = to_test_net.test(ok, ko, data_type, dim)
+                        max.append(maximum[0])
 
                         print('BUFFER ----'+ str(init+1))
                         print(np.array(ok))
@@ -242,4 +246,4 @@ def Extract_Frames(video):
 
     cap.release()
     cv2.destroyAllWindows()
-    #return dataX, GAP_data, FINAL
+    return result_buffer, GAP_data, FINAL, max, data_type, dim
