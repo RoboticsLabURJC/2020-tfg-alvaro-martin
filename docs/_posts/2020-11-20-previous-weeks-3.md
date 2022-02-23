@@ -23,7 +23,7 @@ pinned: false
 
 ## Testing networks
 
-So now we have the generated datashet and the network model trained with that data, we need to test it and see if our model is valid.
+So now we have the generated dataset and the network model trained with that data, we need to test it and see if our model is valid.
 For I have been using the scripts main_test.py and net_test_config.yml located in [link](https://github.com/RoboticsLabURJC/2020-tfg-alvaro-martin/tree/main/Generator%20%26%20Train_Test/Network), very similar to train scripts.
 
 

@@ -1,6 +1,6 @@
 ---
 title: "Previous weeks - Training the models"
-excerpt: "With generated datashet and getting familiarized with the networks"
+excerpt: "With generated dataset and getting familiarized with the networks"
 
 sidebar:
   nav: "docs"
@@ -23,7 +23,7 @@ pinned: false
 
 ## Training Networks
 
-Now that we have the proper datashets created to train different models of Neural Networks with Deep Learning is time to check if the conclusions made by Nuria are the same with my models. I keeped the models which give her the least mean realative error after making the test.
+Now that we have the proper datasets created to train different models of Neural Networks with Deep Learning is time to check if the conclusions made by Nuria are the same with my models. I keeped the models which give her the least mean realative error after making the test.
 
 For training the network I have been using the scripts main_train.py and net_train_config.yml located in [link](https://github.com/RoboticsLabURJC/2020-tfg-alvaro-martin/tree/main/Generator%20%26%20Train_Test/Network)
 
@@ -31,7 +31,7 @@ As you can see the code is very similar to the generator script, where you can c
  - the complexity of the model (simple, complex, convLSTM, complex_convLSTM)
  - type of Net (Recurrent or Non recurrent), the activation function which decides, whether a neuron should be activated or not by calculating weighted sum and further adding bias with it
  - loss function (generate predictions, compare them with the actual values and then compute what is known as a loss, it has to be as low as possible)
- - batch data: taking data by groups, for large datashets
+ - batch data: taking data by groups, for large datasets
  - number of epochs
  - number of samples
  - patience: how many epochs are needed to determinate that the train have finished if there is no improve between epochs.
@@ -81,9 +81,9 @@ data_dir: /Users/Martin/Desktop/_30/Frames_dataset/linear_var_5000_80_120/linear
 ### WINDOWS ······················································
 
 ### Data
-###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Datashet_10/Frames_dataset/linear_point_255_var_1_20000_80_120/linear_10_[None]_
-###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Datashet_10/Frames_dataset/parabolic_point_255_var_1_6000_80_120/parabolic_10_[None]_
-###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Datashet_10/Frames_dataset/sinusoidal_point_255_fix_1000_80_120/sinusoidal_10_[None]_
+###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Dataset_10/Frames_dataset/linear_point_255_var_1_20000_80_120/linear_10_[None]_
+###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Dataset_10/Frames_dataset/parabolic_point_255_var_1_6000_80_120/parabolic_10_[None]_
+###data_dir: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Generator & Train_Test/Dataset_10/Frames_dataset/sinusoidal_point_255_fix_1000_80_120/sinusoidal_10_[None]_
 
 batch_data: False ###True or False
 data_model: modeled ###raw or modeled

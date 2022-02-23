@@ -25,7 +25,7 @@ pinned: false
 
 After learning basics about how can we implement Neural Networks to predict object in the next frames of a video recording we need to understand how can we train this kind of Networks.
 
-For that, Nuria created a datashet generator that we can use for create linear, parabolic or sinusoidal, defined the height and the weight of the image/frame, color of the point (for raw iamges)
+For that, Nuria created a dataset generator that we can use for create linear, parabolic or sinusoidal, defined the height and the weight of the image/frame, color of the point (for raw iamges)
 
 First we are going to explain the differences between raw and modeled:
 
@@ -37,7 +37,7 @@ Raw images are .png images created with black and a white pixel indicating the p
 
 {% include figure image_path="/assets/images/logbook/previous_weeks_1/raw_sample.png" alt="Raw sample" %}
 
-Using sequence_generator_config.yml and main_gen.py you can configure the datashet expected chaging number of samples, raw or modeled, percentage of train and test values...
+Using sequence_generator_config.yml and main_gen.py you can configure the dataset expected chaging number of samples, raw or modeled, percentage of train and test values...
 
 You can find the files in the repository: /Generator & Train_Test/Generator AMM with the modified changes for my analisys:
 
@@ -46,7 +46,7 @@ You can find the files in the repository: /Generator & Train_Test/Generator AMM 
 
 
 ### Root to save
-###root: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Datashet
+###root: C:/Users/optiva/Desktop/TFG/2020-tfg-alvaro-martin/Dataset
 root: /Users/Martin/Desktop/
 
 ### Type of element to generate
@@ -90,4 +90,4 @@ split:
   fraction_validation: 0.1
 
 
-## The standar of datashet I have been using is 10000 samples raw and 20000 samples for modeled and 10000 for raw images
+## The standar of dataset I have been using is 10000 samples raw and 20000 samples for modeled and 10000 for raw images
